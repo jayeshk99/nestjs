@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity({ name: 'AWSPreviousGenerationInstance' })
 export class AWSPreviousGenerationInstanceEntity {
@@ -37,4 +44,16 @@ export class AWSPreviousGenerationInstanceEntity {
 
   @Column({ name: 'Platform' })
   platform: string;
+
+  @CreateDateColumn({ name: 'createdAt', type: 'timestamp' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updatedAt', type: 'timestamp' })
+  updatedAt: Date;
+
+  @BeforeInsert()
+  updateTime() {
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
+  }
 }

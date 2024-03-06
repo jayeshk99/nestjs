@@ -1,8 +1,10 @@
 import {
+  BeforeInsert,
   Column,
   CreateDateColumn,
   Entity,
   PrimaryGeneratedColumn,
+  UpdateDateColumn,
 } from 'typeorm';
 
 @Entity({ name: 'aws_idle_analysis' })
@@ -28,6 +30,18 @@ export class AwsIdleAnalysisEntity {
   @Column({ name: 'upper_network_out' })
   upperNetworkOut: number;
 
-  @CreateDateColumn({ name: 'created_on', type: 'date' })
+  @Column({ name: 'created_on', type: 'date' })
   createdOn: Date;
+
+  @CreateDateColumn({ name: 'createdAt', type: 'timestamp' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updatedAt', type: 'timestamp' })
+  updatedAt: Date;
+
+  @BeforeInsert()
+  updateTime() {
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
+  }
 }

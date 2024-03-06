@@ -9,20 +9,20 @@ import {
 
 @Entity({ name: 'AWSUsers' })
 export class AWSUsersEntity {
-  @PrimaryGeneratedColumn()
-  Id: number;
+  @PrimaryGeneratedColumn({ name: '' })
+  id: number;
 
-  @Column()
-  AccountId: string;
+  @Column({ name: 'AccountId' })
+  accountId: string;
 
-  @Column()
-  IAMUserId: string;
+  @Column({ name: 'IAMUserId' })
+  iAMUserId: string;
 
-  @Column()
-  IAMUserName: string;
+  @Column({ name: 'IAMUserName' })
+  iAMUserName: string;
 
-  @Column()
-  UpdatedBy: number;
+  @Column({ name: 'UpdatedBy' })
+  updatedBy: number;
 
   @CreateDateColumn({ name: 'createdAt', type: 'timestamptz' })
   createdAt: Date;

@@ -1,4 +1,11 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 @Entity({ name: 'IdleS3Glacier' })
 export class IdleS3GlacierEntity {
@@ -55,4 +62,16 @@ export class IdleS3GlacierEntity {
 
   @Column({ name: 'IpAddress' })
   ipAddress: string;
+
+  @CreateDateColumn({ name: 'createdAt', type: 'timestamp' })
+  createdAt: Date;
+
+  @UpdateDateColumn({ name: 'updatedAt', type: 'timestamp' })
+  updatedAt: Date;
+
+  @BeforeInsert()
+  updateTime() {
+    this.createdAt = new Date();
+    this.updatedAt = new Date();
+  }
 }

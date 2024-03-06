@@ -9,65 +9,65 @@ import {
 
 @Entity({ name: 'AWSAccounts' })
 export class AWSAccountsEntity {
-  @PrimaryGeneratedColumn()
-  Id: number;
+  @PrimaryGeneratedColumn({ name: 'Id' })
+  id: number;
 
   @Column({ name: 'Name' })
-  Name: string;
+  name: string;
 
   @Column({ name: 'CloudProvider' })
-  CloudProvider: string;
+  cloudProvider: string;
 
   @Column({ name: 'Location' })
-  Location: string;
+  location: string;
 
   @Column({ name: 'PayeeOrganization' })
-  PayeeOrganization: string;
+  payeeOrganization: string;
 
   @Column({ name: 'Attributes' })
-  Attributes: string;
+  attributes: string;
 
   @Column({ name: 'AccountId' })
-  AccountId: string;
+  accountId: string;
 
   @Column({ name: 'AccessKeyId' })
-  AccessKeyId: string;
+  accessKeyId: string;
 
   @Column({ name: 'SecretAccessKeyId' })
-  SecretAccessKeyId: string;
+  secretAccessKeyId: string;
 
   @Column({ name: 'Credentials', default: false })
-  Credentials: boolean;
+  credentials: boolean;
 
   @Column({ name: 'Company' })
-  Company: string;
+  company: string;
 
   @Column({ name: 'IAMUserId' })
-  IAMUserId: string;
+  iAMUserId: string;
 
   @Column({ name: 'CreatedBy' })
-  CreatedBy: number;
+  createdBy: number;
 
   @Column({ name: 'IsActive', default: 1 })
-  IsActive: number;
+  isActive: number;
 
   @Column({ name: 'AWSLimit', default: 0 })
-  AWSLimit: number;
+  aWSLimit: number;
 
   @Column({ name: 'BucketName' })
-  BucketName: string;
+  bucketName: string;
 
   @Column({ name: 'BucketPrefix' })
-  BucketPrefix: string;
+  bucketPrefix: string;
 
   @Column({ name: 'BucketRegion' })
-  BucketRegion: string;
+  bucketRegion: string;
 
   @Column({ name: 'UpdatedBy' })
   UpdatedBy: number;
 
   @Column({ name: 'IpAddress' })
-  IpAddress: string;
+  ipAddress: string;
 
   @CreateDateColumn({ name: 'createdAt' })
   createdAt: Date;

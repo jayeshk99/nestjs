@@ -9,9 +9,9 @@ export class AwsAccountRepository {
     @InjectRepository(AWSAccountsEntity)
     private readonly awsAccountRepository: Repository<AWSAccountsEntity>,
   ) {}
-  async getAccountDetails(AccountId: string): Promise<AWSAccountsEntity> {
+  async getAccountDetails(accountId: string): Promise<AWSAccountsEntity> {
     return await this.awsAccountRepository.findOne({
-      where: { AccountId, IsActive: 1, Credentials: true },
+      where: { accountId, isActive: 1, credentials: true },
     });
   }
 }

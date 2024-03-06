@@ -163,25 +163,25 @@ export class AwsInstanceEntity {
   privateIp: string;
 
   @Column({ name: 'CreatedBy' })
-  CreatedBy: number;
+  createdBy: number;
 
   @Column({ name: 'UpdatedBy' })
-  UpdatedBy: number;
+  updatedBy: number;
 
   @Column({ name: 'IpAddress' })
-  IpAddress: string;
+  ipAddress: string;
 
   @Column({ name: 'KeyName' })
-  KeyName: string;
+  keyName: string;
 
   @Column({ name: 'LaunchTime' })
-  LaunchTime: Date;
+  launchTime: Date;
 
   @Column({ name: 'MonitoringState' })
-  MonitoringState: string;
+  monitoringState: string;
 
   @Column({ name: 'SecurityGroups' })
-  SecurityGroups: string;
+  securityGroups: string;
 
   @BeforeInsert()
   updateTime() {
