@@ -24,8 +24,8 @@ import {
 import { S3DetailsRepository } from 'src/infra/repositories/s3DetailsRepository';
 
 @Injectable()
-export class S3Servie {
-  private readonly logger = new Logger(S3Servie.name);
+export class S3Service {
+  private readonly logger = new Logger(S3Service.name);
   constructor(
     private readonly clientConfigurationService: ClientConfigurationService,
     private readonly s3SdkService: S3SdkService,

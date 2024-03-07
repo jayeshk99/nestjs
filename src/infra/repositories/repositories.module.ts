@@ -10,6 +10,8 @@ import { AwsUsageDetailsRepository } from './awsUsageDetails.repository';
 import { S3DetailsRepository } from './s3DetailsRepository';
 import { AWSUsageDetailsEntity } from '../entities/awsUsageDetails.entity';
 import { S3BucketEntity } from '../entities/s3Details.entity';
+import { FsxDetailsRepository } from './fsxDetailsRepository';
+import { FSxEntity } from '../entities/fsxDetails.entity';
 
 @Module({
   imports: [
@@ -18,6 +20,7 @@ import { S3BucketEntity } from '../entities/s3Details.entity';
       AWSAccountsEntity,
       AWSUsageDetailsEntity,
       S3BucketEntity,
+      FSxEntity
     ]),
   ],
   providers: [
@@ -25,12 +28,14 @@ import { S3BucketEntity } from '../entities/s3Details.entity';
     AwsAccountRepository,
     AwsUsageDetailsRepository,
     S3DetailsRepository,
+    FsxDetailsRepository
   ],
   exports: [
     AwsInstanceRepository,
     AwsAccountRepository,
     AwsUsageDetailsRepository,
     S3DetailsRepository,
+    FsxDetailsRepository
   ],
 })
 export class RepositoriesModule {}

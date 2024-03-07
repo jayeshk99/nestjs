@@ -1,12 +1,13 @@
 import { Module } from '@nestjs/common';
 import { RepositoriesModule } from 'src/infra/repositories/repositories.module';
-import { S3Service } from './s3.service';
+
 import { AwsSdkModule } from 'src/libs/aws-sdk/aws-sdk.module';
 import { AwsHelperModule } from '../helper/helper.module';
+import { FsxService } from './fsx.service';
 
 @Module({
-  imports: [RepositoriesModule, AwsSdkModule, AwsHelperModule],
-  providers: [S3Service],
-  exports: [S3Service],
+  imports: [RepositoriesModule, AwsSdkModule, AwsHelperModule,],
+  providers: [FsxService],
+  exports: [FsxService],
 })
-export class S3Module {}
+export class FsxModule {}
