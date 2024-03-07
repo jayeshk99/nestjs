@@ -4,7 +4,8 @@ import { ClientConfigurationService } from 'src/libs/aws-sdk/clientConfiguration
 import { ClientCredentials } from '../../common/interfaces/awsClient.interface';
 import { REGIONS } from 'src/common/constants/constants';
 import { EC2SdkService } from 'src/libs/aws-sdk/ec2Sdk.service';
-import { S3Servie } from '../awsResources/s3/s3.service';
+import { S3Service } from '../awsResources/s3/s3.service';
+import { EFSService } from '../awsResources/efs/efs.service';
 
 @Injectable()
 export class ResourceSyncService {
@@ -13,7 +14,8 @@ export class ResourceSyncService {
     private readonly clientConfigurationService: ClientConfigurationService,
     private readonly awsAccountRepository: AwsAccountRepository,
     private readonly ec2SdkService: EC2SdkService,
-    private readonly s3Service: S3Servie,
+    private readonly s3Service: S3Service,
+    private readonly efsService: EFSService,
   ) {}
 
   async fetchAllResources(AccountId: string) {
@@ -30,12 +32,16 @@ export class ResourceSyncService {
         await this.clientConfigurationService.getEC2Client(clientRequest);
       const regions = await this.ec2SdkService.getEnabledRegions(ec2Client);
 
-      // await Promise.all(
-      //   regions.Regions.map(async (region) => {
-      clientRequest = { ...clientRequest, region: REGIONS.US_EAST_1 };
-      await this.s3Service.fetchS3Details(clientRequest);
-      //   }),
-      // );
+      await Promise.all(
+        regions.Regions.map(async (region) => {
+          let regionWiseClientRequest = {
+            ...clientRequest,
+            region: region.RegionName,
+          };
+          await this.s3Service.fetchS3Details(regionWiseClientRequest);
+          await this.efsService.fetchEfsDetails(regionWiseClientRequest);
+        }),
+      );
     } catch (error) {
       this.logger.log(
         `Error in getting information about account : ${AccountId} message: ${error}`,

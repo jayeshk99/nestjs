@@ -7,9 +7,11 @@ import { EntitiesModule } from '../entities/entities.module';
 import { AWSAccountsEntity } from '../entities/awsAccount.entity';
 import { AwsAccountRepository } from './AwsAccount.repository';
 import { AwsUsageDetailsRepository } from './awsUsageDetails.repository';
-import { S3DetailsRepository } from './s3DetailsRepository';
+import { S3DetailsRepository } from './s3Details.repository';
 import { AWSUsageDetailsEntity } from '../entities/awsUsageDetails.entity';
 import { S3BucketEntity } from '../entities/s3Details.entity';
+import { EFSRepository } from './efs.repository';
+import { EFSEntity } from '../entities/efsDetails.entity';
 
 @Module({
   imports: [
@@ -18,6 +20,7 @@ import { S3BucketEntity } from '../entities/s3Details.entity';
       AWSAccountsEntity,
       AWSUsageDetailsEntity,
       S3BucketEntity,
+      EFSEntity,
     ]),
   ],
   providers: [
@@ -25,12 +28,14 @@ import { S3BucketEntity } from '../entities/s3Details.entity';
     AwsAccountRepository,
     AwsUsageDetailsRepository,
     S3DetailsRepository,
+    EFSRepository,
   ],
   exports: [
     AwsInstanceRepository,
     AwsAccountRepository,
     AwsUsageDetailsRepository,
     S3DetailsRepository,
+    EFSRepository,
   ],
 })
 export class RepositoriesModule {}
