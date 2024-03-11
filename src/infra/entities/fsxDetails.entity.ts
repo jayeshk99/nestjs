@@ -18,6 +18,9 @@ export class FSxEntity {
   @Column({ name: 'FileSystemId' })
   fileSystemId: string;
 
+  @Column({ name: 'ResourceARN' })
+  resourceARN: string;
+
   @Column({ name: 'FileSystemType' })
   fileType: string;
 

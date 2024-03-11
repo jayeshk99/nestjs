@@ -39,7 +39,7 @@ import { FSxEntity } from '../entities/fsxDetails.entity';
     AwsAccountRepository,
     AwsUsageDetailsRepository,
     S3DetailsRepository,
-    FsxDetailsRepository
+    FsxDetailsRepository,
     EFSRepository,
   ],
 })

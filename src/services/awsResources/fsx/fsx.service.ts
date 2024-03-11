@@ -27,7 +27,7 @@ export class FsxService {
         await this.clientConfigurationService.getFsxClient(data);
 
       const fileSystems =
-        await this.fsxSdkService.describeFileSystems(fsxClient);
+        await this.fsxSdkService.listFileSystems(fsxClient);
 
       if (fileSystems && fileSystems.length) {
         for (let i = 0; i < fileSystems.length; i++) {
@@ -38,6 +38,7 @@ export class FsxService {
             await this.awsUsageDetailsRepository.getAwsCurrencyCode(accountId);
           const FsxFields: FsxFileSystemProps = {
             fileSystemId: fsxDetails.FileSystemId,
+            resourceArn: fsxDetails.ResourceARN,
             storageOwner: fsxDetails.OwnerId,
             storageName: name,
             fileSystemType: fsxDetails.FileSystemType,

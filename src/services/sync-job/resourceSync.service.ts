@@ -35,15 +35,16 @@ export class ResourceSyncService {
       let ec2Client =
         await this.clientConfigurationService.getEC2Client(clientRequest);
       const regions = await this.ec2SdkService.getEnabledRegions(ec2Client);
-
+      await this.s3Service.fetchS3Details(clientRequest);
       await Promise.all(
         regions.Regions.map(async (region) => {
           let regionWiseClientRequest = {
             ...clientRequest,
             region: region.RegionName,
           };
-          await this.s3Service.fetchS3Details(regionWiseClientRequest);
+        
           await this.efsService.fetchEfsDetails(regionWiseClientRequest);
+          await this.fsxService.fetchFsxDetails(regionWiseClientRequest)
         }),
       );
     } catch (error) {

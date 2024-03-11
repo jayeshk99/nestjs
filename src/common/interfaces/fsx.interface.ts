@@ -2,6 +2,7 @@ export interface FsxFileSystemProps {
   id?: number;
   accountId?: string;
   fileSystemId?: string;
+  resourceArn?: string;
   fileSystemType?: string;
   storageName?: string;
   storageOwner?: string;
