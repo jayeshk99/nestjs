@@ -3,6 +3,7 @@ import { ClientConfigurationService } from './clientConfiguration.service';
 import { CloudwatchSdkService } from './cloudwatchSdk.service';
 import { S3SdkService } from './s3Sdk.service';
 import { EC2SdkService } from './ec2Sdk.service';
+import { EFSSdkService } from './efsSdk.service';
 import { FsxSdkService } from './fsxSdkService';
 
 @Module({
@@ -12,6 +13,7 @@ import { FsxSdkService } from './fsxSdkService';
     CloudwatchSdkService,
     S3SdkService,
     EC2SdkService,
+    EFSSdkService,
     FsxSdkService
   ],
   exports: [
@@ -19,6 +21,7 @@ import { FsxSdkService } from './fsxSdkService';
     CloudwatchSdkService,
     S3SdkService,
     EC2SdkService,
+    EFSSdkService,
     FsxSdkService
   ],
 })

@@ -21,7 +21,7 @@ import {
   S3BucketProps,
   S3CostDetailProps,
 } from 'src/common/interfaces/s3.interface';
-import { S3DetailsRepository } from 'src/infra/repositories/s3DetailsRepository';
+import { S3DetailsRepository } from 'src/infra/repositories/s3Details.repository';
 
 @Injectable()
 export class S3Service {
@@ -77,7 +77,6 @@ export class S3Service {
               bucketName: bucket.Name,
               accountId: accountId,
             });
-          console.log('currencyCode:', currencyCode);
           const s3BucketFields: S3BucketProps = {
             storageOwner: bucketsList.Owner.DisplayName,
             storageName: bucket.Name,
@@ -101,7 +100,6 @@ export class S3Service {
           const isBucketExist =
             await this.s3DetailsRepository.findS3Bucket(s3BucketFields);
           if (isBucketExist) {
-            console.log('update s3 bucket :', s3BucketFields);
             await this.s3DetailsRepository.updateS3Bucket(
               isBucketExist.id,
               s3BucketFields,

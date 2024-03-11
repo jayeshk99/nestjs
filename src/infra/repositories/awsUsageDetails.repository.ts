@@ -20,10 +20,10 @@ export class AwsUsageDetailsRepository {
     if (data.resourceId) {
       cost = await this.awsUsageDetailsRepository
         .createQueryBuilder('costData')
-        .select('costData.BillingDate', 'BillingDate')
-        .addSelect('costData.CurrencyCode', 'CurrencyCode')
-        .addSelect('costData.ProductCode', 'ProductCode')
-        .addSelect('costData.UnBlendedCost', 'UnBlendedCost')
+        .select('costData.BillingDate', 'billingDate')
+        .addSelect('costData.CurrencyCode', 'currencyCode')
+        .addSelect('costData.ProductCode', 'productCode')
+        .addSelect('costData.UnBlendedCost', 'unBlendedCost')
         .where('costData.ProductCode = :productCode', { productCode })
         .andWhere('costData.ResourceId like :resourceId', {
           resourceId: `%${resourceId}%`,
@@ -35,10 +35,10 @@ export class AwsUsageDetailsRepository {
     } else {
       cost = await this.awsUsageDetailsRepository
         .createQueryBuilder('costData')
-        .select('costData.BillingDate', 'BillingDate')
-        .addSelect('costData.CurrencyCode', 'CurrencyCode')
-        .addSelect('costData.ProductCode', 'ProductCode')
-        .addSelect('costData.UnBlendedCost', 'UnBlendedCost')
+        .select('costData.BillingDate', 'billingDate')
+        .addSelect('costData.CurrencyCode', 'currencyCode')
+        .addSelect('costData.ProductCode', 'productCode')
+        .addSelect('costData.UnBlendedCost', 'unBlendedCost')
         .where('costData.ProductCode = :productCode', { productCode })
         .andWhere('costData.UsageAccountId = :awsAccountId', { awsAccountId })
         .andWhere('costData.BillingDate < :limitDate', { limitDate })

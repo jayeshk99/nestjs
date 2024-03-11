@@ -27,3 +27,13 @@ export interface AWSMetricProps {
   TimeStamp?: string;
   Dimensions: { Name: string; Value: string }[];
 }
+
+export interface ListResourcesProps {
+  Marker?: string;
+  NextMarker?: string;
+  Token?: string;
+  NextToken?: string;
+  marker?: string;
+  nextMarker?: string;
+  nextToken?: string;
+}

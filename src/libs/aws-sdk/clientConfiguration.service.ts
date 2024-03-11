@@ -60,6 +60,15 @@ export class ClientConfigurationService {
     return s3Client;
   }
 
+  async getEFSClient(credentials: ClientCredentials): Promise<AWS.EFS> {
+    const { region, accessKeyId, secretAccessKeyId, accountId } = credentials;
+    const efsClient = new AWS.EFS({
+      region: region,
+      credentials: { accessKeyId, secretAccessKey: secretAccessKeyId },
+    });
+    return efsClient;
+  }
+
   async getFsxClient(credentials: ClientCredentials): Promise<AWS.FSx> {
     const fsxClient = new AWS.FSx({
       region: credentials.region,

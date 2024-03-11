@@ -7,9 +7,11 @@ import { EntitiesModule } from '../entities/entities.module';
 import { AWSAccountsEntity } from '../entities/awsAccount.entity';
 import { AwsAccountRepository } from './AwsAccount.repository';
 import { AwsUsageDetailsRepository } from './awsUsageDetails.repository';
-import { S3DetailsRepository } from './s3DetailsRepository';
+import { S3DetailsRepository } from './s3Details.repository';
 import { AWSUsageDetailsEntity } from '../entities/awsUsageDetails.entity';
 import { S3BucketEntity } from '../entities/s3Details.entity';
+import { EFSRepository } from './efs.repository';
+import { EFSEntity } from '../entities/efsDetails.entity';
 import { FsxDetailsRepository } from './fsxDetailsRepository';
 import { FSxEntity } from '../entities/fsxDetails.entity';
 
@@ -20,6 +22,7 @@ import { FSxEntity } from '../entities/fsxDetails.entity';
       AWSAccountsEntity,
       AWSUsageDetailsEntity,
       S3BucketEntity,
+      EFSEntity,
       FSxEntity
     ]),
   ],
@@ -28,6 +31,7 @@ import { FSxEntity } from '../entities/fsxDetails.entity';
     AwsAccountRepository,
     AwsUsageDetailsRepository,
     S3DetailsRepository,
+    EFSRepository,
     FsxDetailsRepository
   ],
   exports: [
@@ -36,6 +40,7 @@ import { FSxEntity } from '../entities/fsxDetails.entity';
     AwsUsageDetailsRepository,
     S3DetailsRepository,
     FsxDetailsRepository
+    EFSRepository,
   ],
 })
 export class RepositoriesModule {}
