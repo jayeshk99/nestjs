@@ -6,6 +6,7 @@ import { REGIONS } from 'src/common/constants/constants';
 import { EC2SdkService } from 'src/libs/aws-sdk/ec2Sdk.service';
 import { S3Service } from '../awsResources/s3/s3.service';
 import { EFSService } from '../awsResources/efs/efs.service';
+import { S3GlacierService } from '../awsResources/s3Glacier/s3Glacier.service';
 
 @Injectable()
 export class ResourceSyncService {
@@ -16,6 +17,7 @@ export class ResourceSyncService {
     private readonly ec2SdkService: EC2SdkService,
     private readonly s3Service: S3Service,
     private readonly efsService: EFSService,
+    private readonly s3GlacierService: S3GlacierService,
   ) {}
 
   async fetchAllResources(AccountId: string) {
@@ -40,6 +42,9 @@ export class ResourceSyncService {
           };
           await this.s3Service.fetchS3Details(regionWiseClientRequest);
           await this.efsService.fetchEfsDetails(regionWiseClientRequest);
+          await this.s3GlacierService.fetchS3GlacierDetails(
+            regionWiseClientRequest,
+          );
         }),
       );
     } catch (error) {

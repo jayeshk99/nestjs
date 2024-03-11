@@ -68,4 +68,13 @@ export class ClientConfigurationService {
     });
     return efsClient;
   }
+
+  async getS3GlacierClient(credentials: ClientCredentials) {
+    const { region, accessKeyId, secretAccessKeyId, accountId } = credentials;
+    const s3GlacierClient = new AWS.Glacier({
+      region: region,
+      credentials: { accessKeyId, secretAccessKey: secretAccessKeyId },
+    });
+    return s3GlacierClient;
+  }
 }

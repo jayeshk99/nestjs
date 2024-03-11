@@ -4,6 +4,7 @@ import { CloudwatchSdkService } from './cloudwatchSdk.service';
 import { S3SdkService } from './s3Sdk.service';
 import { EC2SdkService } from './ec2Sdk.service';
 import { EFSSdkService } from './efsSdk.service';
+import { S3GlacierSdkService } from './s3GlacierSdk.service';
 
 @Module({
   imports: [],
@@ -13,6 +14,7 @@ import { EFSSdkService } from './efsSdk.service';
     S3SdkService,
     EC2SdkService,
     EFSSdkService,
+    S3GlacierSdkService,
   ],
   exports: [
     ClientConfigurationService,
@@ -20,6 +22,7 @@ import { EFSSdkService } from './efsSdk.service';
     S3SdkService,
     EC2SdkService,
     EFSSdkService,
+    S3GlacierSdkService,
   ],
 })
 export class AwsSdkModule {}
