@@ -9,6 +9,7 @@ import { EFSService } from '../awsResources/efs/efs.service';
 import { S3Service } from '../awsResources/s3/s3.service';
 import { FsxService } from '../awsResources/fsx/fsx.service';
 import { Region } from 'src/common/interfaces/ec2Region.interface';
+import { RdsService } from '../awsResources/rds/rds.service';
 
 @Injectable()
 export class ResourceSyncService {
@@ -20,6 +21,7 @@ export class ResourceSyncService {
     private readonly s3Service: S3Service,
     private readonly efsService: EFSService,
     private readonly fsxService: FsxService,
+    private readonly rdsService: RdsService
   ) {}
 
   async fetchAllResources(AccountId: string) {
@@ -45,6 +47,7 @@ export class ResourceSyncService {
         
           await this.efsService.fetchEfsDetails(regionWiseClientRequest);
           await this.fsxService.fetchFsxDetails(regionWiseClientRequest)
+          await this.rdsService.fetchRdsDetails(regionWiseClientRequest)
         }),
       );
     } catch (error) {

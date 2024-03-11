@@ -14,6 +14,8 @@ import { EFSRepository } from './efs.repository';
 import { EFSEntity } from '../entities/efsDetails.entity';
 import { FsxDetailsRepository } from './fsxDetailsRepository';
 import { FSxEntity } from '../entities/fsxDetails.entity';
+import { RdsDetailsRepository } from './rdsDetails.repositories';
+import { RDSDetailsEntity } from '../entities/rdsDetails.entity';
 
 @Module({
   imports: [
@@ -23,7 +25,8 @@ import { FSxEntity } from '../entities/fsxDetails.entity';
       AWSUsageDetailsEntity,
       S3BucketEntity,
       EFSEntity,
-      FSxEntity
+      FSxEntity,
+      RDSDetailsEntity
     ]),
   ],
   providers: [
@@ -32,7 +35,8 @@ import { FSxEntity } from '../entities/fsxDetails.entity';
     AwsUsageDetailsRepository,
     S3DetailsRepository,
     EFSRepository,
-    FsxDetailsRepository
+    FsxDetailsRepository,
+    RdsDetailsRepository
   ],
   exports: [
     AwsInstanceRepository,
@@ -41,6 +45,7 @@ import { FSxEntity } from '../entities/fsxDetails.entity';
     S3DetailsRepository,
     FsxDetailsRepository,
     EFSRepository,
+    RdsDetailsRepository
   ],
 })
 export class RepositoriesModule {}

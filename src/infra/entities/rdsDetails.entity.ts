@@ -28,7 +28,7 @@ export class RDSDetailsEntity {
   engine: string;
 
   @Column({ name: 'AllocatedStorage' })
-  allocatedStorage: string;
+  allocatedStorage: number;
 
   @Column({ name: 'DBInstanceArn' })
   dbInstanceArn: string;

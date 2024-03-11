@@ -79,4 +79,14 @@ export class ClientConfigurationService {
     });
     return fsxClient;
   }
+  async getRdsClient(credentials: ClientCredentials): Promise<AWS.RDS> {
+    const rdsClient = new AWS.RDS({
+      region: credentials.region,
+      credentials: {
+        accessKeyId: credentials.accessKeyId,
+        secretAccessKey: credentials.secretAccessKeyId,
+      },
+    });
+    return rdsClient;
+  }
 }
