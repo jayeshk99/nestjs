@@ -14,6 +14,8 @@ import { EFSRepository } from './efs.repository';
 import { EFSEntity } from '../entities/efsDetails.entity';
 import { S3GlacierDetailsEntity } from '../entities/s3GlacierDetails.entity';
 import { S3GlacierRepository } from './s3Glacier.repository';
+import { FsxDetailsRepository } from './fsxDetailsRepository';
+import { FSxEntity } from '../entities/fsxDetails.entity';
 
 @Module({
   imports: [
@@ -24,6 +26,7 @@ import { S3GlacierRepository } from './s3Glacier.repository';
       S3BucketEntity,
       EFSEntity,
       S3GlacierDetailsEntity,
+      FSxEntity,
     ]),
   ],
   providers: [
@@ -33,12 +36,14 @@ import { S3GlacierRepository } from './s3Glacier.repository';
     S3DetailsRepository,
     EFSRepository,
     S3GlacierRepository,
+    FsxDetailsRepository,
   ],
   exports: [
     AwsInstanceRepository,
     AwsAccountRepository,
     AwsUsageDetailsRepository,
     S3DetailsRepository,
+    FsxDetailsRepository,
     EFSRepository,
     S3GlacierRepository,
   ],

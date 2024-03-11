@@ -77,4 +77,14 @@ export class ClientConfigurationService {
     });
     return s3GlacierClient;
   }
+  async getFsxClient(credentials: ClientCredentials): Promise<AWS.FSx> {
+    const fsxClient = new AWS.FSx({
+      region: credentials.region,
+      credentials: {
+        accessKeyId: credentials.accessKeyId,
+        secretAccessKey: credentials.secretAccessKeyId,
+      },
+    });
+    return fsxClient;
+  }
 }
