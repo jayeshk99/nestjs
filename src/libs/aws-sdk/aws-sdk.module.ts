@@ -6,6 +6,8 @@ import { EC2SdkService } from './ec2Sdk.service';
 import { EFSSdkService } from './efsSdk.service';
 import { S3GlacierSdkService } from './s3GlacierSdk.service';
 import { FsxSdkService } from './fsxSdkService';
+import { ECRSdkService } from './ecrSdk.service';
+import { EKSSdkService } from './eksSdk.service';
 
 @Module({
   imports: [],
@@ -17,6 +19,8 @@ import { FsxSdkService } from './fsxSdkService';
     EFSSdkService,
     S3GlacierSdkService,
     FsxSdkService,
+    ECRSdkService,
+    EKSSdkService,
   ],
   exports: [
     ClientConfigurationService,
@@ -26,6 +30,8 @@ import { FsxSdkService } from './fsxSdkService';
     EFSSdkService,
     S3GlacierSdkService,
     FsxSdkService,
+    ECRSdkService,
+    EKSSdkService,
   ],
 })
 export class AwsSdkModule {}

@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { S3BucketEntity } from '../entities/s3Details.entity';
-import { S3BucketProps } from 'src/common/interfaces/s3.interface';
 import { EFSEntity } from '../entities/efsDetails.entity';
 import { EFSProps } from 'src/common/interfaces/efs.interface';
 
@@ -20,11 +18,11 @@ export class EFSRepository {
     });
   }
 
-  async updateEfs(id: number, data: S3BucketProps) {
+  async updateEfs(id: number, data: EFSProps) {
     return await this.efsRepository.update({ id }, { ...data });
   }
 
-  async createEfs(data: S3BucketProps) {
+  async createEfs(data: EFSProps) {
     const result = this.efsRepository.create(data);
     return this.efsRepository.save(result);
     // return await this.s3BucketRepository.save({ ...data });

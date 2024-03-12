@@ -10,6 +10,8 @@ import { S3GlacierService } from '../awsResources/s3Glacier/s3Glacier.service';
 import { S3Service } from '../awsResources/s3/s3.service';
 import { FsxService } from '../awsResources/fsx/fsx.service';
 import { Region } from 'src/common/interfaces/ec2Region.interface';
+import { ECRService } from '../awsResources/ecr/ecr.service';
+import { EKSService } from '../awsResources/eks/ecr.service';
 
 @Injectable()
 export class ResourceSyncService {
@@ -22,6 +24,8 @@ export class ResourceSyncService {
     private readonly efsService: EFSService,
     private readonly s3GlacierService: S3GlacierService,
     private readonly fsxService: FsxService,
+    private readonly ecrSevice: ECRService,
+    private readonly eksService: EKSService,
   ) {}
 
   async fetchAllResources(AccountId: string) {
@@ -37,7 +41,7 @@ export class ResourceSyncService {
       let ec2Client =
         await this.clientConfigurationService.getEC2Client(clientRequest);
       const regions = await this.ec2SdkService.getEnabledRegions(ec2Client);
-      await this.s3Service.fetchS3Details(clientRequest);
+      // await this.s3Service.fetchS3Details(clientRequest);
       await Promise.all(
         regions.Regions.map(async (region) => {
           let regionWiseClientRequest = {
@@ -50,6 +54,8 @@ export class ResourceSyncService {
             regionWiseClientRequest,
           );
           await this.fsxService.fetchFsxDetails(regionWiseClientRequest);
+          await this.ecrSevice.fetchEcrDetails(regionWiseClientRequest);
+          await this.eksService.fetchEksDetails(regionWiseClientRequest);
         }),
       );
     } catch (error) {

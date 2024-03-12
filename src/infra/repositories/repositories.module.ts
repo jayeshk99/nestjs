@@ -16,6 +16,10 @@ import { S3GlacierDetailsEntity } from '../entities/s3GlacierDetails.entity';
 import { S3GlacierRepository } from './s3Glacier.repository';
 import { FsxDetailsRepository } from './fsxDetailsRepository';
 import { FSxEntity } from '../entities/fsxDetails.entity';
+import { ECREntity } from '../entities/ecrDetails.entity';
+import { EKSEntity } from '../entities/eksDetails.entity';
+import { ECRRepository } from './ecr.repository';
+import { EKSRepository } from './eks.repository';
 
 @Module({
   imports: [
@@ -27,6 +31,8 @@ import { FSxEntity } from '../entities/fsxDetails.entity';
       EFSEntity,
       S3GlacierDetailsEntity,
       FSxEntity,
+      ECREntity,
+      EKSEntity,
     ]),
   ],
   providers: [
@@ -37,6 +43,8 @@ import { FSxEntity } from '../entities/fsxDetails.entity';
     EFSRepository,
     S3GlacierRepository,
     FsxDetailsRepository,
+    ECRRepository,
+    EKSRepository,
   ],
   exports: [
     AwsInstanceRepository,
@@ -46,6 +54,8 @@ import { FSxEntity } from '../entities/fsxDetails.entity';
     FsxDetailsRepository,
     EFSRepository,
     S3GlacierRepository,
+    ECRRepository,
+    EKSRepository,
   ],
 })
 export class RepositoriesModule {}

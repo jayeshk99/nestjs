@@ -4,7 +4,6 @@ import {
   ListResourcesProps,
 } from 'src/common/interfaces/awsClient.interface';
 import * as AWS from 'aws-sdk';
-import { LIST_RESOURCE_KEY } from 'src/common/constants/constants';
 import { FileSystemDescription } from 'aws-sdk/clients/efs';
 @Injectable()
 export class EFSSdkService {

@@ -87,4 +87,24 @@ export class ClientConfigurationService {
     });
     return fsxClient;
   }
+  async getEcrClient(credentials: ClientCredentials): Promise<AWS.ECR> {
+    const ecrClient = new AWS.ECR({
+      region: credentials.region,
+      credentials: {
+        accessKeyId: credentials.accessKeyId,
+        secretAccessKey: credentials.secretAccessKeyId,
+      },
+    });
+    return ecrClient;
+  }
+  async getEksClient(credentials: ClientCredentials): Promise<AWS.EKS> {
+    const eksClient = new AWS.EKS({
+      region: credentials.region,
+      credentials: {
+        accessKeyId: credentials.accessKeyId,
+        secretAccessKey: credentials.secretAccessKeyId,
+      },
+    });
+    return eksClient;
+  }
 }
