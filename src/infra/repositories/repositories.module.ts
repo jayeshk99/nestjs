@@ -12,10 +12,16 @@ import { AWSUsageDetailsEntity } from '../entities/awsUsageDetails.entity';
 import { S3BucketEntity } from '../entities/s3Details.entity';
 import { EFSRepository } from './efs.repository';
 import { EFSEntity } from '../entities/efsDetails.entity';
+import { S3GlacierDetailsEntity } from '../entities/s3GlacierDetails.entity';
+import { S3GlacierRepository } from './s3Glacier.repository';
 import { FsxDetailsRepository } from './fsxDetailsRepository';
 import { FSxEntity } from '../entities/fsxDetails.entity';
 import { RdsDetailsRepository } from './rdsDetails.repositories';
 import { RDSDetailsEntity } from '../entities/rdsDetails.entity';
+import { ECREntity } from '../entities/ecrDetails.entity';
+import { EKSEntity } from '../entities/eksDetails.entity';
+import { ECRRepository } from './ecr.repository';
+import { EKSRepository } from './eks.repository';
 
 @Module({
   imports: [
@@ -25,6 +31,10 @@ import { RDSDetailsEntity } from '../entities/rdsDetails.entity';
       AWSUsageDetailsEntity,
       S3BucketEntity,
       EFSEntity,
+      S3GlacierDetailsEntity,
+      FSxEntity,
+      ECREntity,
+      EKSEntity,
       FSxEntity,
       RDSDetailsEntity
     ]),
@@ -35,6 +45,10 @@ import { RDSDetailsEntity } from '../entities/rdsDetails.entity';
     AwsUsageDetailsRepository,
     S3DetailsRepository,
     EFSRepository,
+    S3GlacierRepository,
+    FsxDetailsRepository,
+    ECRRepository,
+    EKSRepository,
     FsxDetailsRepository,
     RdsDetailsRepository
   ],
@@ -45,6 +59,9 @@ import { RDSDetailsEntity } from '../entities/rdsDetails.entity';
     S3DetailsRepository,
     FsxDetailsRepository,
     EFSRepository,
+    S3GlacierRepository,
+    ECRRepository,
+    EKSRepository,
     RdsDetailsRepository
   ],
 })

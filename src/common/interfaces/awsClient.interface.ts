@@ -36,6 +36,7 @@ export interface ListResourcesProps {
   marker?: string;
   nextMarker?: string;
   nextToken?: string;
+  accountId?: string;
   MaxResults?: number;
   MaxRecords?: number
 }

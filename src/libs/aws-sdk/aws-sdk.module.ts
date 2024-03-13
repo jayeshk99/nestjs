@@ -4,7 +4,10 @@ import { CloudwatchSdkService } from './cloudwatchSdk.service';
 import { S3SdkService } from './s3Sdk.service';
 import { EC2SdkService } from './ec2Sdk.service';
 import { EFSSdkService } from './efsSdk.service';
+import { S3GlacierSdkService } from './s3GlacierSdk.service';
 import { FsxSdkService } from './fsxSdkService';
+import { ECRSdkService } from './ecrSdk.service';
+import { EKSSdkService } from './eksSdk.service';
 import { RdsSdkService } from './rdsSdk.service';
 
 @Module({
@@ -15,6 +18,10 @@ import { RdsSdkService } from './rdsSdk.service';
     S3SdkService,
     EC2SdkService,
     EFSSdkService,
+    S3GlacierSdkService,
+    FsxSdkService,
+    ECRSdkService,
+    EKSSdkService,
     FsxSdkService,
     RdsSdkService
   ],
@@ -24,6 +31,10 @@ import { RdsSdkService } from './rdsSdk.service';
     S3SdkService,
     EC2SdkService,
     EFSSdkService,
+    S3GlacierSdkService,
+    FsxSdkService,
+    ECRSdkService,
+    EKSSdkService,
     FsxSdkService,
     RdsSdkService
   ],

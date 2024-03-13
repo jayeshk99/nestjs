@@ -9,6 +9,9 @@ import { EFSClient } from '@aws-sdk/client-efs';
 import { FSxClient } from '@aws-sdk/client-fsx';
 import { RDSClient } from '@aws-sdk/client-rds';
 import { PricingClient } from '@aws-sdk/client-pricing';
+import { GlacierClient } from '@aws-sdk/client-glacier';
+import { ECRClient } from '@aws-sdk/client-ecr';
+import { EKSClient } from '@aws-sdk/client-eks';
 @Injectable()
 export class ClientConfigurationService {
   async getEC2Client(creds: ClientCredentials): Promise<EC2Client> {
@@ -17,15 +20,14 @@ export class ClientConfigurationService {
       credentials: { accessKeyId, secretAccessKey },
       region,
     });
-
     return ec2Client;
   }
 
   async getPricingClient(creds: ClientCredentials): Promise<PricingClient> {
     const { accessKeyId, secretAccessKey, region } = creds;
     const pricingClient = new PricingClient({
-      region,
       credentials: { accessKeyId, secretAccessKey },
+      region,
     });
 
     return pricingClient;
@@ -61,6 +63,14 @@ export class ClientConfigurationService {
     return efsClient;
   }
 
+  async getS3GlacierClient(creds: ClientCredentials): Promise<GlacierClient> {
+    const { region, accessKeyId, secretAccessKey } = creds;
+    const s3GlacierClient = new GlacierClient({
+      region: region,
+      credentials: { accessKeyId, secretAccessKey },
+    });
+    return s3GlacierClient;
+  }
   async getFsxClient(creds: ClientCredentials): Promise<FSxClient> {
     const { region, accessKeyId, secretAccessKey } = creds;
     const fsxClient = new FSxClient({
@@ -68,6 +78,22 @@ export class ClientConfigurationService {
       credentials: { accessKeyId, secretAccessKey },
     });
     return fsxClient;
+  }
+  async getEcrClient(creds: ClientCredentials): Promise<ECRClient> {
+    const { region, accessKeyId, secretAccessKey } = creds;
+    const ecrClient = new ECRClient({
+      region,
+      credentials: { accessKeyId, secretAccessKey },
+    });
+    return ecrClient;
+  }
+  async getEksClient(creds: ClientCredentials): Promise<EKSClient> {
+    const { region, accessKeyId, secretAccessKey } = creds;
+    const eksClient = new EKSClient({
+      region,
+      credentials: { accessKeyId, secretAccessKey },
+    });
+    return eksClient;
   }
   async getRdsClient(creds: ClientCredentials): Promise<RDSClient> {
     const { region, accessKeyId, secretAccessKey } = creds;

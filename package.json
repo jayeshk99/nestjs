@@ -22,8 +22,11 @@
   "dependencies": {
     "@aws-sdk/client-cloudwatch": "^3.529.1",
     "@aws-sdk/client-ec2": "^3.532.0",
+    "@aws-sdk/client-ecr": "^3.529.1",
     "@aws-sdk/client-efs": "^3.529.1",
+    "@aws-sdk/client-eks": "^3.529.1",
     "@aws-sdk/client-fsx": "^3.529.1",
+    "@aws-sdk/client-glacier": "^3.529.1",
     "@aws-sdk/client-pricing": "^3.529.1",
     "@aws-sdk/client-rds": "^3.529.1",
     "@aws-sdk/client-s3": "^3.529.1",
