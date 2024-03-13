@@ -21,7 +21,7 @@ export class FsxService {
       this.logger.log(
         `Fsx details job STARTED for account: ${data.accountId} region: ${data.region}`,
       );
-      const { accessKeyId, secretAccessKeyId, accountId, region } = data;
+      const { accessKeyId, secretAccessKey, accountId, region } = data;
 
       const fsxClient =
         await this.clientConfigurationService.getFsxClient(data);

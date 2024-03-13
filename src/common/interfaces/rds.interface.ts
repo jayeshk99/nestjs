@@ -22,7 +22,7 @@ export interface RDSInstanceProps {
   backupRetentionPeriod?: number;
   dbParameterGroups?: string;
   availabilityZone?: string;
-  vPCId?: string;
+  vpcId?: string;
   multiAZ?: boolean;
   optionGroupMemberships?: string;
   associatedRoles?: string;

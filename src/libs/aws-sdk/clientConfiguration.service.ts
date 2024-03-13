@@ -2,90 +2,78 @@ import { Injectable, Logger } from '@nestjs/common';
 
 import * as AWS from 'aws-sdk';
 import { ClientCredentials } from '../../common/interfaces/awsClient.interface';
+import { EC2Client } from '@aws-sdk/client-ec2';
+import { CloudWatchClient } from '@aws-sdk/client-cloudwatch';
+import { S3Client } from '@aws-sdk/client-s3';
+import { EFSClient } from '@aws-sdk/client-efs';
+import { FSxClient } from '@aws-sdk/client-fsx';
+import { RDSClient } from '@aws-sdk/client-rds';
+import { PricingClient } from '@aws-sdk/client-pricing';
 @Injectable()
 export class ClientConfigurationService {
-  private readonly logger = new Logger(ClientConfigurationService.name);
-
-  async initialConfiguration(
-    accessKeyId: string,
-    secretAccessKeyId: string,
-    region: string,
-  ) {
-    AWS.config.update({
-      region: region,
-      credentials: {
-        accessKeyId: accessKeyId,
-        secretAccessKey: secretAccessKeyId,
-      },
+  async getEC2Client(creds: ClientCredentials): Promise<EC2Client> {
+    const { accessKeyId, secretAccessKey, region } = creds;
+    const ec2Client = new EC2Client({
+      credentials: { accessKeyId, secretAccessKey },
+      region,
     });
-  }
-
-  async getEC2Client(creds: ClientCredentials) {
-    const { accessKeyId, secretAccessKeyId, region } = creds;
-    await this.initialConfiguration(accessKeyId, secretAccessKeyId, region);
-
-    const ec2Client = new AWS.EC2();
 
     return ec2Client;
   }
 
-  async getPricingClient(creds: ClientCredentials) {
-    const { accessKeyId, secretAccessKeyId, region } = creds;
-
-    await this.initialConfiguration(accessKeyId, secretAccessKeyId, region);
-
-    const pricingClient = new AWS.Pricing();
+  async getPricingClient(creds: ClientCredentials): Promise<PricingClient> {
+    const { accessKeyId, secretAccessKey, region } = creds;
+    const pricingClient = new PricingClient({
+      region,
+      credentials: { accessKeyId, secretAccessKey },
+    });
 
     return pricingClient;
   }
 
-  async getCloudWatchClient(creds: ClientCredentials) {
-    const { accessKeyId, secretAccessKeyId, region } = creds;
-
-    await this.initialConfiguration(accessKeyId, secretAccessKeyId, region);
-
-    const cloudWatchClient = new AWS.CloudWatch();
+  async getCloudWatchClient(
+    creds: ClientCredentials,
+  ): Promise<CloudWatchClient> {
+    const { accessKeyId, secretAccessKey, region } = creds;
+    const cloudWatchClient = new CloudWatchClient({
+      credentials: { accessKeyId, secretAccessKey },
+      region,
+    });
 
     return cloudWatchClient;
   }
 
-  async getS3Client(credentials: ClientCredentials): Promise<AWS.S3> {
-    const s3Client = new AWS.S3({
-      region: credentials.region,
-      credentials: {
-        accessKeyId: credentials.accessKeyId,
-        secretAccessKey: credentials.secretAccessKeyId,
-      },
+  async getS3Client(creds: ClientCredentials): Promise<S3Client> {
+    const { accessKeyId, secretAccessKey, region } = creds;
+    const s3Client = new S3Client({
+      credentials: { accessKeyId, secretAccessKey },
+      region,
     });
     return s3Client;
   }
 
-  async getEFSClient(credentials: ClientCredentials): Promise<AWS.EFS> {
-    const { region, accessKeyId, secretAccessKeyId, accountId } = credentials;
-    const efsClient = new AWS.EFS({
+  async getEFSClient(creds: ClientCredentials): Promise<EFSClient> {
+    const { region, accessKeyId, secretAccessKey } = creds;
+    const efsClient = new EFSClient({
       region: region,
-      credentials: { accessKeyId, secretAccessKey: secretAccessKeyId },
+      credentials: { accessKeyId, secretAccessKey },
     });
     return efsClient;
   }
 
-  async getFsxClient(credentials: ClientCredentials): Promise<AWS.FSx> {
-    const fsxClient = new AWS.FSx({
-      region: credentials.region,
-      credentials: {
-        accessKeyId: credentials.accessKeyId,
-        secretAccessKey: credentials.secretAccessKeyId,
-      },
+  async getFsxClient(creds: ClientCredentials): Promise<FSxClient> {
+    const { region, accessKeyId, secretAccessKey } = creds;
+    const fsxClient = new FSxClient({
+      region,
+      credentials: { accessKeyId, secretAccessKey },
     });
     return fsxClient;
   }
-  async getRdsClient(credentials: ClientCredentials): Promise<AWS.RDS> {
-    const rdsClient = new AWS.RDS({
-      region: credentials.region,
-      credentials: {
-        accessKeyId: credentials.accessKeyId,
-        secretAccessKey: credentials.secretAccessKeyId,
-      },
+  async getRdsClient(creds: ClientCredentials): Promise<RDSClient> {
+    const { region, accessKeyId, secretAccessKey } = creds;
+    const rdsClient = new RDSClient({
+      region,
+      credentials: { accessKeyId, secretAccessKey },
     });
     return rdsClient;
   }

@@ -4,7 +4,7 @@ import { AwsSdkModule } from 'src/libs/aws-sdk/aws-sdk.module';
 import { AwsHelperService } from './helper.service';
 
 @Module({
-  imports: [AwsSdkModule],
+  imports: [AwsSdkModule,RepositoriesModule],
   providers: [AwsHelperService],
   exports: [AwsHelperService],
 })

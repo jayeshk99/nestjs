@@ -26,7 +26,7 @@ export class EFSService {
       this.logger.log(
         `EFS details job STARTED for account: ${data.accountId} region: ${data.region}`,
       );
-      const { accessKeyId, secretAccessKeyId, accountId, region } = data;
+      const { accessKeyId, secretAccessKey, accountId, region } = data;
       const efsClient =
         await this.clientConfigurationService.getEFSClient(data);
       const efsList = await this.efsSdkService.listEfs(efsClient);

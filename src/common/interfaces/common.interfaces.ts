@@ -16,7 +16,12 @@ export interface awsUsageCostProps {
   startTime: string;
   endTime: string;
 }
-
+export interface awsResourceAvailableprops{
+  resourceId: string;
+  prouductCode: string;
+  awsAccountId: string;
+  billingDate: string;
+}
 export interface JobRequest {
   accountId: string;
 }

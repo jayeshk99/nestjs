@@ -2,24 +2,30 @@ import { Injectable } from '@nestjs/common';
 import { DBInstanceMessage } from 'aws-sdk/clients/rds';
 
 import { ListResourcesProps } from 'src/common/interfaces/awsClient.interface';
+import {
+  DescribeDBInstancesCommand,
+  DescribeDBInstancesCommandOutput,
+  RDSClient,
+} from '@aws-sdk/client-rds';
 @Injectable()
 export class RdsSdkService {
-  async listInstances(
-    rdsClient: AWS.RDS,
-  ): Promise<DBInstanceMessage['DBInstances']> {
-    const allResources: DBInstanceMessage['DBInstances'] = [];
-    const fsxListParams: ListResourcesProps = { MaxRecords: 50, Marker: null };
+  async listRdsInstances(
+    rdsClient: RDSClient,
+  ): Promise<DescribeDBInstancesCommandOutput['DBInstances']> {
+    const allResources: DescribeDBInstancesCommandOutput['DBInstances'] = [];
+    const rdsListParams: ListResourcesProps = { MaxRecords: 50, Marker: null };
     let nextToken = null;
     do {
       try {
         if (nextToken) {
-          fsxListParams.Marker = nextToken;
+          rdsListParams.Marker = nextToken;
         } else {
-          delete fsxListParams.Marker;
+          delete rdsListParams.Marker;
         }
-        const data = await rdsClient
-          .describeDBInstances(fsxListParams)
-          .promise();
+        const data = await rdsClient.send(
+          new DescribeDBInstancesCommand(rdsListParams),
+        );
+
         const resources = data.DBInstances;
 
         if (resources && resources.length > 0) {

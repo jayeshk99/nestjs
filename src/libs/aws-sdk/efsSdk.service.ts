@@ -6,10 +6,17 @@ import {
 import * as AWS from 'aws-sdk';
 import { LIST_RESOURCE_KEY } from 'src/common/constants/constants';
 import { FileSystemDescription } from 'aws-sdk/clients/efs';
+import {
+  DescribeFileSystemsCommand,
+  DescribeFileSystemsCommandOutput,
+  EFSClient,
+} from '@aws-sdk/client-efs';
 @Injectable()
 export class EFSSdkService {
-  async listEfs(efsClient: AWS.EFS) {
-    let efsList: FileSystemDescription[] = [];
+  async listEfs(
+    efsClient: EFSClient,
+  ): Promise<DescribeFileSystemsCommandOutput['FileSystems']> {
+    let efsList: DescribeFileSystemsCommandOutput['FileSystems'] = [];
     let nextToken: string | null = null;
     // TODO: implement enum for possible values for different resource/ make on global config or enum for aws resources
     let inputParams: ListResourcesProps = {};
@@ -21,7 +28,9 @@ export class EFSSdkService {
           delete inputParams.Marker;
         }
 
-        const data = await efsClient.describeFileSystems(inputParams).promise();
+        const data = await efsClient.send(
+          new DescribeFileSystemsCommand(inputParams),
+        );
         const resources = data.FileSystems;
 
         if (resources && resources.length > 0) {

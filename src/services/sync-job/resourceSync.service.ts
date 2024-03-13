@@ -30,7 +30,7 @@ export class ResourceSyncService {
         await this.awsAccountRepository.getAccountDetails(AccountId);
       let clientRequest: ClientCredentials = {
         accessKeyId: accountDetails.accessKeyId,
-        secretAccessKeyId: accountDetails.secretAccessKeyId,
+        secretAccessKey: accountDetails.secretAccessKeyId,
         accountId: AccountId,
         region: REGIONS.US_EAST_1,
       };

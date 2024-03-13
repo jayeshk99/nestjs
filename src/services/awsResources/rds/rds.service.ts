@@ -6,9 +6,14 @@ import { AwsHelperModule } from '../helper/helper.module';
 import { AwsHelperService } from '../helper/helper.service';
 import { AwsUsageDetailsRepository } from 'src/infra/repositories/awsUsageDetails.repository';
 import { PRODUCT_CODE } from 'src/common/constants/constants';
-import { RDSInstanceProps, RdsCostDetailProps } from 'src/common/interfaces/rds.interface';
+import {
+  RDSInstanceProps,
+  RdsCostDetailProps,
+} from 'src/common/interfaces/rds.interface';
 import { awsUsageCostProps } from 'src/common/interfaces/common.interfaces';
 import { RdsDetailsRepository } from 'src/infra/repositories/rdsDetails.repositories';
+import { group } from 'console';
+import moment from 'moment';
 
 @Injectable()
 export class RdsService {
@@ -17,8 +22,8 @@ export class RdsService {
     private readonly clientConfigurationService: ClientConfigurationService,
     private readonly rdsSdkService: RdsSdkService,
     private readonly awsHelperService: AwsHelperService,
-    private readonly awsUsageDetailsRepository:AwsUsageDetailsRepository,
-    private readonly rdsDetailsRepository: RdsDetailsRepository
+    private readonly awsUsageDetailsRepository: AwsUsageDetailsRepository,
+    private readonly rdsDetailsRepository: RdsDetailsRepository,
   ) {}
 
   async fetchRdsDetails(data: ClientCredentials) {
@@ -26,18 +31,21 @@ export class RdsService {
       this.logger.log(
         `Fsx details job STARTED for account: ${data.accountId} region: ${data.region}`,
       );
-      const { accessKeyId, secretAccessKeyId, accountId, region } = data;
+      const { accessKeyId, secretAccessKey, accountId, region } = data;
 
       const rdsClient =
         await this.clientConfigurationService.getRdsClient(data);
       const rdsInstancesList =
-        await this.rdsSdkService.listInstances(rdsClient);
+        await this.rdsSdkService.listRdsInstances(rdsClient);
 
       if (rdsInstancesList && rdsInstancesList.length) {
+        const currencyCode =
+          await this.awsUsageDetailsRepository.getAwsCurrencyCode(accountId);
         const cloudWatchClient =
           await this.clientConfigurationService.getCloudWatchClient(data);
+
         for (let instance = 0; instance < rdsInstancesList.length; instance++) {
-            const dbInstance=rdsInstancesList[instance]
+          const dbInstance = rdsInstancesList[instance];
           let {
             CPUUtilization,
             DatabaseConnections,
@@ -64,114 +72,65 @@ export class RdsService {
           let avgDBConnections = DatabaseConnections.map(
             ({ Average }) => Average,
           );
-          const { currencyCode, rdsPerDayCost, storagePrevMonthCost } =
-            await this.rdsCostDetails({
-              rdsInstanceArn: dbInstance.DBInstanceArn,
+          const { dailyCost, isPrevMonthCostAvailable, prevMonthCost } =
+            await this.awsHelperService.getCostDetails({
+              resourceId: dbInstance.DBInstanceArn,
               accountId: accountId,
+              productName: 'RDS',
             });
-
-            const dbParameterGroupNames =
-            dbInstance.DBParameterGroups.length &&
-            dbInstance.DBParameterGroups.map(
-              (group) => group.DBParameterGroupName
-            );
-          const optionGroupMemebershipNames =
-            dbInstance.OptionGroupMemberships.length &&
-            dbInstance.OptionGroupMemberships.map(
-              (group) => group.OptionGroupName
-            );
           const DBInstanceFields: RDSInstanceProps = {
+            accountId: accountId,
+            dbName: dbInstance.DBName,
             dbInstanceIdentifier: dbInstance.DBInstanceIdentifier,
             dbInstanceClass: dbInstance.DBInstanceClass,
             engine: dbInstance.Engine,
-            dbName: dbInstance.DBName,
             allocatedStorage: dbInstance.AllocatedStorage,
-            engineVersion: dbInstance.EngineVersion,
-            createdOn: dbInstance.InstanceCreateTime,
-            storageType: dbInstance.StorageType,
             dbInstanceArn: dbInstance.DBInstanceArn,
+            engineVersion: dbInstance.EngineVersion,
             readIOPSAvgMax: Math.max(...avgReadIOPS) || 0,
             writeIOPSAvgMax: Math.max(...avgWriteIOPS) || 0,
             dbConnectionsAvgMax: Math.max(...avgDBConnections) || 0,
+            storageType: dbInstance.StorageType,
+            createdOn: dbInstance.InstanceCreateTime,
             region: region,
-            accountId: accountId,
-            monthlyCost:
-              (rdsPerDayCost && parseFloat(rdsPerDayCost.toFixed(2))) || 0,
-            currencyCode:
-              (currencyCode && currencyCode[0]?.billing_currency) || "",
+            currencyCode: currencyCode,
+            monthlyCost: isPrevMonthCostAvailable
+              ? prevMonthCost
+              : dailyCost
+                ? dailyCost * moment().daysInMonth()
+                : 0,
             instanceStatus: dbInstance.DBInstanceStatus,
-            databaseEndpoint: dbInstance.Endpoint.Address,
-            databasePort: dbInstance.Endpoint.Port,
+            databaseEndpoint: dbInstance.Endpoint?.Address,
+            databasePort: dbInstance.Endpoint?.Port,
             backupWindow: dbInstance.PreferredBackupWindow,
             backupRetentionPeriod: dbInstance.BackupRetentionPeriod,
-            // SecurityGroups: '',
-            dbParameterGroups: dbParameterGroupNames.join(","),
+            dbParameterGroups: dbInstance.DBParameterGroups?.map(
+              (group) => group.DBParameterGroupName,
+            )?.join(','),
             availabilityZone: dbInstance.AvailabilityZone,
-            vPCId: dbInstance.DBSubnetGroup.VpcId,
+            vpcId: dbInstance.DBSubnetGroup?.VpcId,
             multiAZ: dbInstance.MultiAZ,
-            optionGroupMemberships: optionGroupMemebershipNames.join(","),
-            associatedRoles:
-              dbInstance.AssociatedRoles.length &&
-              JSON.stringify(dbInstance.AssociatedRoles.length),
+            optionGroupMemberships: dbInstance.OptionGroupMemberships?.map(
+              (group) => group.OptionGroupName,
+            )?.join(','),
+            associatedRoles: dbInstance.AssociatedRoles?.toString(),
             storageEncrypted: dbInstance.StorageEncrypted,
             deletionProtection: dbInstance.DeletionProtection,
+            // /* some other properties*/
           };
-          const isBucketExist =
-          await this.rdsDetailsRepository.findDBInstance(DBInstanceFields);
-        if (isBucketExist) {
-          await this.rdsDetailsRepository.updateDBInstance(
-            isBucketExist.id,
-            DBInstanceFields,
-          );
-        } else {
-          await this.rdsDetailsRepository.createDBInstance(DBInstanceFields);
-        }
-
+          console.log(DBInstanceFields);
+          // const dbInstanceExist =
+          // await this.rdsDetailsRepository.findDBInstance(DBInstanceFields);
+          // if (dbInstanceExist) {
+          //   await this.rdsDetailsRepository.updateDBInstance(
+          //     dbInstanceExist.id,
+          //     DBInstanceFields,
+          //   );
+          // } else {
+          //   await this.rdsDetailsRepository.createDBInstance(DBInstanceFields);
+          // }
         }
       }
     } catch (error) {}
-  }
-  async rdsCostDetails(data: RdsCostDetailProps) {
-    try {
-      const { rdsInstanceArn, accountId } = data;
-      const s3UsageDetails =
-        await this.awsUsageDetailsRepository.getOneDayCostOfResource({
-          resourceId: rdsInstanceArn,
-          productCode: PRODUCT_CODE.RDS,
-          awsAccountId: accountId,
-        });
-
-      const currencyCode =
-        await this.awsUsageDetailsRepository.getAwsCurrencyCode(accountId);
-
-      const rdsPerDayCost = s3UsageDetails && s3UsageDetails.unBlendedCost;
-
-      const currentDate = new Date().toISOString().split('T')[0];
-      const currentBillDate = new Date(currentDate);
-      const startDate = new Date(
-        currentBillDate.setDate(currentBillDate.getDate() - 29),
-      )
-        .toISOString()
-        .split('T')[0];
-
-      const usageCostFields: awsUsageCostProps = {
-        resourceId: rdsInstanceArn,
-        prouductCode: PRODUCT_CODE.RDS,
-        startTime: startDate,
-        endTime: currentDate,
-        awsAccountId: accountId,
-      };
-
-      const storageMonthlyCost =
-        await this.awsUsageDetailsRepository.getAwsStorageUsageCost(
-          usageCostFields,
-        );
-      const storagePrevMonthCost: number = storageMonthlyCost?.costSum;
-      return { currencyCode, rdsPerDayCost, storagePrevMonthCost };
-    } catch (error) {
-      this.logger.log(
-        `Error in getting cost details for s3 for account: ${data.accountId} ${error}`,
-      );
-    }
   }
 }

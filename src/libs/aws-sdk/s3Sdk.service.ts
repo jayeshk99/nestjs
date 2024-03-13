@@ -1,16 +1,23 @@
 import { Injectable } from '@nestjs/common';
-import { AwsClientRequest } from 'src/common/interfaces/awsClient.interface';
-import { ClientConfigurationService } from './clientConfiguration.service';
-import * as AWS from 'aws-sdk';
-import { ListBucketsOutput } from 'aws-sdk/clients/s3';
+import {
+  GetBucketLocationCommand,
+  GetBucketLocationCommandOutput,
+  ListBucketsCommand,
+  ListBucketsCommandOutput,
+  S3Client,
+} from '@aws-sdk/client-s3';
 @Injectable()
 export class S3SdkService {
-  async listBuckets(s3Client: AWS.S3): Promise<ListBucketsOutput> {
-    let buckets = await s3Client.listBuckets().promise();
-    buckets.Buckets[0];
+  async listBuckets(s3Client: S3Client): Promise<ListBucketsCommandOutput> {
+    let buckets = await s3Client.send(new ListBucketsCommand({}));
     return buckets;
   }
-  async getBucketLocation(s3Client: AWS.S3, bucketName: string) {
-    return await s3Client.getBucketLocation({ Bucket: bucketName }).promise();
+  async getBucketLocation(
+    s3Client: S3Client,
+    bucketName: string,
+  ): Promise<GetBucketLocationCommandOutput> {
+    return await s3Client.send(
+      new GetBucketLocationCommand({ Bucket: bucketName }),
+    );
   }
 }

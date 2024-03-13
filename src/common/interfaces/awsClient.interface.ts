@@ -8,7 +8,7 @@ export interface AwsClientRequest {
 
 export interface ClientCredentials {
   accessKeyId: string;
-  secretAccessKeyId: string;
+  secretAccessKey: string;
   accountId: string;
   region: string;
 }

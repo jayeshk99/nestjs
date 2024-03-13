@@ -38,7 +38,7 @@ export class S3Service {
       this.logger.log(
         `S3 details job STARTED for account: ${data.accountId} region: ${data.region}`,
       );
-      const { accessKeyId, secretAccessKeyId, accountId, region } = data;
+      const { accessKeyId, secretAccessKey, accountId, region } = data;
       const currentTimestamp = new Date();
 
       const s3Client = await this.clientConfigurationService.getS3Client(data);

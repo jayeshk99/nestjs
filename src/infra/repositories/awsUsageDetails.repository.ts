@@ -4,6 +4,7 @@ import { LessThan, Repository } from 'typeorm';
 import { AWSUsageDetailsEntity } from '../entities/awsUsageDetails.entity';
 import {
   AWSPricingReq,
+  awsResourceAvailableprops,
   awsUsageCostProps,
 } from 'src/common/interfaces/common.interfaces';
 
@@ -72,5 +73,19 @@ export class AwsUsageDetailsRepository {
         endTime: new Date(endTime),
       })
       .getRawOne();
+  }
+  async findPrevMonthCostAvailable(
+    params: awsResourceAvailableprops,
+  ): Promise<boolean> {
+    const { awsAccountId, prouductCode, resourceId, billingDate } = params;
+    const res = await this.awsUsageDetailsRepository.findOne({
+      where: {
+        resourceId: resourceId,
+        usageAccountId: awsAccountId,
+        billingDate: new Date(billingDate),
+        productCode: prouductCode,
+      },
+    });
+    return res ? true : false;
   }
 }
