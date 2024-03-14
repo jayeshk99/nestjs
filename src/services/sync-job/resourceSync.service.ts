@@ -30,7 +30,7 @@ export class ResourceSyncService {
     private readonly rdsService: RdsService
   ) {}
 
-  async fetchAllResources(AccountId: string) {
+  async fetchAllResources(AccountId: string): Promise<void> {
     try {
       const accountDetails =
         await this.awsAccountRepository.getAccountDetails(AccountId);
@@ -43,7 +43,7 @@ export class ResourceSyncService {
       let ec2Client =
         await this.clientConfigurationService.getEC2Client(clientRequest);
       const regions = await this.ec2SdkService.getEnabledRegions(ec2Client);
-      // await this.s3Service.fetchS3Details(clientRequest);
+      await this.s3Service.fetchS3Details(clientRequest);
       await Promise.all(
         regions.Regions.map(async (region) => {
           let regionWiseClientRequest = {

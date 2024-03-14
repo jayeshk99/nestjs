@@ -1,15 +1,19 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { AWSMetricProps } from 'src/common/interfaces/awsClient.interface';
 import { CloudwatchSdkService } from 'src/libs/aws-sdk/cloudwatchSdk.service';
-import { awsUsageCostProps } from 'src/common/interfaces/common.interfaces';
+import {
+  UtilizationOutput,
+  awsUsageCostProps,
+} from 'src/common/interfaces/common.interfaces';
 import { GetMetricStatisticsOutput } from 'aws-sdk/clients/cloudwatch';
 import { CostDetailsProps } from 'src/common/interfaces/costDetails.interface';
 import { PRODUCT_CODE } from 'src/common/constants/constants';
 import { AwsUsageDetailsRepository } from 'src/infra/repositories/awsUsageDetails.repository';
-import moment from 'moment';
+import * as moment from 'moment';
 import {
   CloudWatchClient,
   GetMetricStatisticsCommand,
+  GetMetricStatisticsCommandOutput,
 } from '@aws-sdk/client-cloudwatch';
 @Injectable()
 export class AwsHelperService {
@@ -35,12 +39,12 @@ export class AwsHelperService {
     startDate: Date,
     endDate: Date,
   ): Promise<{
-    CPUUtilization: GetMetricStatisticsOutput['Datapoints'];
-    DatabaseConnections: GetMetricStatisticsOutput['Datapoints'];
-    ReadIOPS: GetMetricStatisticsOutput['Datapoints'];
-    WriteIOPS: GetMetricStatisticsOutput['Datapoints'];
-    NetworkReceiveThroughput: GetMetricStatisticsOutput['Datapoints'];
-    NetworkTransmitThroughput: GetMetricStatisticsOutput['Datapoints'];
+    CPUUtilization: GetMetricStatisticsCommandOutput['Datapoints'];
+    DatabaseConnections: GetMetricStatisticsCommandOutput['Datapoints'];
+    ReadIOPS: GetMetricStatisticsCommandOutput['Datapoints'];
+    WriteIOPS: GetMetricStatisticsCommandOutput['Datapoints'];
+    NetworkReceiveThroughput: GetMetricStatisticsCommandOutput['Datapoints'];
+    NetworkTransmitThroughput: GetMetricStatisticsCommandOutput['Datapoints'];
   }> {
     try {
       const metricNames = [
@@ -88,7 +92,7 @@ export class AwsHelperService {
     InstanceName: string,
     startDate: Date,
     endDate: Date,
-  ): Promise<GetMetricStatisticsOutput['Datapoints']> {
+  ): Promise<GetMetricStatisticsCommandOutput['Datapoints']> {
     const response = await client.send(
       new GetMetricStatisticsCommand({
         Namespace: 'AWS/RDS',
@@ -125,7 +129,6 @@ export class AwsHelperService {
           productCode: PRODUCT_CODE[`${productName}`],
           awsAccountId: accountId,
         });
-
       const dailyCost = usageDetails && usageDetails.unBlendedCost;
 
       const currentDate = moment(new Date()).format('YYYY-MM-DD');
@@ -146,7 +149,6 @@ export class AwsHelperService {
           usageCostFields,
         );
       const prevMonthCost: number = monthlyCost?.costSum;
-      console.log('done');
       const isPrevMonthCostAvailable =
         await this.awsUsageDetailsRepository.findPrevMonthCostAvailable({
           resourceId: resourceId,
@@ -162,5 +164,19 @@ export class AwsHelperService {
         `Error in getting cost details for ${data.productName} for account: ${data.accountId} ${error}`,
       );
     }
+  }
+
+  mapUtilizationData(
+    utilizationData: GetMetricStatisticsCommandOutput['Datapoints'],
+    dbInstanceIdentifier: string,
+    accountId: string,
+    metricName: string,
+  ): UtilizationOutput[] {
+    return utilizationData.map((data) => ({
+      ...data,
+      dbInstanceIdentifier: dbInstanceIdentifier,
+      accountId: accountId,
+      metricName: metricName,
+    }));
   }
 }

@@ -7,6 +7,7 @@ import {
   awsResourceAvailableprops,
   awsUsageCostProps,
 } from 'src/common/interfaces/common.interfaces';
+import * as moment from 'moment';
 
 @Injectable()
 export class AwsUsageDetailsRepository {
@@ -17,7 +18,7 @@ export class AwsUsageDetailsRepository {
   async getOneDayCostOfResource(data: AWSPricingReq) {
     const { awsAccountId, productCode, resourceId } = data;
     let cost: Partial<AWSUsageDetailsEntity>;
-    const limitDate = new Date().toJSON().split('T')[0];
+    const limitDate = new Date(moment().subtract(1,'day').format('YYYY-MM-DD'));
     if (data.resourceId) {
       cost = await this.awsUsageDetailsRepository
         .createQueryBuilder('costData')

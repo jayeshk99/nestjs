@@ -22,6 +22,8 @@ import { ECREntity } from '../entities/ecrDetails.entity';
 import { EKSEntity } from '../entities/eksDetails.entity';
 import { ECRRepository } from './ecr.repository';
 import { EKSRepository } from './eks.repository';
+import { RDSCPUUtilizationEntity } from '../entities/rightsizing/rdsCpuUtilization.entity';
+import { RdsUtilizationRepository } from './rdsUtilizationRepository';
 
 @Module({
   imports: [
@@ -36,7 +38,8 @@ import { EKSRepository } from './eks.repository';
       ECREntity,
       EKSEntity,
       FSxEntity,
-      RDSDetailsEntity
+      RDSDetailsEntity,
+      RDSCPUUtilizationEntity
     ]),
   ],
   providers: [
@@ -50,7 +53,8 @@ import { EKSRepository } from './eks.repository';
     ECRRepository,
     EKSRepository,
     FsxDetailsRepository,
-    RdsDetailsRepository
+    RdsDetailsRepository,
+    RdsUtilizationRepository
   ],
   exports: [
     AwsInstanceRepository,
@@ -62,7 +66,8 @@ import { EKSRepository } from './eks.repository';
     S3GlacierRepository,
     ECRRepository,
     EKSRepository,
-    RdsDetailsRepository
+    RdsDetailsRepository,
+    RdsUtilizationRepository
   ],
 })
 export class RepositoriesModule {}

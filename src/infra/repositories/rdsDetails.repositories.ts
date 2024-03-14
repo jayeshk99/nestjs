@@ -23,6 +23,24 @@ export class RdsDetailsRepository {
     });
   }
 
+  async findAllActiveDBInstances(
+    params: RDSInstanceProps,
+  ): Promise<Array<{ region: string; dbinstanceidentifier: string[] }>> {
+    const { accountId } = params;
+    const isActive = 1;
+    const result = await this.dbInstanceRepository
+      .createQueryBuilder('entity')
+      .select('entity.Region AS region')
+      .addSelect(
+        'ARRAY_AGG(entity.DBInstanceIdentifier) AS dbinstanceidentifier',
+      )
+      .groupBy('entity.Region')
+      .where('entity.AccountId= :accountId', { accountId })
+      .andWhere('entity.IsActive = :isActive', { isActive })
+      .getRawMany();
+    return result;
+  }
+
   async updateDBInstance(id: number, data: RDSInstanceProps) {
     return await this.dbInstanceRepository.update({ id }, { ...data });
   }

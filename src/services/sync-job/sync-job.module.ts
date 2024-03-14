@@ -9,6 +9,7 @@ import { FsxModule } from '../awsResources/fsx/fsx.module';
 import { EKSModule } from '../awsResources/eks/eks.module';
 import { ECRModule } from '../awsResources/ecr/ecr.module';
 import { RdsModule } from '../awsResources/rds/rds.module';
+import { RDSUtilizationDataSyncService } from './rdsUtilizationDataSyncService';
 
 @Module({
   imports: [
@@ -22,7 +23,7 @@ import { RdsModule } from '../awsResources/rds/rds.module';
     ECRModule,
     RdsModule,
   ],
-  providers: [ResourceSyncService],
-  exports: [ResourceSyncService],
+  providers: [ResourceSyncService,RDSUtilizationDataSyncService],
+  exports: [ResourceSyncService,RDSUtilizationDataSyncService],
 })
 export class SyncJobModule {}
