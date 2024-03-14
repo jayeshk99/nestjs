@@ -1,5 +1,3 @@
-import { StringFilter } from 'aws-sdk/clients/securityhub';
-
 export interface FetchServiceReq {
   accountId: string;
   region: string;
@@ -19,15 +17,15 @@ export interface awsUsageCostProps {
   endTime: string;
 }
 export interface UtilizationOutput {
-  Average?: number;
-  Maximum?: number;
-  Minimum?: number;
-  Timestamp?: Date;
-  Unit?: string;
-  Sum?: number;
-  SampleCount?: number;
+  average?: number;
+  maximum?: number;
+  minimum?: number;
+  timestamp?: Date;
+  unit?: string;
+  sum?: number;
+  sampleCount?: number;
   metricName: string;
-  ExtendedStatistics?: any;
+  extendedStatistics?: any;
   accountId: string;
   dbInstanceIdentifier: string;
 }

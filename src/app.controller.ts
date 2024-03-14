@@ -4,14 +4,14 @@ import { AwsInstanceRepository } from './infra/repositories/instanceDetails.repo
 import { ResourceSyncService } from './services/sync-job/resourceSync.service';
 import { JobRequest } from './common/interfaces/common.interfaces';
 import { RDSUtilizationDataSyncService } from './services/sync-job/rdsUtilizationDataSyncService';
+import * as moment from 'moment';
 
 @Controller()
 export class AppController {
   constructor(
-    private readonly appService: AppService,
     private readonly awsInstanceRepository: AwsInstanceRepository,
     private readonly resourceSyncService: ResourceSyncService,
-    private readonly rdsUtilizationDataSyncService: RDSUtilizationDataSyncService
+    private readonly rdsUtilizationDataSyncService: RDSUtilizationDataSyncService,
   ) {}
 
   @Get()
@@ -21,8 +21,16 @@ export class AppController {
   }
   @Post('/job')
   async startJob(@Body() body: JobRequest) {
+    const startTime = new Date(
+      moment().subtract(1, 'day').format('YYYY-MM-DD HH:mm'),
+    );
+    const endTime = new Date();
     await this.resourceSyncService.fetchAllResources(body.accountId);
-    await this.rdsUtilizationDataSyncService.syncUtilizationData(body.accountId)
+    await this.rdsUtilizationDataSyncService.syncUtilizationData(
+      body.accountId,
+      startTime,
+      endTime,
+    );
     return {
       status: 200,
       message: `Aws Resource job started`,

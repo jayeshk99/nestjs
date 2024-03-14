@@ -1,10 +1,18 @@
 import { Injectable } from '@nestjs/common';
-import { RdsService } from '../awsResources/rds/rds.service';
+import { RdsMetricService } from '../awsResources/rds/rds.metric.service';
 
 @Injectable()
 export class RDSUtilizationDataSyncService {
-  constructor(private readonly rdsService: RdsService) {}
-  async syncUtilizationData(accountId: string): Promise<void> {
-    await this.rdsService.fetchRdsUtilizationData(accountId);
+  constructor(private readonly rdsMetricService: RdsMetricService) {}
+  async syncUtilizationData(
+    accountId: string,
+    startTime: Date,
+    endTime: Date,
+  ): Promise<void> {
+    await this.rdsMetricService.syncRdsUtilizationData(
+      accountId,
+      startTime,
+      endTime,
+    );
   }
 }

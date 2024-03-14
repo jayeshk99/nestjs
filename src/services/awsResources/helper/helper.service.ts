@@ -5,14 +5,12 @@ import {
   UtilizationOutput,
   awsUsageCostProps,
 } from 'src/common/interfaces/common.interfaces';
-import { GetMetricStatisticsOutput } from 'aws-sdk/clients/cloudwatch';
 import { CostDetailsProps } from 'src/common/interfaces/costDetails.interface';
 import { PRODUCT_CODE } from 'src/common/constants/constants';
 import { AwsUsageDetailsRepository } from 'src/infra/repositories/awsUsageDetails.repository';
 import * as moment from 'moment';
 import {
   CloudWatchClient,
-  GetMetricStatisticsCommand,
   GetMetricStatisticsCommandOutput,
 } from '@aws-sdk/client-cloudwatch';
 @Injectable()
@@ -25,7 +23,7 @@ export class AwsHelperService {
   async getMetricsData(
     params: AWSMetricProps,
     cloudWatchClient: CloudWatchClient,
-  ) {
+  ): Promise<GetMetricStatisticsCommandOutput['Datapoints']> {
     const result = await this.cloudWatchService.getMetricSatistics(
       cloudWatchClient,
       params,
@@ -33,89 +31,6 @@ export class AwsHelperService {
     return result;
   }
 
-  async getRDSUtilizationData(
-    client: CloudWatchClient,
-    InstanceName: string,
-    startDate: Date,
-    endDate: Date,
-  ): Promise<{
-    CPUUtilization: GetMetricStatisticsCommandOutput['Datapoints'];
-    DatabaseConnections: GetMetricStatisticsCommandOutput['Datapoints'];
-    ReadIOPS: GetMetricStatisticsCommandOutput['Datapoints'];
-    WriteIOPS: GetMetricStatisticsCommandOutput['Datapoints'];
-    NetworkReceiveThroughput: GetMetricStatisticsCommandOutput['Datapoints'];
-    NetworkTransmitThroughput: GetMetricStatisticsCommandOutput['Datapoints'];
-  }> {
-    try {
-      const metricNames = [
-        'CPUUtilization',
-        'DatabaseConnections',
-        'ReadIOPS',
-        'WriteIOPS',
-        'NetworkReceiveThroughput',
-        'NetworkTransmitThroughput',
-      ];
-      const metricDataPromises = metricNames.map((metricName: string) => {
-        return this.fetchMetricData(
-          client,
-          metricName,
-          InstanceName,
-          startDate,
-          endDate,
-        );
-      });
-      const [
-        CPUUtilization,
-        DatabaseConnections,
-        ReadIOPS,
-        WriteIOPS,
-        NetworkReceiveThroughput,
-        NetworkTransmitThroughput,
-      ] = await Promise.all(metricDataPromises);
-
-      return {
-        CPUUtilization,
-        DatabaseConnections,
-        ReadIOPS,
-        WriteIOPS,
-        NetworkReceiveThroughput,
-        NetworkTransmitThroughput,
-      };
-    } catch (error) {
-      console.log('Error fetching RDS Utilization data', error.message);
-    }
-  }
-
-  async fetchMetricData(
-    client: CloudWatchClient,
-    metricName: string,
-    InstanceName: string,
-    startDate: Date,
-    endDate: Date,
-  ): Promise<GetMetricStatisticsCommandOutput['Datapoints']> {
-    const response = await client.send(
-      new GetMetricStatisticsCommand({
-        Namespace: 'AWS/RDS',
-        MetricName: metricName,
-        Dimensions: [
-          { Name: 'DBInstanceIdentifier', Value: `${InstanceName}` },
-        ],
-        StartTime: startDate,
-        EndTime: endDate,
-        Period: 60,
-        Statistics: ['Average', 'Minimum', 'Maximum'],
-        Unit:
-          metricName === 'CPUUtilization'
-            ? 'Percent'
-            : metricName === 'DatabaseConnections'
-              ? 'Count'
-              : metricName === 'ReadIOPS' || metricName === 'WriteIOPS'
-                ? 'Count/Second'
-                : 'Bytes/Second',
-      }),
-    );
-    return response.Datapoints;
-  }
   async getCostDetails(data: CostDetailsProps): Promise<{
     dailyCost: number;
     isPrevMonthCostAvailable: boolean;
@@ -173,7 +88,11 @@ export class AwsHelperService {
     metricName: string,
   ): UtilizationOutput[] {
     return utilizationData.map((data) => ({
-      ...data,
+      timestamp: data.Timestamp,
+      maximum: data.Maximum,
+      minimum: data.Minimum,
+      unit: data.Unit,
+      average: data.Average,
       dbInstanceIdentifier: dbInstanceIdentifier,
       accountId: accountId,
       metricName: metricName,

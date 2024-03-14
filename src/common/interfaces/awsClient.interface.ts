@@ -26,6 +26,7 @@ export interface AWSMetricProps {
   Statistics?: string[];
   TimeStamp?: string;
   Dimensions: { Name: string; Value: string }[];
+  Unit?:string
 }
 
 export interface ListResourcesProps {
