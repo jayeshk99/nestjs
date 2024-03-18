@@ -18,7 +18,8 @@ export class RdsUtilizationRepository {
     startTime: Date;
     endTime: Date;
   }): Promise<void> {
-    const { accountId, dbInstanceIdentifier, metricName, startTime, endTime } =
+    try {
+      const { accountId, dbInstanceIdentifier, metricName, startTime, endTime } =
       data;
     await this.utilizationRepository.delete({
       accountId: In([accountId]),
@@ -26,9 +27,19 @@ export class RdsUtilizationRepository {
       dbInstanceIdentifier,
       timestamp: Between(startTime, endTime),
     });
+    } catch (error) {
+      console.log(error)
+    }
+    
   }
   async addUtilizationData(data:RdsUtilizationProps[]):Promise<void>{
-    const result = this.utilizationRepository.create(data);
-    await this.utilizationRepository.save(result);
+    try {
+      console.log(data[0])
+      const result = this.utilizationRepository.create(data);
+      await this.utilizationRepository.save(result);
+    } catch (error) {
+      console.log('error while adding',error)
+    }
+   
   }
 }

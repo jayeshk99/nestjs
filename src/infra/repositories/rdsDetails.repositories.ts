@@ -1,8 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
-import { S3BucketEntity } from '../entities/s3Details.entity';
-import { S3BucketProps } from 'src/common/interfaces/s3.interface';
 import { RDSDetailsEntity } from '../entities/rdsDetails.entity';
 import { RDSInstanceProps } from 'src/common/interfaces/rds.interface';
 
@@ -16,7 +14,7 @@ export class RdsDetailsRepository {
     return await this.dbInstanceRepository.find();
   }
 
-  async findDBInstance(params: RDSInstanceProps) {
+  async findDBInstance(params: RDSInstanceProps): Promise<RDSDetailsEntity> {
     const { accountId, dbInstanceArn } = params;
     return await this.dbInstanceRepository.findOne({
       where: { accountId, dbInstanceArn, isActive: 1 },
@@ -41,13 +39,26 @@ export class RdsDetailsRepository {
     return result;
   }
 
-  async updateDBInstance(id: number, data: RDSInstanceProps) {
-    return await this.dbInstanceRepository.update({ id }, { ...data });
+  async updateDBInstance(id: number, data: RDSInstanceProps): Promise<void> {
+    await this.dbInstanceRepository.update({ id }, { ...data });
+  }
+  async updateDBInstanceByIdentifier(
+    condtions: {
+      dbInstanceIdentifier: string;
+      accountId: string;
+      region: string;
+    },
+    data: RDSInstanceProps,
+  ): Promise<void> {
+    const { dbInstanceIdentifier, accountId, region } = condtions;
+    await this.dbInstanceRepository.update(
+      { dbInstanceIdentifier, accountId, region, isActive: 1 },
+      { ...data },
+    );
   }
 
-  async createDBInstance(data: RDSInstanceProps) {
+  async createDBInstance(data: RDSInstanceProps): Promise<void> {
     const result = this.dbInstanceRepository.create(data);
-    return this.dbInstanceRepository.save(result);
-    // return await this.s3BucketRepository.save({ ...data });
+    await this.dbInstanceRepository.save(result);
   }
 }

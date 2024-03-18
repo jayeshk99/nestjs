@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { LessThan, Repository } from 'typeorm';
+import { Repository } from 'typeorm';
 import { AWSUsageDetailsEntity } from '../entities/awsUsageDetails.entity';
 import {
   AWSPricingReq,
@@ -18,7 +18,9 @@ export class AwsUsageDetailsRepository {
   async getOneDayCostOfResource(data: AWSPricingReq) {
     const { awsAccountId, productCode, resourceId } = data;
     let cost: Partial<AWSUsageDetailsEntity>;
-    const limitDate = new Date(moment().subtract(1,'day').format('YYYY-MM-DD'));
+    const limitDate = new Date(
+      moment().subtract(1, 'day').format('YYYY-MM-DD'),
+    );
     if (data.resourceId) {
       cost = await this.awsUsageDetailsRepository
         .createQueryBuilder('costData')
@@ -50,7 +52,9 @@ export class AwsUsageDetailsRepository {
     return cost;
   }
 
-  async getAwsCurrencyCode(accountId: string) {
+  async getAwsCurrencyCode(
+    accountId: string,
+  ): Promise<{ billing_currency: string }> {
     return await this.awsUsageDetailsRepository
       .createQueryBuilder('data')
       .select('data.CurrencyCode', 'billing_currency')

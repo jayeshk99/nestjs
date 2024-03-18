@@ -9,10 +9,7 @@ import {
   AWSMetricProps,
   ClientCredentials,
 } from 'src/common/interfaces/awsClient.interface';
-import {
-  FetchServiceReq,
-  awsUsageCostProps,
-} from 'src/common/interfaces/common.interfaces';
+import { awsUsageCostProps } from 'src/common/interfaces/common.interfaces';
 import { ClientConfigurationService } from 'src/libs/aws-sdk/clientConfiguration.service';
 import { S3SdkService } from 'src/libs/aws-sdk/s3Sdk.service';
 import { AwsHelperService } from '../helper/helper.service';
@@ -22,6 +19,7 @@ import {
   S3CostDetailProps,
 } from 'src/common/interfaces/s3.interface';
 import { S3DetailsRepository } from 'src/infra/repositories/s3Details.repository';
+import * as moment from 'moment';
 
 @Injectable()
 export class S3Service {
@@ -60,6 +58,8 @@ export class S3Service {
       };
       const bucketsList = await this.s3SdkService.listBuckets(s3Client);
       if (bucketsList && bucketsList.Buckets && bucketsList.Buckets.length) {
+        const currencyCode =
+          await this.awsUsageDetailsRepository.getAwsCurrencyCode(accountId);
         for (let i = 0; i < bucketsList.Buckets.length; i++) {
           const bucket = bucketsList.Buckets[i];
           metricParams.Dimensions[1].Value = bucket.Name;
@@ -72,10 +72,11 @@ export class S3Service {
           if (sizeMetricData?.length) {
             size = sizeMetricData[0] && sizeMetricData[0]['Maximum'];
           }
-          const { currencyCode, s3PerDayCost, storagePrevMonthCost } =
-            await this.s3CostDetails({
-              bucketName: bucket.Name,
+          const { dailyCost, isPrevMonthCostAvailable, prevMonthCost } =
+            await this.awsHelperService.getCostDetails({
+              resourceId: bucket.Name,
               accountId: accountId,
+              productCode: PRODUCT_CODE.S3,
             });
           const s3BucketFields: S3BucketProps = {
             storageOwner: bucketsList.Owner.DisplayName,
@@ -85,10 +86,14 @@ export class S3Service {
             size: size,
             region: region,
             unit: 'Bytes',
-            pricePerHour: (s3PerDayCost && s3PerDayCost / 24) || 0,
+            pricePerHour: (dailyCost && dailyCost / 24) || 0,
             currencyCode:
               (currencyCode && currencyCode?.billing_currency) || '',
-            storagePricePerMonth: storagePrevMonthCost || 0,
+            storagePricePerMonth: isPrevMonthCostAvailable
+              ? prevMonthCost
+              : dailyCost
+                ? dailyCost * moment().daysInMonth()
+                : 0,
           };
           const regionResult = await this.s3SdkService.getBucketLocation(
             s3Client,
