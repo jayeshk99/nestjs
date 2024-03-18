@@ -12,6 +12,8 @@ import { PricingClient } from '@aws-sdk/client-pricing';
 import { GlacierClient } from '@aws-sdk/client-glacier';
 import { ECRClient } from '@aws-sdk/client-ecr';
 import { EKSClient } from '@aws-sdk/client-eks';
+import { ElasticLoadBalancingClient } from '@aws-sdk/client-elastic-load-balancing';
+import { ElasticLoadBalancingV2Client } from '@aws-sdk/client-elastic-load-balancing-v2';
 @Injectable()
 export class ClientConfigurationService {
   async getEC2Client(creds: ClientCredentials): Promise<EC2Client> {
@@ -102,5 +104,21 @@ export class ClientConfigurationService {
       credentials: { accessKeyId, secretAccessKey },
     });
     return rdsClient;
+  }
+  async getAWSLoadBalancerClient(creds: ClientCredentials) {
+    const { region, accessKeyId, secretAccessKey } = creds;
+    const loadBalancerClient = new ElasticLoadBalancingClient({
+      region,
+      credentials: { accessKeyId, secretAccessKey },
+    });
+    return loadBalancerClient;
+  }
+  async getAWSLoadBalancerV2Client(creds: ClientCredentials) {
+    const { region, accessKeyId, secretAccessKey } = creds;
+    const loadBalancerClient = new ElasticLoadBalancingV2Client({
+      region,
+      credentials: { accessKeyId, secretAccessKey },
+    });
+    return loadBalancerClient;
   }
 }

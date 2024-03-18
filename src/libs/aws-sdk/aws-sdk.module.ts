@@ -9,6 +9,7 @@ import { FsxSdkService } from './fsxSdkService';
 import { ECRSdkService } from './ecrSdk.service';
 import { EKSSdkService } from './eksSdk.service';
 import { RdsSdkService } from './rdsSdk.service';
+import { AWSLoadBalancerSdkService } from './awsLoadBalancerSdk.service';
 
 @Module({
   imports: [],
@@ -23,7 +24,8 @@ import { RdsSdkService } from './rdsSdk.service';
     ECRSdkService,
     EKSSdkService,
     FsxSdkService,
-    RdsSdkService
+    RdsSdkService,
+    AWSLoadBalancerSdkService,
   ],
   exports: [
     ClientConfigurationService,
@@ -36,7 +38,8 @@ import { RdsSdkService } from './rdsSdk.service';
     ECRSdkService,
     EKSSdkService,
     FsxSdkService,
-    RdsSdkService
+    RdsSdkService,
+    AWSLoadBalancerSdkService,
   ],
 })
 export class AwsSdkModule {}

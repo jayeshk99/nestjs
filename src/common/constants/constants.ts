@@ -160,3 +160,15 @@ export const LIST_RESOURCE_KEY = {
   CLOUD_TRAIL: 'NA',
   ASG: 'NA',
 };
+
+export const LOAD_BALANCER_VERSION = {
+  V1: 'v1',
+  V2: 'v2',
+};
+
+export const LOAD_BALANCER_TYPE = {
+  APPLICATION: 'application',
+  CLASSIC: 'classic',
+  NETWORK: 'network',
+  GATEWAY: 'gateway',
+};

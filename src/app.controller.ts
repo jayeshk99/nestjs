@@ -11,7 +11,7 @@ export class AppController {
     private readonly appService: AppService,
     private readonly awsInstanceRepository: AwsInstanceRepository,
     private readonly resourceSyncService: ResourceSyncService,
-    private readonly rdsUtilizationDataSyncService: RDSUtilizationDataSyncService
+    private readonly rdsUtilizationDataSyncService: RDSUtilizationDataSyncService,
   ) {}
 
   @Get()
@@ -22,7 +22,9 @@ export class AppController {
   @Post('/job')
   async startJob(@Body() body: JobRequest) {
     await this.resourceSyncService.fetchAllResources(body.accountId);
-    await this.rdsUtilizationDataSyncService.syncUtilizationData(body.accountId)
+    await this.rdsUtilizationDataSyncService.syncUtilizationData(
+      body.accountId,
+    );
     return {
       status: 200,
       message: `Aws Resource job started`,

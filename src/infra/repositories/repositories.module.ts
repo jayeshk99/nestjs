@@ -24,6 +24,8 @@ import { ECRRepository } from './ecr.repository';
 import { EKSRepository } from './eks.repository';
 import { RDSCPUUtilizationEntity } from '../entities/rightsizing/rdsCpuUtilization.entity';
 import { RdsUtilizationRepository } from './rdsUtilizationRepository';
+import { AWSLoadBalancerEntity } from '../entities/awsLoadBalancerDetails.entity';
+import { AWSLoadBalancerRepository } from './loadBalancer.repository';
 
 @Module({
   imports: [
@@ -39,7 +41,8 @@ import { RdsUtilizationRepository } from './rdsUtilizationRepository';
       EKSEntity,
       FSxEntity,
       RDSDetailsEntity,
-      RDSCPUUtilizationEntity
+      RDSCPUUtilizationEntity,
+      AWSLoadBalancerEntity,
     ]),
   ],
   providers: [
@@ -54,7 +57,8 @@ import { RdsUtilizationRepository } from './rdsUtilizationRepository';
     EKSRepository,
     FsxDetailsRepository,
     RdsDetailsRepository,
-    RdsUtilizationRepository
+    RdsUtilizationRepository,
+    AWSLoadBalancerRepository,
   ],
   exports: [
     AwsInstanceRepository,
@@ -67,7 +71,8 @@ import { RdsUtilizationRepository } from './rdsUtilizationRepository';
     ECRRepository,
     EKSRepository,
     RdsDetailsRepository,
-    RdsUtilizationRepository
+    RdsUtilizationRepository,
+    AWSLoadBalancerRepository,
   ],
 })
 export class RepositoriesModule {}

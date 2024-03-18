@@ -114,7 +114,7 @@ export class RdsService {
             await this.awsHelperService.getCostDetails({
               resourceId: dbInstance.DBInstanceArn,
               accountId: accountId,
-              productName: 'RDS',
+              productCode: PRODUCT_CODE.RDS,
             });
 
           if (CPUUtilizationData.length) {

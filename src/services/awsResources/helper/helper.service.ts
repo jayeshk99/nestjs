@@ -122,11 +122,11 @@ export class AwsHelperService {
     prevMonthCost: number;
   }> {
     try {
-      const { resourceId, accountId, productName } = data;
+      const { resourceId, accountId, productCode } = data;
       const usageDetails =
         await this.awsUsageDetailsRepository.getOneDayCostOfResource({
           resourceId: resourceId,
-          productCode: PRODUCT_CODE[`${productName}`],
+          productCode: productCode,
           awsAccountId: accountId,
         });
       const dailyCost = usageDetails && usageDetails.unBlendedCost;
@@ -138,7 +138,7 @@ export class AwsHelperService {
 
       const usageCostFields: awsUsageCostProps = {
         resourceId: resourceId,
-        prouductCode: PRODUCT_CODE[`${productName}`],
+        prouductCode: productCode,
         startTime: startDate,
         endTime: currentDate,
         awsAccountId: accountId,
@@ -152,7 +152,7 @@ export class AwsHelperService {
       const isPrevMonthCostAvailable =
         await this.awsUsageDetailsRepository.findPrevMonthCostAvailable({
           resourceId: resourceId,
-          prouductCode: PRODUCT_CODE[`${productName}`],
+          prouductCode: productCode,
           awsAccountId: accountId,
           billingDate: moment(new Date())
             .subtract(1, 'months')
@@ -161,7 +161,7 @@ export class AwsHelperService {
       return { dailyCost, isPrevMonthCostAvailable, prevMonthCost };
     } catch (error) {
       this.logger.log(
-        `Error in getting cost details for ${data.productName} for account: ${data.accountId} ${error}`,
+        `Error in getting cost details for ${data.productCode} for account: ${data.accountId} ${error}`,
       );
     }
   }

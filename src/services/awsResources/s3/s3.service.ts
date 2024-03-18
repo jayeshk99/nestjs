@@ -116,7 +116,6 @@ export class S3Service {
         `S3 Details job COMPLETED for account: ${data.accountId} region: ${data.region}`,
       );
     } catch (error) {
-      console.log(error);
       this.logger.log(
         `Error in getting s3 Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
       );

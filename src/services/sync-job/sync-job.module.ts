@@ -10,6 +10,7 @@ import { EKSModule } from '../awsResources/eks/eks.module';
 import { ECRModule } from '../awsResources/ecr/ecr.module';
 import { RdsModule } from '../awsResources/rds/rds.module';
 import { RDSUtilizationDataSyncService } from './rdsUtilizationDataSyncService';
+import { LoadBalancerModule } from '../awsResources/loadBalancer/loadBalancer.module';
 
 @Module({
   imports: [
@@ -22,8 +23,9 @@ import { RDSUtilizationDataSyncService } from './rdsUtilizationDataSyncService';
     EKSModule,
     ECRModule,
     RdsModule,
+    LoadBalancerModule,
   ],
-  providers: [ResourceSyncService,RDSUtilizationDataSyncService],
-  exports: [ResourceSyncService,RDSUtilizationDataSyncService],
+  providers: [ResourceSyncService, RDSUtilizationDataSyncService],
+  exports: [ResourceSyncService, RDSUtilizationDataSyncService],
 })
 export class SyncJobModule {}
