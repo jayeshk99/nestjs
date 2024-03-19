@@ -13,6 +13,7 @@ import { RDSUtilizationDataSyncService } from './rdsUtilizationDataSyncService';
 import { LoadBalancerModule } from '../awsResources/loadBalancer/loadBalancer.module';
 import { ResourceGroupModule } from '../awsResources/resourceGroups/resourceGroups.module';
 import { EBSModule } from '../awsResources/ebs/ebs.module';
+import { ECSModule } from '../awsResources/ecs/ecs.module';
 
 @Module({
   imports: [
@@ -27,7 +28,8 @@ import { EBSModule } from '../awsResources/ebs/ebs.module';
     RdsModule,
     LoadBalancerModule,
     ResourceGroupModule,
-    EBSModule
+    EBSModule,
+    ECSModule,
   ],
   providers: [ResourceSyncService, RDSUtilizationDataSyncService],
   exports: [ResourceSyncService, RDSUtilizationDataSyncService],

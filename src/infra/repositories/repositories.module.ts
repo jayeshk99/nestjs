@@ -29,6 +29,8 @@ import { ResourceGroupRepository } from './resourceGroup.repository';
 import { AwsResourceGroupEntity } from '../entities/awsResourceGroupDetails.entity';
 import { EBSRepository } from './ebs.repository';
 import { EBSEntity } from '../entities/ebsDetails.entity';
+import { AwsContainerInstanceEntity } from '../entities/awsContainerInstance.entity';
+import { ECSRepository } from './ecs.repository';
 
 @Module({
   imports: [
@@ -49,6 +51,7 @@ import { EBSEntity } from '../entities/ebsDetails.entity';
       RDSCPUUtilizationEntity,
       AwsResourceGroupEntity,
       EBSEntity,
+      AwsContainerInstanceEntity,
     ]),
   ],
   providers: [
@@ -68,6 +71,7 @@ import { EBSEntity } from '../entities/ebsDetails.entity';
     RdsUtilizationRepository,
     ResourceGroupRepository,
     EBSRepository,
+    ECSRepository,
   ],
   exports: [
     AwsInstanceRepository,
@@ -85,6 +89,7 @@ import { EBSEntity } from '../entities/ebsDetails.entity';
     RdsUtilizationRepository,
     ResourceGroupRepository,
     EBSRepository,
+    ECSRepository,
   ],
 })
 export class RepositoriesModule {}

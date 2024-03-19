@@ -37,7 +37,8 @@ export class AWSLoadBalancerService {
       this.logger.log(
         `AWSLoad Balancer details job STARTED for account: ${data.accountId} region: ${data.region}`,
       );
-      const { accessKeyId, secretAccessKey, accountId, region,currencyCode } = data;
+      const { accessKeyId, secretAccessKey, accountId, region, currencyCode } =
+        data;
       const currentTimestamp = new Date();
       const loadBalancerClient =
         await this.clientConfigurationService.getAWSLoadBalancerClient(data);
@@ -65,16 +66,17 @@ export class AWSLoadBalancerService {
       ]);
       const loadBalancersData = [...v1Fields, ...v2Fields];
       for (let elb of loadBalancersData) {
-        const isBucketExist =
-          await this.awsLoadBalancerRepository.findByCondition({
+        const isElbExist = await this.awsLoadBalancerRepository.findByCondition(
+          {
             where: {
               accountId: elb.accountId,
               loadBalancerName: elb.loadBalancerName,
               isActive: 1,
             },
-          });
-        if (isBucketExist) {
-          await this.awsLoadBalancerRepository.update(isBucketExist.id, elb);
+          },
+        );
+        if (isElbExist) {
+          await this.awsLoadBalancerRepository.update(isElbExist.id, elb);
         } else {
           const elbEntity = this.awsLoadBalancerRepository.create(elb);
           await this.awsLoadBalancerRepository.save(elbEntity);

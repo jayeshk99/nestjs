@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { LOOK_UP_EVENT } from 'src/common/constants/constants';
+import { LOOK_UP_EVENT, RESOURCE_TYPE } from 'src/common/constants/constants';
 import { ClientCredentials } from 'src/common/interfaces/awsClient.interface';
 import { ResourceGroupProps } from 'src/common/interfaces/resourceGroup.interface';
 import { ResourceGroupRepository } from 'src/infra/repositories/resourceGroup.repository';
@@ -21,7 +21,8 @@ export class ResourceGroupService {
       this.logger.log(
         `S3 details job STARTED for account: ${data.accountId} region: ${data.region}`,
       );
-      const { accountId, accessKeyId, secretAccessKey, region,currencyCode } = data;
+      const { accountId, accessKeyId, secretAccessKey, region, currencyCode } =
+        data;
       const resourceGroupClient =
         await this.clientConfigurationService.getResourceGroupClient(data);
       const resourceGroupList =
@@ -45,6 +46,7 @@ export class ResourceGroupService {
                 ],
               },
               resourceGroup.GroupName,
+              RESOURCE_TYPE.AWS_RG,
             );
           const ResourceGroupFields: ResourceGroupProps = {
             resourceGroupName: resourceGroup.GroupName,
