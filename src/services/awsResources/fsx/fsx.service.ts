@@ -21,7 +21,8 @@ export class FsxService {
       this.logger.log(
         `Fsx details job STARTED for account: ${data.accountId} region: ${data.region}`,
       );
-      const { accessKeyId, secretAccessKey, accountId, region } = data;
+      const { accessKeyId, secretAccessKey, accountId, region, currencyCode } =
+        data;
 
       const fsxClient =
         await this.clientConfigurationService.getFsxClient(data);
@@ -33,8 +34,6 @@ export class FsxService {
           const fsxDetails = fileSystems[i];
           const name = fsxDetails.Tags.find(({ Key }) => Key === 'Name')?.Value;
 
-          const currencyCode =
-            await this.awsUsageDetailsRepository.getAwsCurrencyCode(accountId);
           const FsxFields: FsxFileSystemProps = {
             fileSystemId: fsxDetails.FileSystemId,
             resourceArn: fsxDetails.ResourceARN,
@@ -49,8 +48,7 @@ export class FsxService {
             accountId: accountId,
             storageCapacity: fsxDetails.StorageCapacity,
             unit: 'GB',
-            currencyCode:
-              (currencyCode && currencyCode[0]?.billing_currency) || '',
+            currencyCode: currencyCode,
           };
           const isFileSystemExist =
             await this.fsxDetailsRepository.findFsxFileSystem(FsxFields);

@@ -14,7 +14,7 @@ import { ElasticLoadBalancingClient } from '@aws-sdk/client-elastic-load-balanci
 import { ElasticLoadBalancingV2Client } from '@aws-sdk/client-elastic-load-balancing-v2';
 import { ResourceGroupsClient } from '@aws-sdk/client-resource-groups';
 import { CloudTrailClient } from '@aws-sdk/client-cloudtrail';
-import { EBSClient } from '@aws-sdk/client-ebs';
+
 @Injectable()
 export class ClientConfigurationService {
   async getEC2Client(creds: ClientCredentials): Promise<EC2Client> {
@@ -112,29 +112,7 @@ export class ClientConfigurationService {
       credentials: { accessKeyId, secretAccessKey },
     });
   }
-  async getEBSClient(creds: ClientCredentials): Promise<EBSClient> {
-    const { region, accessKeyId, secretAccessKey } = creds;
-    return new EBSClient({
-      region,
-      credentials: { accessKeyId, secretAccessKey },
-    });
-  }
-  async getAWSLoadBalancerClient(creds: ClientCredentials) {
-    const { region, accessKeyId, secretAccessKey } = creds;
-    const loadBalancerClient = new ElasticLoadBalancingClient({
-      region,
-      credentials: { accessKeyId, secretAccessKey },
-    });
-    return loadBalancerClient;
-  }
-  async getAWSLoadBalancerV2Client(creds: ClientCredentials) {
-    const { region, accessKeyId, secretAccessKey } = creds;
-    const loadBalancerClient = new ElasticLoadBalancingV2Client({
-      region,
-      credentials: { accessKeyId, secretAccessKey },
-    });
-    return loadBalancerClient;
-  }
+
   async getAWSLoadBalancerClient(creds: ClientCredentials) {
     const { region, accessKeyId, secretAccessKey } = creds;
     const loadBalancerClient = new ElasticLoadBalancingClient({

@@ -25,7 +25,7 @@ export class RdsService {
       this.logger.log(
         `Fsx details job STARTED for account: ${data.accountId} region: ${data.region}`,
       );
-      const { accessKeyId, secretAccessKey, accountId, region } = data;
+      const { accessKeyId, secretAccessKey, accountId, region ,currencyCode} = data;
 
       const rdsClient =
         await this.clientConfigurationService.getRdsClient(data);
@@ -33,8 +33,6 @@ export class RdsService {
         await this.rdsSdkService.listRdsInstances(rdsClient);
 
       if (rdsInstancesList && rdsInstancesList.length) {
-        const currencyCode =
-          await this.awsUsageDetailsRepository.getAwsCurrencyCode(accountId);
         for (let instance = 0; instance < rdsInstancesList.length; instance++) {
           const dbInstance = rdsInstancesList[instance];
           const { dailyCost, isPrevMonthCostAvailable, prevMonthCost } =
@@ -56,7 +54,7 @@ export class RdsService {
             storageType: dbInstance.StorageType,
             createdOn: dbInstance.InstanceCreateTime,
             region: region,
-            currencyCode: currencyCode.billing_currency,
+            currencyCode: currencyCode,
             monthlyCost: isPrevMonthCostAvailable
               ? prevMonthCost
               : dailyCost

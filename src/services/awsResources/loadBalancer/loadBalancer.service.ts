@@ -20,7 +20,7 @@ import {
   ElasticLoadBalancingClient,
 } from '@aws-sdk/client-elastic-load-balancing';
 import { AWSLoadBalancerProps } from 'src/common/interfaces/loadBalancer.interface';
-import moment from 'moment';
+import * as moment from 'moment';
 
 @Injectable()
 export class AWSLoadBalancerService {
@@ -37,10 +37,8 @@ export class AWSLoadBalancerService {
       this.logger.log(
         `AWSLoad Balancer details job STARTED for account: ${data.accountId} region: ${data.region}`,
       );
-      const { accessKeyId, secretAccessKey, accountId, region } = data;
+      const { accessKeyId, secretAccessKey, accountId, region,currencyCode } = data;
       const currentTimestamp = new Date();
-      const currencyCode =
-        await this.awsUsageDetailsRepository.getAwsCurrencyCode(accountId);
       const loadBalancerClient =
         await this.clientConfigurationService.getAWSLoadBalancerClient(data);
       const loadBalancerV2Client =
@@ -55,13 +53,13 @@ export class AWSLoadBalancerService {
         this.getLoadBalancerV1Fields(
           loadBalancerClient,
           loadBalancerList,
-          currencyCode.billing_currency,
+          currencyCode,
           data,
         ),
         this.getLoadBalancerV2Fields(
           loadBalancerV2Client,
           loadBalancerV2List,
-          currencyCode.billing_currency,
+          currencyCode,
           data,
         ),
       ]);

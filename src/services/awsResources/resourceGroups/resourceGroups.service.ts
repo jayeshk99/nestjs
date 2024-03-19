@@ -21,7 +21,7 @@ export class ResourceGroupService {
       this.logger.log(
         `S3 details job STARTED for account: ${data.accountId} region: ${data.region}`,
       );
-      const { accountId, accessKeyId, secretAccessKey, region } = data;
+      const { accountId, accessKeyId, secretAccessKey, region,currencyCode } = data;
       const resourceGroupClient =
         await this.clientConfigurationService.getResourceGroupClient(data);
       const resourceGroupList =
