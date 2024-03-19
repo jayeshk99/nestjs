@@ -26,8 +26,7 @@ export class FsxService {
       const fsxClient =
         await this.clientConfigurationService.getFsxClient(data);
 
-      const fileSystems =
-        await this.fsxSdkService.listFileSystems(fsxClient);
+      const fileSystems = await this.fsxSdkService.listFileSystems(fsxClient);
 
       if (fileSystems && fileSystems.length) {
         for (let i = 0; i < fileSystems.length; i++) {
@@ -76,7 +75,6 @@ export class FsxService {
         `Fsx Details job COMPLETED for account: ${data.accountId} region: ${data.region}`,
       );
     } catch (error) {
-      console.log(error);
       this.logger.log(
         `Error in getting Fsx Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
       );

@@ -77,11 +77,9 @@ export class EFSService {
         productCode: PRODUCT_CODE.EFS,
         awsAccountId: accountId,
       });
-    console.log('efsUsageDetails:', efsUsageDetails);
     const currencyCode =
       await this.awsUsageDetailsRepository.getAwsCurrencyCode(accountId);
     const efsPerDayCost = efsUsageDetails && efsUsageDetails.unBlendedCost;
-    console.log('efsPerDayCost:', efsPerDayCost);
     const currentDate = new Date().toISOString().split('T')[0];
     const currentBillDate = new Date(currentDate);
     const startDate = new Date(
@@ -105,5 +103,3 @@ export class EFSService {
     return { currencyCode, efsPerDayCost, efsPrevMonthCost };
   }
 }
-
-// 19	"fs-0f6ff518f9402f54d"		"386152433177"	6	"2023-11-20 09:48:00+00"	"us-east-1"	"available"	1	0	"2023-12-29 09:09:02.928+00"	"2024-03-07 02:00:19.316+00"	"386152433177"	"KB"	1.2458333333333335e-09	"USD"	1.6307000000000005e-06	466	466		"arn:aws:elasticfilesystem:us-east-1:386152433177:file-system/fs-0f6ff518f9402f54d"

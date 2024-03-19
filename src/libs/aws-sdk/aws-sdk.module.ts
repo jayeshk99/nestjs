@@ -9,6 +9,7 @@ import { FsxSdkService } from './fsxSdkService';
 import { ECRSdkService } from './ecrSdk.service';
 import { EKSSdkService } from './eksSdk.service';
 import { RdsSdkService } from './rdsSdk.service';
+import { AWSLoadBalancerSdkService } from './awsLoadBalancerSdk.service';
 import { ResourceGroupSdkService } from './resourceGroupSdk.service';
 import { CloudTrailSdkService } from './cloudTrailSdk.service';
 
@@ -26,6 +27,8 @@ import { CloudTrailSdkService } from './cloudTrailSdk.service';
     EKSSdkService,
     FsxSdkService,
     RdsSdkService,
+    AWSLoadBalancerSdkService,
+    RdsSdkService,
     ResourceGroupSdkService,
     CloudTrailSdkService
   ],
@@ -40,6 +43,8 @@ import { CloudTrailSdkService } from './cloudTrailSdk.service';
     ECRSdkService,
     EKSSdkService,
     FsxSdkService,
+    RdsSdkService,
+    AWSLoadBalancerSdkService,
     RdsSdkService,
     ResourceGroupSdkService,
     CloudTrailSdkService

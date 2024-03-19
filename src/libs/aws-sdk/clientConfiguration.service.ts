@@ -10,6 +10,8 @@ import { PricingClient } from '@aws-sdk/client-pricing';
 import { GlacierClient } from '@aws-sdk/client-glacier';
 import { ECRClient } from '@aws-sdk/client-ecr';
 import { EKSClient } from '@aws-sdk/client-eks';
+import { ElasticLoadBalancingClient } from '@aws-sdk/client-elastic-load-balancing';
+import { ElasticLoadBalancingV2Client } from '@aws-sdk/client-elastic-load-balancing-v2';
 import { ResourceGroupsClient } from '@aws-sdk/client-resource-groups';
 import { CloudTrailClient } from '@aws-sdk/client-cloudtrail';
 import { EBSClient } from '@aws-sdk/client-ebs';
@@ -116,5 +118,37 @@ export class ClientConfigurationService {
       region,
       credentials: { accessKeyId, secretAccessKey },
     });
+  }
+  async getAWSLoadBalancerClient(creds: ClientCredentials) {
+    const { region, accessKeyId, secretAccessKey } = creds;
+    const loadBalancerClient = new ElasticLoadBalancingClient({
+      region,
+      credentials: { accessKeyId, secretAccessKey },
+    });
+    return loadBalancerClient;
+  }
+  async getAWSLoadBalancerV2Client(creds: ClientCredentials) {
+    const { region, accessKeyId, secretAccessKey } = creds;
+    const loadBalancerClient = new ElasticLoadBalancingV2Client({
+      region,
+      credentials: { accessKeyId, secretAccessKey },
+    });
+    return loadBalancerClient;
+  }
+  async getAWSLoadBalancerClient(creds: ClientCredentials) {
+    const { region, accessKeyId, secretAccessKey } = creds;
+    const loadBalancerClient = new ElasticLoadBalancingClient({
+      region,
+      credentials: { accessKeyId, secretAccessKey },
+    });
+    return loadBalancerClient;
+  }
+  async getAWSLoadBalancerV2Client(creds: ClientCredentials) {
+    const { region, accessKeyId, secretAccessKey } = creds;
+    const loadBalancerClient = new ElasticLoadBalancingV2Client({
+      region,
+      credentials: { accessKeyId, secretAccessKey },
+    });
+    return loadBalancerClient;
   }
 }

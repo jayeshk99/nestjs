@@ -22,6 +22,8 @@ import { ECRRepository } from './ecr.repository';
 import { EKSRepository } from './eks.repository';
 import { RDSCPUUtilizationEntity } from '../entities/rightsizing/rdsCpuUtilization.entity';
 import { RdsUtilizationRepository } from './rdsUtilizationRepository';
+import { AWSLoadBalancerEntity } from '../entities/awsLoadBalancerDetails.entity';
+import { AWSLoadBalancerRepository } from './loadBalancer.repository';
 import { ResourceGroupRepository } from './resourceGroup.repository';
 import { AwsResourceGroupEntity } from '../entities/awsResourceGroupDetails.entity';
 import { EBSRepository } from './ebs.repository';
@@ -42,6 +44,8 @@ import { EBSEntity } from '../entities/ebsDetails.entity';
       FSxEntity,
       RDSDetailsEntity,
       RDSCPUUtilizationEntity,
+      AWSLoadBalancerEntity,
+      RDSCPUUtilizationEntity,
       AwsResourceGroupEntity,
       EBSEntity
     ]),
@@ -59,6 +63,8 @@ import { EBSEntity } from '../entities/ebsDetails.entity';
     FsxDetailsRepository,
     RdsDetailsRepository,
     RdsUtilizationRepository,
+    AWSLoadBalancerRepository,
+    RdsUtilizationRepository,
     ResourceGroupRepository,
     EBSRepository
   ],
@@ -73,6 +79,8 @@ import { EBSEntity } from '../entities/ebsDetails.entity';
     ECRRepository,
     EKSRepository,
     RdsDetailsRepository,
+    RdsUtilizationRepository,
+    AWSLoadBalancerRepository,
     RdsUtilizationRepository,
     ResourceGroupRepository,
     EBSRepository

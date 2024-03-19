@@ -7,6 +7,7 @@ import { AwsUsageDetailsRepository } from 'src/infra/repositories/awsUsageDetail
 import { RDSInstanceProps } from 'src/common/interfaces/rds.interface';
 import { RdsDetailsRepository } from 'src/infra/repositories/rdsDetails.repositories';
 import * as moment from 'moment';
+import { PRODUCT_CODE } from 'src/common/constants/constants';
 
 @Injectable()
 export class RdsService {
@@ -40,7 +41,7 @@ export class RdsService {
             await this.awsHelperService.getCostDetails({
               resourceId: dbInstance.DBInstanceArn,
               accountId: accountId,
-              productName: 'RDS',
+              productCode: PRODUCT_CODE.RDS,
             });
 
           const DBInstanceFields: RDSInstanceProps = {

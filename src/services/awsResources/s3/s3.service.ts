@@ -76,7 +76,7 @@ export class S3Service {
             await this.awsHelperService.getCostDetails({
               resourceId: bucket.Name,
               accountId: accountId,
-              productName: 'S3',
+              productCode: PRODUCT_CODE.S3,
             });
           const s3BucketFields: S3BucketProps = {
             storageOwner: bucketsList.Owner.DisplayName,
