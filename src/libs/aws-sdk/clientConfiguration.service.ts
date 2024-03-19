@@ -132,10 +132,9 @@ export class ClientConfigurationService {
   }
   async getEcsClient(creds: ClientCredentials) {
     const { region, accessKeyId, secretAccessKey } = creds;
-    const loadBalancerClient = new ECSClient({
+    return new ECSClient({
       region,
       credentials: { accessKeyId, secretAccessKey },
     });
-    return loadBalancerClient;
   }
 }
