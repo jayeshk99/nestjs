@@ -13,6 +13,8 @@ import { Region } from 'src/common/interfaces/ec2Region.interface';
 import { ECRService } from '../awsResources/ecr/ecr.service';
 import { EKSService } from '../awsResources/eks/ecr.service';
 import { RdsService } from '../awsResources/rds/rds.service';
+import { ResourceGroupService } from '../awsResources/resourceGroups/resourceGroups.service';
+import { EBSService } from '../awsResources/ebs/ebs.service';
 
 @Injectable()
 export class ResourceSyncService {
@@ -27,7 +29,9 @@ export class ResourceSyncService {
     private readonly fsxService: FsxService,
     private readonly ecrSevice: ECRService,
     private readonly eksService: EKSService,
-    private readonly rdsService: RdsService
+    private readonly rdsService: RdsService,
+    private readonly resourceGroupService: ResourceGroupService,
+    private readonly ebsService: EBSService
   ) {}
 
   async fetchAllResources(AccountId: string): Promise<void> {
@@ -58,8 +62,12 @@ export class ResourceSyncService {
           await this.fsxService.fetchFsxDetails(regionWiseClientRequest);
           await this.ecrSevice.fetchEcrDetails(regionWiseClientRequest);
           await this.eksService.fetchEksDetails(regionWiseClientRequest);
-          await this.fsxService.fetchFsxDetails(regionWiseClientRequest)
-          await this.rdsService.fetchRdsDetails(regionWiseClientRequest)
+          await this.fsxService.fetchFsxDetails(regionWiseClientRequest);
+          await this.rdsService.fetchRdsDetails(regionWiseClientRequest);
+          await this.resourceGroupService.fetchResourceGroupDetails(
+            regionWiseClientRequest,
+          );
+          await this.ebsService.fetchEBSDetails(regionWiseClientRequest)
         }),
       );
     } catch (error) {
