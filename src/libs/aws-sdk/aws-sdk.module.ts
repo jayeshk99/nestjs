@@ -9,6 +9,8 @@ import { FsxSdkService } from './fsxSdkService';
 import { ECRSdkService } from './ecrSdk.service';
 import { EKSSdkService } from './eksSdk.service';
 import { RdsSdkService } from './rdsSdk.service';
+import { ResourceGroupSdkService } from './resourceGroupSdk.service';
+import { CloudTrailSdkService } from './cloudTrailSdk.service';
 
 @Module({
   imports: [],
@@ -23,7 +25,9 @@ import { RdsSdkService } from './rdsSdk.service';
     ECRSdkService,
     EKSSdkService,
     FsxSdkService,
-    RdsSdkService
+    RdsSdkService,
+    ResourceGroupSdkService,
+    CloudTrailSdkService
   ],
   exports: [
     ClientConfigurationService,
@@ -36,7 +40,9 @@ import { RdsSdkService } from './rdsSdk.service';
     ECRSdkService,
     EKSSdkService,
     FsxSdkService,
-    RdsSdkService
+    RdsSdkService,
+    ResourceGroupSdkService,
+    CloudTrailSdkService
   ],
 })
 export class AwsSdkModule {}

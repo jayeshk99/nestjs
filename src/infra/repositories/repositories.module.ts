@@ -2,8 +2,6 @@ import { Module } from '@nestjs/common';
 import { AwsInstanceRepository } from './instanceDetails.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AwsInstanceEntity } from '../entities/instanceDetails.entity';
-import { DatabaseModule } from '../database/database.module';
-import { EntitiesModule } from '../entities/entities.module';
 import { AWSAccountsEntity } from '../entities/awsAccount.entity';
 import { AwsAccountRepository } from './AwsAccount.repository';
 import { AwsUsageDetailsRepository } from './awsUsageDetails.repository';
@@ -24,6 +22,10 @@ import { ECRRepository } from './ecr.repository';
 import { EKSRepository } from './eks.repository';
 import { RDSCPUUtilizationEntity } from '../entities/rightsizing/rdsCpuUtilization.entity';
 import { RdsUtilizationRepository } from './rdsUtilizationRepository';
+import { ResourceGroupRepository } from './resourceGroup.repository';
+import { AwsResourceGroupEntity } from '../entities/awsResourceGroupDetails.entity';
+import { EBSRepository } from './ebs.repository';
+import { EBSEntity } from '../entities/ebsDetails.entity';
 
 @Module({
   imports: [
@@ -39,7 +41,9 @@ import { RdsUtilizationRepository } from './rdsUtilizationRepository';
       EKSEntity,
       FSxEntity,
       RDSDetailsEntity,
-      RDSCPUUtilizationEntity
+      RDSCPUUtilizationEntity,
+      AwsResourceGroupEntity,
+      EBSEntity
     ]),
   ],
   providers: [
@@ -54,7 +58,9 @@ import { RdsUtilizationRepository } from './rdsUtilizationRepository';
     EKSRepository,
     FsxDetailsRepository,
     RdsDetailsRepository,
-    RdsUtilizationRepository
+    RdsUtilizationRepository,
+    ResourceGroupRepository,
+    EBSRepository
   ],
   exports: [
     AwsInstanceRepository,
@@ -67,7 +73,9 @@ import { RdsUtilizationRepository } from './rdsUtilizationRepository';
     ECRRepository,
     EKSRepository,
     RdsDetailsRepository,
-    RdsUtilizationRepository
+    RdsUtilizationRepository,
+    ResourceGroupRepository,
+    EBSRepository
   ],
 })
 export class RepositoriesModule {}

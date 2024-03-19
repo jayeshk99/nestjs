@@ -160,3 +160,15 @@ export const LIST_RESOURCE_KEY = {
   CLOUD_TRAIL: 'NA',
   ASG: 'NA',
 };
+
+export const LOOK_UP_EVENT = {
+  EC2: "ec2.amazonaws.com",
+  S3: "s3.amazonaws.com",
+  Glacier: "glacier.amazonaws.com",
+  EFS: "elasticfilesystem.amazonaws.com",
+  FSx: "fsx.amazonaws.com",
+  ResourceGroups: "resource-groups.amazonaws.com",
+  SNS: "sns.amazonaws.com",
+  EMR: "elasticmapreduce.amazonaws.com",
+  ECS: "ecs.amazonaws.com",
+};
