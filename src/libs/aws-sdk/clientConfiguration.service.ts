@@ -14,6 +14,7 @@ import { ECRClient } from '@aws-sdk/client-ecr';
 import { EKSClient } from '@aws-sdk/client-eks';
 import { ElasticLoadBalancingClient } from '@aws-sdk/client-elastic-load-balancing';
 import { ElasticLoadBalancingV2Client } from '@aws-sdk/client-elastic-load-balancing-v2';
+import { ECSClient } from '@aws-sdk/client-ecs';
 @Injectable()
 export class ClientConfigurationService {
   async getEC2Client(creds: ClientCredentials): Promise<EC2Client> {
@@ -116,6 +117,14 @@ export class ClientConfigurationService {
   async getAWSLoadBalancerV2Client(creds: ClientCredentials) {
     const { region, accessKeyId, secretAccessKey } = creds;
     const loadBalancerClient = new ElasticLoadBalancingV2Client({
+      region,
+      credentials: { accessKeyId, secretAccessKey },
+    });
+    return loadBalancerClient;
+  }
+  async getEcsClient(creds: ClientCredentials) {
+    const { region, accessKeyId, secretAccessKey } = creds;
+    const loadBalancerClient = new ECSClient({
       region,
       credentials: { accessKeyId, secretAccessKey },
     });

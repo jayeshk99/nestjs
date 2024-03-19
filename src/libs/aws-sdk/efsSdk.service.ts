@@ -36,7 +36,7 @@ export class EFSSdkService {
           efsList.push(...resources);
         }
 
-        nextToken = data.NextMarker;
+        nextToken = data.NextMarker || null;
       } catch (error) {
         console.error(`Error listing EFS List:`, error);
         break;

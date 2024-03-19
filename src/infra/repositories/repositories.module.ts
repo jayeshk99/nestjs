@@ -26,6 +26,7 @@ import { RDSCPUUtilizationEntity } from '../entities/rightsizing/rdsCpuUtilizati
 import { RdsUtilizationRepository } from './rdsUtilizationRepository';
 import { AWSLoadBalancerEntity } from '../entities/awsLoadBalancerDetails.entity';
 import { AWSLoadBalancerRepository } from './loadBalancer.repository';
+import { BaseRepository } from './base.repository';
 
 @Module({
   imports: [

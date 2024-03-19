@@ -50,7 +50,7 @@ export class FsxService {
             storageCapacity: fsxDetails.StorageCapacity,
             unit: 'GB',
             currencyCode:
-              (currencyCode && currencyCode[0]?.billing_currency) || '',
+              (currencyCode && currencyCode?.billing_currency) || '',
           };
           const isFileSystemExist =
             await this.fsxDetailsRepository.findFsxFileSystem(FsxFields);
