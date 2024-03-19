@@ -12,6 +12,7 @@ import { ECRClient } from '@aws-sdk/client-ecr';
 import { EKSClient } from '@aws-sdk/client-eks';
 import { ElasticLoadBalancingClient } from '@aws-sdk/client-elastic-load-balancing';
 import { ElasticLoadBalancingV2Client } from '@aws-sdk/client-elastic-load-balancing-v2';
+import { ECSClient } from '@aws-sdk/client-ecs';
 import { ResourceGroupsClient } from '@aws-sdk/client-resource-groups';
 import { CloudTrailClient } from '@aws-sdk/client-cloudtrail';
 import { ElasticBeanstalkClient } from '@aws-sdk/client-elastic-beanstalk';
@@ -128,5 +129,13 @@ export class ClientConfigurationService {
       region,
       credentials: { accessKeyId, secretAccessKey },
     });
+  }
+  async getEcsClient(creds: ClientCredentials) {
+    const { region, accessKeyId, secretAccessKey } = creds;
+    const loadBalancerClient = new ECSClient({
+      region,
+      credentials: { accessKeyId, secretAccessKey },
+    });
+    return loadBalancerClient;
   }
 }

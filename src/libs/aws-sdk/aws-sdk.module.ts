@@ -10,6 +10,7 @@ import { ECRSdkService } from './ecrSdk.service';
 import { EKSSdkService } from './eksSdk.service';
 import { RdsSdkService } from './rdsSdk.service';
 import { AWSLoadBalancerSdkService } from './awsLoadBalancerSdk.service';
+import { ECSSdkService } from './ecsSdk.service';
 import { ResourceGroupSdkService } from './resourceGroupSdk.service';
 import { CloudTrailSdkService } from './cloudTrailSdk.service';
 import { BeanStalkSdkService } from './beanstalkSdk.service';
@@ -29,6 +30,7 @@ import { BeanStalkSdkService } from './beanstalkSdk.service';
     FsxSdkService,
     RdsSdkService,
     AWSLoadBalancerSdkService,
+    ECSSdkService,
     RdsSdkService,
     ResourceGroupSdkService,
     CloudTrailSdkService,
@@ -47,6 +49,7 @@ import { BeanStalkSdkService } from './beanstalkSdk.service';
     FsxSdkService,
     RdsSdkService,
     AWSLoadBalancerSdkService,
+    ECSSdkService,
     RdsSdkService,
     ResourceGroupSdkService,
     CloudTrailSdkService,

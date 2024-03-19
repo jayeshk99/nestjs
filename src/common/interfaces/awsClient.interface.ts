@@ -11,7 +11,7 @@ export interface ClientCredentials {
   secretAccessKey: string;
   accountId: string;
   region: string;
-  currencyCode?: string
+  currencyCode?: string;
 }
 
 export interface AWSMetricProps {
@@ -27,7 +27,7 @@ export interface AWSMetricProps {
   Statistics?: string[];
   TimeStamp?: string;
   Dimensions: { Name: string; Value: string }[];
-  Unit?:string
+  Unit?: string;
 }
 
 export interface ListResourcesProps {
@@ -40,5 +40,5 @@ export interface ListResourcesProps {
   nextToken?: string;
   accountId?: string;
   MaxResults?: number;
-  MaxRecords?: number
+  MaxRecords?: number;
 }

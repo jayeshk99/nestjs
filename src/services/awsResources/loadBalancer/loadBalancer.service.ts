@@ -66,14 +66,18 @@ export class AWSLoadBalancerService {
       const loadBalancersData = [...v1Fields, ...v2Fields];
       for (let elb of loadBalancersData) {
         const isBucketExist =
-          await this.awsLoadBalancerRepository.findLoadBalancer(elb);
+          await this.awsLoadBalancerRepository.findByCondition({
+            where: {
+              accountId: elb.accountId,
+              loadBalancerName: elb.loadBalancerName,
+              isActive: 1,
+            },
+          });
         if (isBucketExist) {
-          await this.awsLoadBalancerRepository.updateLoadBalancer(
-            isBucketExist.id,
-            elb,
-          );
+          await this.awsLoadBalancerRepository.update(isBucketExist.id, elb);
         } else {
-          await this.awsLoadBalancerRepository.createLoadBalancer(elb);
+          const elbEntity = this.awsLoadBalancerRepository.create(elb);
+          await this.awsLoadBalancerRepository.save(elbEntity);
         }
       }
 

@@ -24,6 +24,7 @@ import { RDSCPUUtilizationEntity } from '../entities/rightsizing/rdsCpuUtilizati
 import { RdsUtilizationRepository } from './rdsUtilizationRepository';
 import { AWSLoadBalancerEntity } from '../entities/awsLoadBalancerDetails.entity';
 import { AWSLoadBalancerRepository } from './loadBalancer.repository';
+import { BaseRepository } from './base.repository';
 import { ResourceGroupRepository } from './resourceGroup.repository';
 import { AwsResourceGroupEntity } from '../entities/awsResourceGroupDetails.entity';
 import { EBSRepository } from './ebs.repository';

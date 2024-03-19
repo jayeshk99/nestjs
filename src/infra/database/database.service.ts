@@ -23,5 +23,4 @@ export class DatabaseService implements TypeOrmOptionsFactory {
       logging: false,
     };
   }
-  4;
 }
