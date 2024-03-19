@@ -161,6 +161,7 @@ export const LIST_RESOURCE_KEY = {
   ASG: 'NA',
 };
 
+
 export const LOAD_BALANCER_VERSION = {
   V1: 'v1',
   V2: 'v2',
@@ -171,4 +172,16 @@ export const LOAD_BALANCER_TYPE = {
   CLASSIC: 'classic',
   NETWORK: 'network',
   GATEWAY: 'gateway',
+};
+
+export const LOOK_UP_EVENT = {
+  EC2: "ec2.amazonaws.com",
+  S3: "s3.amazonaws.com",
+  Glacier: "glacier.amazonaws.com",
+  EFS: "elasticfilesystem.amazonaws.com",
+  FSx: "fsx.amazonaws.com",
+  ResourceGroups: "resource-groups.amazonaws.com",
+  SNS: "sns.amazonaws.com",
+  EMR: "elasticmapreduce.amazonaws.com",
+  ECS: "ecs.amazonaws.com",
 };

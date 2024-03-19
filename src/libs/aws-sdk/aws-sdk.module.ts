@@ -11,6 +11,8 @@ import { EKSSdkService } from './eksSdk.service';
 import { RdsSdkService } from './rdsSdk.service';
 import { AWSLoadBalancerSdkService } from './awsLoadBalancerSdk.service';
 import { ECSSdkService } from './ecsSdk.service';
+import { ResourceGroupSdkService } from './resourceGroupSdk.service';
+import { CloudTrailSdkService } from './cloudTrailSdk.service';
 
 @Module({
   imports: [],
@@ -28,6 +30,9 @@ import { ECSSdkService } from './ecsSdk.service';
     RdsSdkService,
     AWSLoadBalancerSdkService,
     ECSSdkService,
+    RdsSdkService,
+    ResourceGroupSdkService,
+    CloudTrailSdkService,
   ],
   exports: [
     ClientConfigurationService,
@@ -43,6 +48,9 @@ import { ECSSdkService } from './ecsSdk.service';
     RdsSdkService,
     AWSLoadBalancerSdkService,
     ECSSdkService,
+    RdsSdkService,
+    ResourceGroupSdkService,
+    CloudTrailSdkService,
   ],
 })
 export class AwsSdkModule {}

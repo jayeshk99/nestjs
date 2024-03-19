@@ -10,6 +10,8 @@ import {
   EKSCostDetailProps,
   EKSProps,
 } from 'src/common/interfaces/eks.interface';
+import { AwsHelperService } from '../helper/helper.service';
+import * as moment from 'moment';
 
 @Injectable()
 export class EKSService {
@@ -20,13 +22,15 @@ export class EKSService {
     private readonly awsUsageDetailsRepository: AwsUsageDetailsRepository,
     private readonly eksRepository: EKSRepository,
     private readonly eksSdkService: EKSSdkService,
+    private readonly awsHelperService: AwsHelperService,
   ) {}
   async fetchEksDetails(data: ClientCredentials) {
     try {
       this.logger.log(
         `EKS details job STARTED for account: ${data.accountId} region: ${data.region}`,
       );
-      const { accessKeyId, secretAccessKey, accountId, region } = data;
+      const { accessKeyId, secretAccessKey, accountId, region, currencyCode } =
+        data;
       const eksClient =
         await this.clientConfigurationService.getEksClient(data);
       const eksList = await this.eksSdkService.listEks(eksClient);
@@ -38,10 +42,11 @@ export class EKSService {
             name: clusterName,
           });
 
-          const { currencyCode, eksPerDayCost, eksPrevMonthCost } =
-            await this.efsCostDetails({
-              clusterArn: cluster.arn,
-              accountId,
+          const { dailyCost, isPrevMonthCostAvailable, prevMonthCost } =
+            await this.awsHelperService.getCostDetails({
+              resourceId: cluster.arn,
+              accountId: accountId,
+              productCode: PRODUCT_CODE.EKS,
             });
           const ClusterFields: EKSProps = {
             accountId: accountId,
@@ -50,9 +55,10 @@ export class EKSService {
             createdOn: cluster.createdAt,
             region: region,
 
-            monthlyCost: eksPrevMonthCost || 0,
-            currencyCode:
-              (currencyCode && currencyCode?.billing_currency) || '',
+            monthlyCost: isPrevMonthCostAvailable
+              ? prevMonthCost
+              : dailyCost * moment().daysInMonth() || 0,
+            currencyCode: currencyCode,
             isActive: 1,
             type: 0,
           };

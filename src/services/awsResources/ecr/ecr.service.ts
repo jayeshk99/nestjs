@@ -10,6 +10,8 @@ import {
   ECRProps,
   ecrCostDetailProps,
 } from 'src/common/interfaces/ecrProps.interface';
+import { AwsHelperService } from '../helper/helper.service';
+import * as moment from 'moment';
 
 @Injectable()
 export class ECRService {
@@ -20,13 +22,15 @@ export class ECRService {
     private readonly awsUsageDetailsRepository: AwsUsageDetailsRepository,
     private readonly ecrRepository: ECRRepository,
     private readonly ecrSdkService: ECRSdkService,
+    private readonly awsHelperService: AwsHelperService,
   ) {}
   async fetchEcrDetails(data: ClientCredentials) {
     try {
       this.logger.log(
         `ECR details job STARTED for account: ${data.accountId} region: ${data.region}`,
       );
-      const { accessKeyId, secretAccessKey, accountId, region } = data;
+      const { accessKeyId, secretAccessKey, accountId, region, currencyCode } =
+        data;
       const ecrClient =
         await this.clientConfigurationService.getEcrClient(data);
       const ecrList = await this.ecrSdkService.listEcr(ecrClient);
@@ -41,12 +45,13 @@ export class ECRService {
               repositoryName: repository.repositoryName,
             },
           );
-
-          const { currencyCode, ecrPerDayCost, ecrPrevMonthCost } =
-            await this.ecrCostDetails({
-              repositoryArn: repository.repositoryArn,
-              accountId,
+          const { dailyCost, isPrevMonthCostAvailable, prevMonthCost } =
+            await this.awsHelperService.getCostDetails({
+              resourceId: repository.repositoryArn,
+              accountId: accountId,
+              productCode: PRODUCT_CODE.ECR,
             });
+
           const RepositoryFields: ECRProps = {
             accountId: accountId,
             repositoryName: repository.repositoryName,
@@ -55,9 +60,10 @@ export class ECRService {
             createdOn: repository.createdAt,
             region: region,
             lastUpdated: null,
-            monthlyCost: ecrPrevMonthCost || 0,
-            currencyCode:
-              (currencyCode && currencyCode?.billing_currency) || '',
+            monthlyCost: isPrevMonthCostAvailable
+              ? prevMonthCost
+              : dailyCost * moment().daysInMonth() || 0,
+            currencyCode: currencyCode,
             isActive: 1,
             type: 0,
           };

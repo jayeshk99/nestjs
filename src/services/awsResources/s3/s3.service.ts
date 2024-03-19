@@ -36,7 +36,8 @@ export class S3Service {
       this.logger.log(
         `S3 details job STARTED for account: ${data.accountId} region: ${data.region}`,
       );
-      const { accessKeyId, secretAccessKey, accountId, region } = data;
+      const { accessKeyId, secretAccessKey, accountId, region, currencyCode } =
+        data;
       const currentTimestamp = new Date();
 
       const s3Client = await this.clientConfigurationService.getS3Client(data);
@@ -58,8 +59,6 @@ export class S3Service {
       };
       const bucketsList = await this.s3SdkService.listBuckets(s3Client);
       if (bucketsList && bucketsList.Buckets && bucketsList.Buckets.length) {
-        const currencyCode =
-          await this.awsUsageDetailsRepository.getAwsCurrencyCode(accountId);
         for (let i = 0; i < bucketsList.Buckets.length; i++) {
           const bucket = bucketsList.Buckets[i];
           metricParams.Dimensions[1].Value = bucket.Name;
@@ -87,8 +86,7 @@ export class S3Service {
             region: region,
             unit: 'Bytes',
             pricePerHour: (dailyCost && dailyCost / 24) || 0,
-            currencyCode:
-              (currencyCode && currencyCode?.billing_currency) || '',
+            currencyCode: currencyCode,
             storagePricePerMonth: isPrevMonthCostAvailable
               ? prevMonthCost
               : dailyCost

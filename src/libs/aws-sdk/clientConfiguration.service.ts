@@ -1,6 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
-
-import * as AWS from 'aws-sdk';
+import { Injectable } from '@nestjs/common';
 import { ClientCredentials } from '../../common/interfaces/awsClient.interface';
 import { EC2Client } from '@aws-sdk/client-ec2';
 import { CloudWatchClient } from '@aws-sdk/client-cloudwatch';
@@ -15,97 +13,107 @@ import { EKSClient } from '@aws-sdk/client-eks';
 import { ElasticLoadBalancingClient } from '@aws-sdk/client-elastic-load-balancing';
 import { ElasticLoadBalancingV2Client } from '@aws-sdk/client-elastic-load-balancing-v2';
 import { ECSClient } from '@aws-sdk/client-ecs';
+import { ResourceGroupsClient } from '@aws-sdk/client-resource-groups';
+import { CloudTrailClient } from '@aws-sdk/client-cloudtrail';
+
 @Injectable()
 export class ClientConfigurationService {
   async getEC2Client(creds: ClientCredentials): Promise<EC2Client> {
     const { accessKeyId, secretAccessKey, region } = creds;
-    const ec2Client = new EC2Client({
+    return new EC2Client({
       credentials: { accessKeyId, secretAccessKey },
       region,
     });
-    return ec2Client;
   }
 
   async getPricingClient(creds: ClientCredentials): Promise<PricingClient> {
     const { accessKeyId, secretAccessKey, region } = creds;
-    const pricingClient = new PricingClient({
+    return new PricingClient({
       credentials: { accessKeyId, secretAccessKey },
       region,
     });
-
-    return pricingClient;
   }
 
   async getCloudWatchClient(
     creds: ClientCredentials,
   ): Promise<CloudWatchClient> {
     const { accessKeyId, secretAccessKey, region } = creds;
-    const cloudWatchClient = new CloudWatchClient({
+    return new CloudWatchClient({
       credentials: { accessKeyId, secretAccessKey },
       region,
     });
-
-    return cloudWatchClient;
   }
 
   async getS3Client(creds: ClientCredentials): Promise<S3Client> {
     const { accessKeyId, secretAccessKey, region } = creds;
-    const s3Client = new S3Client({
+    return new S3Client({
       credentials: { accessKeyId, secretAccessKey },
       region,
     });
-    return s3Client;
   }
 
   async getEFSClient(creds: ClientCredentials): Promise<EFSClient> {
     const { region, accessKeyId, secretAccessKey } = creds;
-    const efsClient = new EFSClient({
+    return new EFSClient({
       region: region,
       credentials: { accessKeyId, secretAccessKey },
     });
-    return efsClient;
   }
 
   async getS3GlacierClient(creds: ClientCredentials): Promise<GlacierClient> {
     const { region, accessKeyId, secretAccessKey } = creds;
-    const s3GlacierClient = new GlacierClient({
+    return new GlacierClient({
       region: region,
       credentials: { accessKeyId, secretAccessKey },
     });
-    return s3GlacierClient;
   }
   async getFsxClient(creds: ClientCredentials): Promise<FSxClient> {
     const { region, accessKeyId, secretAccessKey } = creds;
-    const fsxClient = new FSxClient({
+    return new FSxClient({
       region,
       credentials: { accessKeyId, secretAccessKey },
     });
-    return fsxClient;
   }
   async getEcrClient(creds: ClientCredentials): Promise<ECRClient> {
     const { region, accessKeyId, secretAccessKey } = creds;
-    const ecrClient = new ECRClient({
+    return new ECRClient({
       region,
       credentials: { accessKeyId, secretAccessKey },
     });
-    return ecrClient;
   }
   async getEksClient(creds: ClientCredentials): Promise<EKSClient> {
     const { region, accessKeyId, secretAccessKey } = creds;
-    const eksClient = new EKSClient({
+    return new EKSClient({
       region,
       credentials: { accessKeyId, secretAccessKey },
     });
-    return eksClient;
   }
   async getRdsClient(creds: ClientCredentials): Promise<RDSClient> {
     const { region, accessKeyId, secretAccessKey } = creds;
-    const rdsClient = new RDSClient({
+    return new RDSClient({
       region,
       credentials: { accessKeyId, secretAccessKey },
     });
-    return rdsClient;
   }
+  async getResourceGroupClient(
+    creds: ClientCredentials,
+  ): Promise<ResourceGroupsClient> {
+    const { region, accessKeyId, secretAccessKey } = creds;
+    return new ResourceGroupsClient({
+      region,
+      credentials: { accessKeyId, secretAccessKey },
+    });
+  }
+  async getCloudTrailClient(
+    creds: ClientCredentials,
+  ): Promise<CloudTrailClient> {
+    const { region, accessKeyId, secretAccessKey } = creds;
+    return new CloudTrailClient({
+      region,
+      credentials: { accessKeyId, secretAccessKey },
+    });
+  }
+
   async getAWSLoadBalancerClient(creds: ClientCredentials) {
     const { region, accessKeyId, secretAccessKey } = creds;
     const loadBalancerClient = new ElasticLoadBalancingClient({

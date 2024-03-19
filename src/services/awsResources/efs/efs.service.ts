@@ -10,6 +10,8 @@ import { AwsUsageDetailsRepository } from 'src/infra/repositories/awsUsageDetail
 import { PRODUCT_CODE } from 'src/common/constants/constants';
 import { awsUsageCostProps } from 'src/common/interfaces/common.interfaces';
 import { EFSRepository } from 'src/infra/repositories/efs.repository';
+import { AwsHelperService } from '../helper/helper.service';
+import * as moment from 'moment';
 
 @Injectable()
 export class EFSService {
@@ -20,23 +22,26 @@ export class EFSService {
     private readonly awsUsageDetailsRepository: AwsUsageDetailsRepository,
     private readonly efsRepository: EFSRepository,
     private readonly efsSdkService: EFSSdkService,
+    private readonly awsHelperService: AwsHelperService,
   ) {}
   async fetchEfsDetails(data: ClientCredentials) {
     try {
       this.logger.log(
         `EFS details job STARTED for account: ${data.accountId} region: ${data.region}`,
       );
-      const { accessKeyId, secretAccessKey, accountId, region } = data;
+      const { accessKeyId, secretAccessKey, accountId, region, currencyCode } =
+        data;
       const efsClient =
         await this.clientConfigurationService.getEFSClient(data);
       const efsList = await this.efsSdkService.listEfs(efsClient);
       if (efsList && efsList.length) {
         for (let i = 0; i < efsList.length; i++) {
           const efsDetails = efsList[i];
-          const { currencyCode, efsPerDayCost, efsPrevMonthCost } =
-            await this.efsCostDetails({
-              fileSystemArn: efsDetails.FileSystemArn,
-              accountId,
+          const { dailyCost, isPrevMonthCostAvailable, prevMonthCost } =
+            await this.awsHelperService.getCostDetails({
+              resourceId: efsDetails.FileSystemArn,
+              accountId: accountId,
+              productCode: PRODUCT_CODE.EFS,
             });
           const EFSFields: EFSProps = {
             fileSystemArn: efsDetails.FileSystemArn,
@@ -49,10 +54,11 @@ export class EFSService {
             region: region,
             accountId: accountId,
             unit: 'KB',
-            pricePerHour: (efsPerDayCost && efsPerDayCost / 24) || 0,
-            currencyCode:
-              (currencyCode && currencyCode?.billing_currency) || '',
-            storagePricePerMonth: efsPrevMonthCost || 0,
+            pricePerHour: (dailyCost && dailyCost / 24) || 0,
+            currencyCode: currencyCode,
+            storagePricePerMonth: isPrevMonthCostAvailable
+              ? prevMonthCost
+              : dailyCost * moment().daysInMonth() || 0,
           };
           const isEfsExist = await this.efsRepository.findEFS(EFSFields);
           if (isEfsExist) {

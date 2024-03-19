@@ -2,8 +2,6 @@ import { Module } from '@nestjs/common';
 import { AwsInstanceRepository } from './instanceDetails.repository';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AwsInstanceEntity } from '../entities/instanceDetails.entity';
-import { DatabaseModule } from '../database/database.module';
-import { EntitiesModule } from '../entities/entities.module';
 import { AWSAccountsEntity } from '../entities/awsAccount.entity';
 import { AwsAccountRepository } from './AwsAccount.repository';
 import { AwsUsageDetailsRepository } from './awsUsageDetails.repository';
@@ -27,6 +25,10 @@ import { RdsUtilizationRepository } from './rdsUtilizationRepository';
 import { AWSLoadBalancerEntity } from '../entities/awsLoadBalancerDetails.entity';
 import { AWSLoadBalancerRepository } from './loadBalancer.repository';
 import { BaseRepository } from './base.repository';
+import { ResourceGroupRepository } from './resourceGroup.repository';
+import { AwsResourceGroupEntity } from '../entities/awsResourceGroupDetails.entity';
+import { EBSRepository } from './ebs.repository';
+import { EBSEntity } from '../entities/ebsDetails.entity';
 
 @Module({
   imports: [
@@ -44,6 +46,9 @@ import { BaseRepository } from './base.repository';
       RDSDetailsEntity,
       RDSCPUUtilizationEntity,
       AWSLoadBalancerEntity,
+      RDSCPUUtilizationEntity,
+      AwsResourceGroupEntity,
+      EBSEntity,
     ]),
   ],
   providers: [
@@ -60,6 +65,9 @@ import { BaseRepository } from './base.repository';
     RdsDetailsRepository,
     RdsUtilizationRepository,
     AWSLoadBalancerRepository,
+    RdsUtilizationRepository,
+    ResourceGroupRepository,
+    EBSRepository,
   ],
   exports: [
     AwsInstanceRepository,
@@ -74,6 +82,9 @@ import { BaseRepository } from './base.repository';
     RdsDetailsRepository,
     RdsUtilizationRepository,
     AWSLoadBalancerRepository,
+    RdsUtilizationRepository,
+    ResourceGroupRepository,
+    EBSRepository,
   ],
 })
 export class RepositoriesModule {}
