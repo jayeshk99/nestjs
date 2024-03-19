@@ -28,6 +28,10 @@ import { ResourceGroupRepository } from './resourceGroup.repository';
 import { AwsResourceGroupEntity } from '../entities/awsResourceGroupDetails.entity';
 import { EBSRepository } from './ebs.repository';
 import { EBSEntity } from '../entities/ebsDetails.entity';
+import { ElasticIPAddress } from '../entities/elasticIpAddresses.entity';
+import { ElasticIpRepository } from './elasticIp.Repository';
+import { BeanStalkRepository } from './elasticbeanstalk.repository';
+import { ElasticBeanstalkEntity } from '../entities/elasticBeanstalkDetails.entity';
 
 @Module({
   imports: [
@@ -47,7 +51,9 @@ import { EBSEntity } from '../entities/ebsDetails.entity';
       AWSLoadBalancerEntity,
       RDSCPUUtilizationEntity,
       AwsResourceGroupEntity,
-      EBSEntity
+      EBSEntity,
+      ElasticIPAddress,
+      ElasticBeanstalkEntity,
     ]),
   ],
   providers: [
@@ -66,7 +72,9 @@ import { EBSEntity } from '../entities/ebsDetails.entity';
     AWSLoadBalancerRepository,
     RdsUtilizationRepository,
     ResourceGroupRepository,
-    EBSRepository
+    EBSRepository,
+    ElasticIpRepository,
+    BeanStalkRepository,
   ],
   exports: [
     AwsInstanceRepository,
@@ -83,7 +91,9 @@ import { EBSEntity } from '../entities/ebsDetails.entity';
     AWSLoadBalancerRepository,
     RdsUtilizationRepository,
     ResourceGroupRepository,
-    EBSRepository
+    EBSRepository,
+    ElasticIpRepository,
+    BeanStalkRepository,
   ],
 })
 export class RepositoriesModule {}

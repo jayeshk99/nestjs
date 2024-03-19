@@ -11,7 +11,7 @@ export interface ClientCredentials {
   secretAccessKey: string;
   accountId: string;
   region: string;
-  currencyCode: string
+  currencyCode?: string
 }
 
 export interface AWSMetricProps {

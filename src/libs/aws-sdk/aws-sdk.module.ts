@@ -12,6 +12,7 @@ import { RdsSdkService } from './rdsSdk.service';
 import { AWSLoadBalancerSdkService } from './awsLoadBalancerSdk.service';
 import { ResourceGroupSdkService } from './resourceGroupSdk.service';
 import { CloudTrailSdkService } from './cloudTrailSdk.service';
+import { BeanStalkSdkService } from './beanstalkSdk.service';
 
 @Module({
   imports: [],
@@ -30,7 +31,8 @@ import { CloudTrailSdkService } from './cloudTrailSdk.service';
     AWSLoadBalancerSdkService,
     RdsSdkService,
     ResourceGroupSdkService,
-    CloudTrailSdkService
+    CloudTrailSdkService,
+    BeanStalkSdkService
   ],
   exports: [
     ClientConfigurationService,
@@ -47,7 +49,8 @@ import { CloudTrailSdkService } from './cloudTrailSdk.service';
     AWSLoadBalancerSdkService,
     RdsSdkService,
     ResourceGroupSdkService,
-    CloudTrailSdkService
+    CloudTrailSdkService,
+    BeanStalkSdkService
   ],
 })
 export class AwsSdkModule {}

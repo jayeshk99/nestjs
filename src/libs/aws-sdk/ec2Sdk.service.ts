@@ -1,5 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import {
+  DescribeAddressesCommand,
+  DescribeAddressesCommandInput,
+  DescribeAddressesCommandOutput,
   DescribeRegionsCommand,
   DescribeVolumesCommand,
   DescribeVolumesCommandInput,
@@ -37,6 +40,21 @@ export class EC2SdkService {
       }
 
       nextToken = data.NextToken;
+    } while (nextToken);
+    return allresources;
+  }
+
+  async listIpAddresses(client: EC2Client) {
+    const allresources: DescribeAddressesCommandOutput['Addresses'] = [];
+    let listaddressesParams: DescribeAddressesCommandInput = {};
+    let nextToken = null;
+    do {
+      const { Addresses } = await client.send(
+        new DescribeAddressesCommand(listaddressesParams),
+      );
+      if (Addresses.length) {
+        allresources.push(...Addresses);
+      }
     } while (nextToken);
     return allresources;
   }

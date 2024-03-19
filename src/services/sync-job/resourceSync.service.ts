@@ -17,6 +17,8 @@ import { AWSLoadBalancerService } from '../awsResources/loadBalancer/loadBalance
 import { ResourceGroupService } from '../awsResources/resourceGroups/resourceGroups.service';
 import { EBSService } from '../awsResources/ebs/ebs.service';
 import { AwsUsageDetailsRepository } from 'src/infra/repositories/awsUsageDetails.repository';
+import { ElasticIpService } from '../awsResources/elasticIp/elasticIp.service';
+import { ElasticBeanStalkService } from '../awsResources/beanstalk/beanstalk.service';
 
 @Injectable()
 export class ResourceSyncService {
@@ -36,6 +38,8 @@ export class ResourceSyncService {
     private readonly resourceGroupService: ResourceGroupService,
     private readonly ebsService: EBSService,
     private readonly awsUsageDetailRepository: AwsUsageDetailsRepository,
+    private readonly elasticIpService: ElasticIpService,
+    private readonly elasticBeanStalkService:ElasticBeanStalkService
   ) {}
 
   async fetchAllResources(AccountId: string): Promise<void> {
@@ -80,6 +84,8 @@ export class ResourceSyncService {
             regionWiseClientRequest,
           );
           await this.ebsService.fetchEBSDetails(regionWiseClientRequest);
+          await this.elasticIpService.syncIpAddresses(regionWiseClientRequest);
+          await this.elasticBeanStalkService.syncBeanStalkApplications(regionWiseClientRequest)
         }),
       );
     } catch (error) {
