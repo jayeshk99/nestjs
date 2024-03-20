@@ -24,10 +24,10 @@ export class EKSService {
     private readonly eksSdkService: EKSSdkService,
     private readonly awsHelperService: AwsHelperService,
   ) {}
-  async fetchEksDetails(data: ClientCredentials) {
+  async syncEKSClusters(data: ClientCredentials) {
     try {
       this.logger.log(
-        `EKS details job STARTED for account: ${data.accountId} region: ${data.region}`,
+        `started Syncing EKS clusters for account:${data.accountId} region:${data.region}`,
       );
       const { accessKeyId, secretAccessKey, accountId, region, currencyCode } =
         data;
@@ -80,11 +80,11 @@ export class EKSService {
         }
       }
       this.logger.log(
-        `EKS details job Completed for account: ${data.accountId} region: ${data.region}`,
+        `completed Syncing EKS clusters for account:${data.accountId} region:${data.region}`,
       );
     } catch (error) {
       this.logger.log(
-        `Error in getting EKS Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
+        `Error in syncing EKS Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
       );
     }
   }

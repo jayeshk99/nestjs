@@ -14,6 +14,8 @@ import { ECSSdkService } from './ecsSdk.service';
 import { ResourceGroupSdkService } from './resourceGroupSdk.service';
 import { CloudTrailSdkService } from './cloudTrailSdk.service';
 import { BeanStalkSdkService } from './beanstalkSdk.service';
+import { SNSSdkService } from './snsSdk.service';
+import { SQSSdkService } from './sqsSdk.service';
 
 @Module({
   imports: [],
@@ -34,7 +36,9 @@ import { BeanStalkSdkService } from './beanstalkSdk.service';
     RdsSdkService,
     ResourceGroupSdkService,
     CloudTrailSdkService,
-    BeanStalkSdkService
+    BeanStalkSdkService,
+    SNSSdkService,
+    SQSSdkService
   ],
   exports: [
     ClientConfigurationService,
@@ -53,7 +57,9 @@ import { BeanStalkSdkService } from './beanstalkSdk.service';
     RdsSdkService,
     ResourceGroupSdkService,
     CloudTrailSdkService,
-    BeanStalkSdkService
+    BeanStalkSdkService,
+    SNSSdkService,
+    SQSSdkService
   ],
 })
 export class AwsSdkModule {}

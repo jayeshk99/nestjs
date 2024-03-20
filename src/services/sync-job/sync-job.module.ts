@@ -12,10 +12,11 @@ import { RdsModule } from '../awsResources/rds/rds.module';
 import { RDSUtilizationDataSyncService } from './rdsUtilizationDataSyncService';
 import { LoadBalancerModule } from '../awsResources/loadBalancer/loadBalancer.module';
 import { ResourceGroupModule } from '../awsResources/resourceGroups/resourceGroups.module';
-import { EBSModule } from '../awsResources/ebs/ebs.module';
 import { ECSModule } from '../awsResources/ecs/ecs.module';
 import { EC2Module } from '../awsResources/ec2/ec2.module';
 import { ElasticBeanStalkModule } from '../awsResources/beanstalk/beanstalk.module';
+import { SNSModule } from '../awsResources/sns/sns.module';
+import { SQSModule } from '../awsResources/sqs/sqs.module';
 
 @Module({
   imports: [
@@ -30,10 +31,11 @@ import { ElasticBeanStalkModule } from '../awsResources/beanstalk/beanstalk.modu
     RdsModule,
     LoadBalancerModule,
     ResourceGroupModule,
-    EBSModule,
     ECSModule,
     EC2Module,
-    ElasticBeanStalkModule
+    ElasticBeanStalkModule,
+    SNSModule,
+    SQSModule
   ],
   providers: [ResourceSyncService, RDSUtilizationDataSyncService],
   exports: [ResourceSyncService, RDSUtilizationDataSyncService],

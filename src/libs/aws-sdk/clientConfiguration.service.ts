@@ -16,6 +16,8 @@ import { ECSClient } from '@aws-sdk/client-ecs';
 import { ResourceGroupsClient } from '@aws-sdk/client-resource-groups';
 import { CloudTrailClient } from '@aws-sdk/client-cloudtrail';
 import { ElasticBeanstalkClient } from '@aws-sdk/client-elastic-beanstalk';
+import { SNSClient } from '@aws-sdk/client-sns';
+import { SQSClient } from '@aws-sdk/client-sqs';
 
 @Injectable()
 export class ClientConfigurationService {
@@ -133,6 +135,20 @@ export class ClientConfigurationService {
   async getEcsClient(creds: ClientCredentials) {
     const { region, accessKeyId, secretAccessKey } = creds;
     return new ECSClient({
+      region,
+      credentials: { accessKeyId, secretAccessKey },
+    });
+  }
+  async getSNSClient(creds: ClientCredentials) {
+    const { region, accessKeyId, secretAccessKey } = creds;
+    return new SNSClient({
+      region,
+      credentials: { accessKeyId, secretAccessKey },
+    });
+  }
+  async getSQSClient(creds: ClientCredentials) {
+    const { region, accessKeyId, secretAccessKey } = creds;
+    return new SQSClient({
       region,
       credentials: { accessKeyId, secretAccessKey },
     });

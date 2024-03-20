@@ -16,15 +16,15 @@ export class S3GlacierService {
     private readonly s3GlacierSdkService: S3GlacierSdkService,
     private readonly s3GlacierRepository: S3GlacierRepository,
   ) {}
-  async fetchS3GlacierDetails(data: ClientCredentials) {
+  async syncS3GlacierVaults(data: ClientCredentials) {
     try {
       this.logger.log(
-        `s3Glacier details job STARTED for account: ${data.accountId} region: ${data.region}`,
+        `started Syncing S3 Glacier vaults for account:${data.accountId} region:${data.region}`,
       );
       const { accessKeyId, secretAccessKey, accountId, region } = data;
       const efsClient =
         await this.clientConfigurationService.getS3GlacierClient(data);
-      const glacierList = await this.s3GlacierSdkService.listS3Glacier(
+      const glacierList = await this.s3GlacierSdkService.listS3GlacierVaults(
         efsClient,
         accountId,
       );
@@ -65,11 +65,11 @@ export class S3GlacierService {
         }
       }
       this.logger.log(
-        `S3Glacier details job COMPLETED for account: ${data.accountId} region: ${data.region}`,
+        `completed Syncing S3 Glacier vaults for account:${data.accountId} region:${data.region}`,
       );
     } catch (error) {
       this.logger.log(
-        `Error in getting S3Glacier Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
+        `Error in syncing S3Glacier Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
       );
     }
   }

@@ -24,10 +24,10 @@ export class EFSService {
     private readonly efsSdkService: EFSSdkService,
     private readonly awsHelperService: AwsHelperService,
   ) {}
-  async fetchEfsDetails(data: ClientCredentials) {
+  async syncEFSFileSystem(data: ClientCredentials) {
     try {
       this.logger.log(
-        `EFS details job STARTED for account: ${data.accountId} region: ${data.region}`,
+        `started Syncing EFS file system for account:${data.accountId} region:${data.region}`,
       );
       const { accessKeyId, secretAccessKey, accountId, region, currencyCode } =
         data;
@@ -76,9 +76,12 @@ export class EFSService {
           }
         }
       }
+      this.logger.log(
+        `completed Syncing EFS file system for account:${data.accountId} region:${data.region}`,
+      );
     } catch (error) {
       this.logger.log(
-        `Error in getting EFS Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
+        `Error in syncing EFS Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
       );
     }
   }

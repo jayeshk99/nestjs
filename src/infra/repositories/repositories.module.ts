@@ -35,6 +35,10 @@ import { ElasticIPAddress } from '../entities/elasticIpAddresses.entity';
 import { ElasticIpRepository } from './elasticIp.Repository';
 import { BeanStalkRepository } from './elasticbeanstalk.repository';
 import { ElasticBeanstalkEntity } from '../entities/elasticBeanstalkDetails.entity';
+import { SNSRepository } from './sns.repository';
+import { SNSDetailsEntity } from '../entities/snsDetails.entity';
+import { SQSDetailsEntity } from '../entities/sqsDetails.entity';
+import { SQSRepository } from './sqs.repository';
 
 @Module({
   imports: [
@@ -58,6 +62,8 @@ import { ElasticBeanstalkEntity } from '../entities/elasticBeanstalkDetails.enti
       AwsContainerInstanceEntity,
       ElasticIPAddress,
       ElasticBeanstalkEntity,
+      SNSDetailsEntity,
+      SQSDetailsEntity
     ]),
   ],
   providers: [
@@ -80,6 +86,8 @@ import { ElasticBeanstalkEntity } from '../entities/elasticBeanstalkDetails.enti
     ECSRepository,
     ElasticIpRepository,
     BeanStalkRepository,
+    SNSRepository,
+    SQSRepository
   ],
   exports: [
     AwsInstanceRepository,
@@ -100,6 +108,8 @@ import { ElasticBeanstalkEntity } from '../entities/elasticBeanstalkDetails.enti
     ECSRepository,
     ElasticIpRepository,
     BeanStalkRepository,
+    SNSRepository,
+    SQSRepository
   ],
 })
 export class RepositoriesModule {}

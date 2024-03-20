@@ -8,18 +8,18 @@ import { FsxSdkService } from 'src/libs/aws-sdk/fsxSdkService';
 import { FsxFileSystemProps } from 'src/common/interfaces/fsx.interface';
 
 @Injectable()
-export class FsxService {
-  private readonly logger = new Logger(FsxService.name);
+export class FSxService {
+  private readonly logger = new Logger(FSxService.name);
   constructor(
     private readonly clientConfigurationService: ClientConfigurationService,
     private readonly fsxSdkService: FsxSdkService,
     private readonly awsUsageDetailsRepository: AwsUsageDetailsRepository,
     private readonly fsxDetailsRepository: FsxDetailsRepository,
   ) {}
-  async fetchFsxDetails(data: ClientCredentials) {
+  async syncFSxFileSystem(data: ClientCredentials) {
     try {
       this.logger.log(
-        `Fsx details job STARTED for account: ${data.accountId} region: ${data.region}`,
+        `started Syncing FSx file system for account:${data.accountId} region:${data.region}`,
       );
       const { accessKeyId, secretAccessKey, accountId, region, currencyCode } =
         data;
@@ -78,11 +78,11 @@ export class FsxService {
         }
       }
       this.logger.log(
-        `Fsx Details job COMPLETED for account: ${data.accountId} region: ${data.region}`,
+        `completed Syncing FSx file system for account:${data.accountId} region:${data.region}`,
       );
     } catch (error) {
       this.logger.log(
-        `Error in getting Fsx Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
+        `Error in syncing FSx Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
       );
     }
   }

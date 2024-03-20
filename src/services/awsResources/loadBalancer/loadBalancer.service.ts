@@ -32,10 +32,10 @@ export class AWSLoadBalancerService {
     private readonly awsLoadBalancerRepository: AWSLoadBalancerRepository,
     private readonly awsLoadBalancerSdkService: AWSLoadBalancerSdkService,
   ) {}
-  async fetchAWSLoadBalancerDetails(data: ClientCredentials) {
+  async syncAWSLoadBalancers(data: ClientCredentials) {
     try {
       this.logger.log(
-        `AWSLoad Balancer details job STARTED for account: ${data.accountId} region: ${data.region}`,
+        `started Syncing load balancers for account:${data.accountId} region:${data.region}`,
       );
       const { accessKeyId, secretAccessKey, accountId, region, currencyCode } =
         data;
@@ -85,11 +85,11 @@ export class AWSLoadBalancerService {
       }
 
       this.logger.log(
-        `AWSLoad Balancer Details job COMPLETED for account: ${data.accountId} region: ${data.region}`,
+        `completed Syncing load balancers for account:${data.accountId} region:${data.region}`,
       );
     } catch (error) {
       this.logger.log(
-        `Error in getting AWSLoad Balancer Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
+        `Error in syncing AWSLoad Balancer Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
       );
     }
   }

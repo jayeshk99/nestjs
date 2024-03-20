@@ -23,19 +23,19 @@ export class AwsHelperService {
   async getMetricsData(
     params: AWSMetricProps,
     cloudWatchClient: CloudWatchClient,
-  ): Promise<GetMetricStatisticsCommandOutput['Datapoints']> {
-    const result = await this.cloudWatchService.getMetricSatistics(
-      cloudWatchClient,
-      params,
-    );
-    return result;
+  ) {
+    try {
+      const result = await this.cloudWatchService.getMetricSatistics(
+        cloudWatchClient,
+        params,
+      );
+      return result;
+    } catch (error) {
+      this.logger.log(`Error occured while fetching metrics data`);
+    }
   }
 
-  async getCostDetails(data: CostDetailsProps): Promise<{
-    dailyCost: number;
-    isPrevMonthCostAvailable: boolean;
-    prevMonthCost: number;
-  }> {
+  async getCostDetails(data: CostDetailsProps) {
     try {
       const { resourceId, accountId, productCode } = data;
       const usageDetails =

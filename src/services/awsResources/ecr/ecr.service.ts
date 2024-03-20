@@ -24,10 +24,10 @@ export class ECRService {
     private readonly ecrSdkService: ECRSdkService,
     private readonly awsHelperService: AwsHelperService,
   ) {}
-  async fetchEcrDetails(data: ClientCredentials) {
+  async syncECRContainers(data: ClientCredentials) {
     try {
       this.logger.log(
-        `ECR details job STARTED for account: ${data.accountId} region: ${data.region}`,
+        `started Syncing ECR containers for account:${data.accountId} region:${data.region}`,
       );
       const { accessKeyId, secretAccessKey, accountId, region, currencyCode } =
         data;
@@ -84,11 +84,11 @@ export class ECRService {
         }
       }
       this.logger.log(
-        `ECR details job Completed for account: ${data.accountId} region: ${data.region}`,
+        `completed Syncing ECR Containers for account:${data.accountId} region:${data.region}`,
       );
     } catch (error) {
       this.logger.log(
-        `Error in getting ECR Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
+        `Error in syncing ECR Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
       );
     }
   }

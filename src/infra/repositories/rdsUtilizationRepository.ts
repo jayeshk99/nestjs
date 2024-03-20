@@ -34,7 +34,6 @@ export class RdsUtilizationRepository {
   }
   async addUtilizationData(data:RdsUtilizationProps[]):Promise<void>{
     try {
-      console.log(data[0])
       const result = this.utilizationRepository.create(data);
       await this.utilizationRepository.save(result);
     } catch (error) {

@@ -18,12 +18,12 @@ export class EC2Service {
     private readonly ec2SdkService: EC2SdkService,
     private readonly elasticIpRepository: ElasticIpRepository,
     private readonly awsHelperService: AwsHelperService,
-    private readonly ebsDetailsRepository: EBSRepository
+    private readonly ebsDetailsRepository: EBSRepository,
   ) {}
   async syncIpAddresses(data: ClientCredentials): Promise<void> {
     try {
       this.logger.log(
-        `Elastic Ip details job STARTED for account: ${data.accountId} region: ${data.region}`,
+        `started Syncing Ip addresses for account:${data.accountId} region:${data.region}`,
       );
       const { accessKeyId, secretAccessKey, accountId, region, currencyCode } =
         data;
@@ -66,68 +66,83 @@ export class EC2Service {
         }
       }
       this.logger.log(
-        `Elastic Ip details job Completed for account: ${data.accountId} region: ${data.region}`,
+        `started Syncing Ip addresses for account:${data.accountId} region:${data.region}`,
       );
     } catch (error) {
       this.logger.log(
-        `Error in getting Elastic Ip Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
+        `Error in syncing Ip addresses for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
       );
     }
   }
   async syncEBSVolumes(data: ClientCredentials): Promise<void> {
-    const { accessKeyId, secretAccessKey, accountId, region, currencyCode } =
-      data;
-    const ebsClient = await this.clientConfigurationService.getEC2Client(data);
-    const ebsList = await this.ec2SdkService.listEBSVolumes(ebsClient);
-    if (ebsList && ebsList.length) {
-      for (let i = 0; i < ebsList?.length; i++) {
-        const ebsDetails = ebsList[i];
-        const attachments =
-          ebsDetails.Attachments?.length && ebsDetails.Attachments[0];
-        const { dailyCost, isPrevMonthCostAvailable, prevMonthCost } =
-          await this.awsHelperService.getCostDetails({
-            resourceId: ebsDetails.VolumeId,
+    try {
+      this.logger.log(
+        `started Syncing EBS Volumes for account:${data.accountId} region:${data.region}`,
+      );
+      const { accessKeyId, secretAccessKey, accountId, region, currencyCode } =
+        data;
+      const ebsClient =
+        await this.clientConfigurationService.getEC2Client(data);
+      const ebsList = await this.ec2SdkService.listEBSVolumes(ebsClient);
+      if (ebsList && ebsList.length) {
+        for (let i = 0; i < ebsList?.length; i++) {
+          const ebsDetails = ebsList[i];
+          const attachments =
+            ebsDetails.Attachments?.length && ebsDetails.Attachments[0];
+          const { dailyCost, isPrevMonthCostAvailable, prevMonthCost } =
+            await this.awsHelperService.getCostDetails({
+              resourceId: ebsDetails.VolumeId,
+              accountId: accountId,
+              productCode: PRODUCT_CODE.EC2,
+            });
+
+          const ebsFields: EBSVolumeProps = {
+            volumeId: ebsDetails.VolumeId,
+            ec2InstanceId: attachments?.InstanceId || null,
+            encrypted: ebsDetails.Encrypted,
+            size: ebsDetails.Size,
+            state: ebsDetails.State,
+            volumeType: ebsDetails.VolumeType,
+            snapshotId: ebsDetails.SnapshotId,
+            vmState: attachments?.State,
+            deleteOnTermination: attachments?.DeleteOnTermination,
+            createdOn: ebsDetails.CreateTime,
+            region: region,
             accountId: accountId,
-            productCode: PRODUCT_CODE.EC2,
-          });
+            unit: 'GB',
+            currencyCode: currencyCode,
+            monthlyCost: isPrevMonthCostAvailable
+              ? prevMonthCost
+              : dailyCost * moment().daysInMonth() || 0,
+          };
 
-        const ebsFields: EBSVolumeProps = {
-          volumeId: ebsDetails.VolumeId,
-          ec2InstanceId: attachments?.InstanceId || null,
-          encrypted: ebsDetails.Encrypted,
-          size: ebsDetails.Size,
-          state: ebsDetails.State,
-          volumeType: ebsDetails.VolumeType,
-          snapshotId: ebsDetails.SnapshotId,
-          vmState: attachments?.State,
-          deleteOnTermination: attachments?.DeleteOnTermination,
-          createdOn: ebsDetails.CreateTime,
-          region: region,
-          accountId: accountId,
-          unit: 'GB',
-          currencyCode: currencyCode,
-          monthlyCost: isPrevMonthCostAvailable
-            ? prevMonthCost
-            : dailyCost * moment().daysInMonth() || 0,
-        };
-
-        const doesVolumeExist = await this.ebsDetailsRepository.findByCondition(
-          {
-            where: {
-              volumeId: ebsDetails.VolumeId,
-              accountId,
-              region,
-              isActive: 1,
-            },
-          },
-        );
-        if (doesVolumeExist) {
-          await this.ebsDetailsRepository.update(doesVolumeExist.id, ebsFields);
-        } else {
-          const ebs = this.ebsDetailsRepository.create(ebsFields);
-          await this.ebsDetailsRepository.save(ebs);
+          const doesVolumeExist =
+            await this.ebsDetailsRepository.findByCondition({
+              where: {
+                volumeId: ebsDetails.VolumeId,
+                accountId,
+                region,
+                isActive: 1,
+              },
+            });
+          if (doesVolumeExist) {
+            await this.ebsDetailsRepository.update(
+              doesVolumeExist.id,
+              ebsFields,
+            );
+          } else {
+            const ebs = this.ebsDetailsRepository.create(ebsFields);
+            await this.ebsDetailsRepository.save(ebs);
+          }
         }
       }
+      this.logger.log(
+        `completed Syncing EBS Volumes for account:${data.accountId} region:${data.region}`,
+      );
+    } catch (error) {
+      this.logger.log(
+        `Error in syncing EBS Volumes for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
+      );
     }
   }
 }

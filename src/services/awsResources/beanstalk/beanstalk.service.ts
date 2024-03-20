@@ -71,9 +71,12 @@ export class ElasticBeanStalkService {
           }
         }
       }
+      this.logger.log(
+        `completed syncing job for BeanStalk applications for account:${data.accountId} region:${data.region}`,
+      );
     } catch (error) {
       this.logger.log(
-        `Error while syncing BeanStalk Applications for account:${data.accountId} region:${data.region} error:${error}`,
+        `Error in syncing BeanStalk Applications for account:${data.accountId} region:${data.region} error:${error}`,
       );
     }
   }
