@@ -1,5 +1,5 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { LOOK_UP_EVENT } from 'src/common/constants/constants';
+import { LOOK_UP_EVENT, RESOURCE_TYPE } from 'src/common/constants/constants';
 import { ClientCredentials } from 'src/common/interfaces/awsClient.interface';
 import { ResourceGroupProps } from 'src/common/interfaces/resourceGroup.interface';
 import { ResourceGroupRepository } from 'src/infra/repositories/resourceGroup.repository';
@@ -46,7 +46,7 @@ export class ResourceGroupService {
                 ],
               },
               resourceGroup.GroupName,
-              'resource groups',
+              RESOURCE_TYPE.AWS_RG,
             );
           const ResourceGroupFields: ResourceGroupProps = {
             resourceGroupName: resourceGroup.GroupName,

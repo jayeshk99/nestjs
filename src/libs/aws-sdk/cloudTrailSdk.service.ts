@@ -5,6 +5,7 @@ import {
   LookupEventsCommandOutput,
 } from '@aws-sdk/client-cloudtrail';
 import { Injectable } from '@nestjs/common';
+import { RESOURCE_TYPE } from '../../common/constants/constants';
 
 @Injectable()
 export class CloudTrailSdkService {
@@ -33,14 +34,14 @@ export class CloudTrailSdkService {
         );
         const foundEvent = filteredData.find((data) => {
           if (
-            serviceName === 'resource groups' &&
+            serviceName === RESOURCE_TYPE.AWS_RG &&
             JSON.parse(data.CloudTrailEvent)?.requestParameters?.GroupName ===
               resourceName
           ) {
             lastModified = data.EventTime;
             return true;
           } else if (
-            serviceName === 'elastic container service' &&
+            serviceName === RESOURCE_TYPE.ECS &&
             JSON.parse(data.CloudTrailEvent)?.responseElements.containerInstance
               .containerInstanceArn === resourceName
           ) {

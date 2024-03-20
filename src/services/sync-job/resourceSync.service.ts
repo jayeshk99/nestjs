@@ -16,6 +16,7 @@ import { RdsService } from '../awsResources/rds/rds.service';
 import { AWSLoadBalancerService } from '../awsResources/loadBalancer/loadBalancer.service';
 import { ResourceGroupService } from '../awsResources/resourceGroups/resourceGroups.service';
 import { AwsUsageDetailsRepository } from 'src/infra/repositories/awsUsageDetails.repository';
+import { ECSService } from '../awsResources/ecs/ecs.service';
 import { EC2Service } from '../awsResources/ec2/ec2.service';
 import { ElasticBeanStalkService } from '../awsResources/beanstalk/beanstalk.service';
 
@@ -36,6 +37,7 @@ export class ResourceSyncService {
     private readonly loadBalancerService: AWSLoadBalancerService,
     private readonly resourceGroupService: ResourceGroupService,
     private readonly awsUsageDetailRepository: AwsUsageDetailsRepository,
+    private readonly ecsService: ECSService,
     private readonly ec2Service: EC2Service,
     private readonly elasticBeanStalkService:ElasticBeanStalkService
   ) {}
@@ -59,7 +61,7 @@ export class ResourceSyncService {
         await this.clientConfigurationService.getEC2Client(clientRequest);
       const regions = await this.ec2SdkService.getEnabledRegions(ec2Client);
 
-      await this.s3Service.fetchS3Details(clientRequest);
+      // await this.s3Service.fetchS3Details(clientRequest);
       await Promise.all(
         regions.Regions.map(async (region) => {
           let regionWiseClientRequest = {
@@ -67,6 +69,22 @@ export class ResourceSyncService {
             region: region.RegionName,
           };
 
+          // await this.efsService.fetchEfsDetails(regionWiseClientRequest);
+          // await this.s3GlacierService.fetchS3GlacierDetails(
+          //   regionWiseClientRequest,
+          // );
+          // await this.fsxService.fetchFsxDetails(regionWiseClientRequest);
+          // await this.ecrSevice.fetchEcrDetails(regionWiseClientRequest);
+          // await this.eksService.fetchEksDetails(regionWiseClientRequest);
+          // await this.rdsService.fetchRdsDetails(regionWiseClientRequest);
+          // await this.loadBalancerService.fetchAWSLoadBalancerDetails(
+          //   regionWiseClientRequest,
+          // );
+          // await this.resourceGroupService.fetchResourceGroupDetails(
+          //   regionWiseClientRequest,
+          // );
+          // await this.ebsService.fetchEBSDetails(regionWiseClientRequest);
+          await this.ecsService.fetchEcsDetails(regionWiseClientRequest);
           await this.efsService.fetchEfsDetails(regionWiseClientRequest);
           await this.s3GlacierService.fetchS3GlacierDetails(
             regionWiseClientRequest,

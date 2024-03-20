@@ -92,38 +92,4 @@ export class ECRService {
       );
     }
   }
-
-  async ecrCostDetails(data: ecrCostDetailProps) {
-    const { repositoryArn, accountId } = data;
-    const ecrUsageDetails =
-      await this.awsUsageDetailsRepository.getOneDayCostOfResource({
-        resourceId: repositoryArn,
-        productCode: PRODUCT_CODE.ECR,
-        awsAccountId: accountId,
-      });
-    const currencyCode =
-      await this.awsUsageDetailsRepository.getAwsCurrencyCode(accountId);
-    const ecrPerDayCost = ecrUsageDetails && ecrUsageDetails.unBlendedCost;
-    const currentDate = new Date().toISOString().split('T')[0];
-    const currentBillDate = new Date(currentDate);
-    const startDate = new Date(
-      currentBillDate.setDate(currentBillDate.getDate() - 29),
-    )
-      .toISOString()
-      .split('T')[0];
-
-    const usageCostFields: awsUsageCostProps = {
-      resourceId: repositoryArn,
-      prouductCode: PRODUCT_CODE.EFS,
-      startTime: startDate,
-      endTime: currentDate,
-      awsAccountId: accountId,
-    };
-    const ecrMonthlyCost =
-      await this.awsUsageDetailsRepository.getAwsStorageUsageCost(
-        usageCostFields,
-      );
-    const ecrPrevMonthCost: number = ecrMonthlyCost?.costSum;
-    return { currencyCode, ecrPerDayCost, ecrPrevMonthCost };
-  }
 }

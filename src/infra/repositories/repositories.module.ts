@@ -29,6 +29,8 @@ import { ResourceGroupRepository } from './resourceGroup.repository';
 import { AwsResourceGroupEntity } from '../entities/awsResourceGroupDetails.entity';
 import { EBSRepository } from './ebs.repository';
 import { EBSEntity } from '../entities/ebsDetails.entity';
+import { AwsContainerInstanceEntity } from '../entities/awsContainerInstance.entity';
+import { ECSRepository } from './ecs.repository';
 import { ElasticIPAddress } from '../entities/elasticIpAddresses.entity';
 import { ElasticIpRepository } from './elasticIp.Repository';
 import { BeanStalkRepository } from './elasticbeanstalk.repository';
@@ -53,6 +55,7 @@ import { ElasticBeanstalkEntity } from '../entities/elasticBeanstalkDetails.enti
       RDSCPUUtilizationEntity,
       AwsResourceGroupEntity,
       EBSEntity,
+      AwsContainerInstanceEntity,
       ElasticIPAddress,
       ElasticBeanstalkEntity,
     ]),
@@ -74,6 +77,7 @@ import { ElasticBeanstalkEntity } from '../entities/elasticBeanstalkDetails.enti
     RdsUtilizationRepository,
     ResourceGroupRepository,
     EBSRepository,
+    ECSRepository,
     ElasticIpRepository,
     BeanStalkRepository,
   ],
@@ -93,6 +97,7 @@ import { ElasticBeanstalkEntity } from '../entities/elasticBeanstalkDetails.enti
     RdsUtilizationRepository,
     ResourceGroupRepository,
     EBSRepository,
+    ECSRepository,
     ElasticIpRepository,
     BeanStalkRepository,
   ],

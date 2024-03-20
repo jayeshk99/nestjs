@@ -44,13 +44,13 @@ export class ECSSdkService {
 
   async listEcsInstances(
     ecsClient: ECSClient,
-    clusterName: string,
+    clusterArn: string,
   ): Promise<ListContainerInstancesCommandOutput['containerInstanceArns']> {
     let ecsList: ListContainerInstancesCommandOutput['containerInstanceArns'] =
       [];
     let nextToken: string | null = null;
     let inputParams: ListContainerInstancesCommandInput = {
-      cluster: clusterName,
+      cluster: clusterArn,
     };
 
     do {
