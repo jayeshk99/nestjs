@@ -15,6 +15,7 @@ import { ElasticLoadBalancingV2Client } from '@aws-sdk/client-elastic-load-balan
 import { ECSClient } from '@aws-sdk/client-ecs';
 import { ResourceGroupsClient } from '@aws-sdk/client-resource-groups';
 import { CloudTrailClient } from '@aws-sdk/client-cloudtrail';
+import { EMRClient } from '@aws-sdk/client-emr';
 
 @Injectable()
 export class ClientConfigurationService {
@@ -137,5 +138,14 @@ export class ClientConfigurationService {
       credentials: { accessKeyId, secretAccessKey },
     });
     return loadBalancerClient;
+  }
+
+  async getEmrClient(creds: ClientCredentials) {
+    const { region, accessKeyId, secretAccessKey } = creds;
+    const emrClient = new EMRClient({
+      region,
+      credentials: { accessKeyId, secretAccessKey },
+    });
+    return emrClient;
   }
 }

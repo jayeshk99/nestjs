@@ -21,32 +21,17 @@ export class EMREntity {
   @Column({ name: 'ClusterArn' })
   clusterArn: string;
 
-  @Column({ name: 'ClusterName' })
-  clusterName: string;
-
   @Column({ name: 'ReleaseLabel' })
   releaseLabel: string;
-
-  @Column({ name: 'MasterPublicDns' })
-  masterPublicDns: string;
 
   @Column({ name: 'Applications' })
   applications: string;
 
-  @Column({ name: 'SecurityConfiguration' })
-  securityConfiguration: string;
-
-  @Column({ name: 'LogUri' })
-  logUri: string;
-
   @Column({ name: 'ServiceRole' })
   serviceRole: string;
 
-  @Column({ name: 'AutoTerminate' })
-  autoTerminate: boolean;
-
   @Column({ name: 'VisibleToAllUsers' })
-  visibleToAllUsers: boolean;
+  visibleToAllUsers: string;
 
   @Column({ name: 'CurrencyCode' })
   currencyCode: string;
@@ -77,9 +62,6 @@ export class EMREntity {
 
   @Column({ name: 'UpdatedBy' })
   updatedBy: number;
-
-  @Column({ name: 'IpAddress' })
-  ipAddress: string;
 
   @CreateDateColumn({ name: 'createdAt', type: 'timestamptz' })
   createdAt: Date;

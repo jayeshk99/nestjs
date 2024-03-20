@@ -18,6 +18,7 @@ import { ResourceGroupService } from '../awsResources/resourceGroups/resourceGro
 import { EBSService } from '../awsResources/ebs/ebs.service';
 import { AwsUsageDetailsRepository } from 'src/infra/repositories/awsUsageDetails.repository';
 import { ECSService } from '../awsResources/ecs/ecs.service';
+import { EMRService } from '../awsResources/emr/emr.service';
 
 @Injectable()
 export class ResourceSyncService {
@@ -38,6 +39,7 @@ export class ResourceSyncService {
     private readonly ebsService: EBSService,
     private readonly awsUsageDetailRepository: AwsUsageDetailsRepository,
     private readonly ecsService: ECSService,
+    private readonly emrservice: EMRService,
   ) {}
 
   async fetchAllResources(AccountId: string): Promise<void> {
@@ -59,7 +61,7 @@ export class ResourceSyncService {
         await this.clientConfigurationService.getEC2Client(clientRequest);
       const regions = await this.ec2SdkService.getEnabledRegions(ec2Client);
 
-      // await this.s3Service.fetchS3Details(clientRequest);
+      await this.s3Service.fetchS3Details(clientRequest);
       await Promise.all(
         regions.Regions.map(async (region) => {
           let regionWiseClientRequest = {
@@ -67,22 +69,23 @@ export class ResourceSyncService {
             region: region.RegionName,
           };
 
-          // await this.efsService.fetchEfsDetails(regionWiseClientRequest);
-          // await this.s3GlacierService.fetchS3GlacierDetails(
-          //   regionWiseClientRequest,
-          // );
-          // await this.fsxService.fetchFsxDetails(regionWiseClientRequest);
-          // await this.ecrSevice.fetchEcrDetails(regionWiseClientRequest);
-          // await this.eksService.fetchEksDetails(regionWiseClientRequest);
-          // await this.rdsService.fetchRdsDetails(regionWiseClientRequest);
-          // await this.loadBalancerService.fetchAWSLoadBalancerDetails(
-          //   regionWiseClientRequest,
-          // );
-          // await this.resourceGroupService.fetchResourceGroupDetails(
-          //   regionWiseClientRequest,
-          // );
-          // await this.ebsService.fetchEBSDetails(regionWiseClientRequest);
+          await this.efsService.fetchEfsDetails(regionWiseClientRequest);
+          await this.s3GlacierService.fetchS3GlacierDetails(
+            regionWiseClientRequest,
+          );
+          await this.fsxService.fetchFsxDetails(regionWiseClientRequest);
+          await this.ecrSevice.fetchEcrDetails(regionWiseClientRequest);
+          await this.eksService.fetchEksDetails(regionWiseClientRequest);
+          await this.rdsService.fetchRdsDetails(regionWiseClientRequest);
+          await this.loadBalancerService.fetchAWSLoadBalancerDetails(
+            regionWiseClientRequest,
+          );
+          await this.resourceGroupService.fetchResourceGroupDetails(
+            regionWiseClientRequest,
+          );
+          await this.ebsService.fetchEBSDetails(regionWiseClientRequest);
           await this.ecsService.fetchEcsDetails(regionWiseClientRequest);
+          await this.emrservice.fetchEmrDetails(regionWiseClientRequest);
         }),
       );
     } catch (error) {

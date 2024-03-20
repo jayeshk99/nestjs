@@ -14,6 +14,7 @@ import { LoadBalancerModule } from '../awsResources/loadBalancer/loadBalancer.mo
 import { ResourceGroupModule } from '../awsResources/resourceGroups/resourceGroups.module';
 import { EBSModule } from '../awsResources/ebs/ebs.module';
 import { ECSModule } from '../awsResources/ecs/ecs.module';
+import { EMRModule } from '../awsResources/emr/emr.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { ECSModule } from '../awsResources/ecs/ecs.module';
     ResourceGroupModule,
     EBSModule,
     ECSModule,
+    EMRModule,
   ],
   providers: [ResourceSyncService, RDSUtilizationDataSyncService],
   exports: [ResourceSyncService, RDSUtilizationDataSyncService],

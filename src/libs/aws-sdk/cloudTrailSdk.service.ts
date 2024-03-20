@@ -47,6 +47,12 @@ export class CloudTrailSdkService {
           ) {
             lastModified = data.EventTime;
             return true;
+          } else if (
+            serviceName === RESOURCE_TYPE.EMR &&
+            JSON.parse(data.CloudTrailEvent)?.responseElements.jobFlowId ===
+              resourceName
+          ) {
+            lastModified = data.EventTime;
           }
           return false;
         });

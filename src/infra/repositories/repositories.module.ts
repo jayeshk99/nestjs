@@ -31,6 +31,8 @@ import { EBSRepository } from './ebs.repository';
 import { EBSEntity } from '../entities/ebsDetails.entity';
 import { AwsContainerInstanceEntity } from '../entities/awsContainerInstance.entity';
 import { ECSRepository } from './ecs.repository';
+import { EMREntity } from '../entities/emrDetails.entity';
+import { EMRRepository } from './emr.repository';
 
 @Module({
   imports: [
@@ -52,6 +54,7 @@ import { ECSRepository } from './ecs.repository';
       AwsResourceGroupEntity,
       EBSEntity,
       AwsContainerInstanceEntity,
+      EMREntity,
     ]),
   ],
   providers: [
@@ -72,6 +75,7 @@ import { ECSRepository } from './ecs.repository';
     ResourceGroupRepository,
     EBSRepository,
     ECSRepository,
+    EMRRepository,
   ],
   exports: [
     AwsInstanceRepository,
@@ -90,8 +94,7 @@ import { ECSRepository } from './ecs.repository';
     ResourceGroupRepository,
     EBSRepository,
     ECSRepository,
+    EMRRepository,
   ],
 })
 export class RepositoriesModule {}
-
-// TODO: Implement base repository and extend repos from it
