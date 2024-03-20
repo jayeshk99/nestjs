@@ -32,7 +32,7 @@ export class EKSService {
       const { accessKeyId, secretAccessKey, accountId, region, currencyCode } =
         data;
       const eksClient =
-        await this.clientConfigurationService.getEksClient(data);
+        await this.clientConfigurationService.getEKSClient(data);
       const eksList = await this.eksSdkService.listEks(eksClient);
 
       if (eksList && eksList.length) {

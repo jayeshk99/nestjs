@@ -69,28 +69,28 @@ export class ClientConfigurationService {
       credentials: { accessKeyId, secretAccessKey },
     });
   }
-  async getFsxClient(creds: ClientCredentials) {
+  async getFSxClient(creds: ClientCredentials) {
     const { region, accessKeyId, secretAccessKey } = creds;
     return new FSxClient({
       region,
       credentials: { accessKeyId, secretAccessKey },
     });
   }
-  async getEcrClient(creds: ClientCredentials) {
+  async getECRClient(creds: ClientCredentials) {
     const { region, accessKeyId, secretAccessKey } = creds;
     return new ECRClient({
       region,
       credentials: { accessKeyId, secretAccessKey },
     });
   }
-  async getEksClient(creds: ClientCredentials) {
+  async getEKSClient(creds: ClientCredentials) {
     const { region, accessKeyId, secretAccessKey } = creds;
     return new EKSClient({
       region,
       credentials: { accessKeyId, secretAccessKey },
     });
   }
-  async getRdsClient(creds: ClientCredentials) {
+  async getRDSClient(creds: ClientCredentials) {
     const { region, accessKeyId, secretAccessKey } = creds;
     return new RDSClient({
       region,
@@ -133,7 +133,7 @@ export class ClientConfigurationService {
       credentials: { accessKeyId, secretAccessKey },
     });
   }
-  async getEcsClient(creds: ClientCredentials) {
+  async getECSClient(creds: ClientCredentials) {
     const { region, accessKeyId, secretAccessKey } = creds;
     return new ECSClient({
       region,
@@ -155,21 +155,11 @@ export class ClientConfigurationService {
     });
   }
 
-  async getEmrClient(creds: ClientCredentials) {
+  async getEMRClient(creds: ClientCredentials) {
     const { region, accessKeyId, secretAccessKey } = creds;
-    const emrClient = new EMRClient({
+    return new EMRClient({
       region,
       credentials: { accessKeyId, secretAccessKey },
     });
-    return emrClient;
-  }
-
-  async getEmrClient(creds: ClientCredentials) {
-    const { region, accessKeyId, secretAccessKey } = creds;
-    const emrClient = new EMRClient({
-      region,
-      credentials: { accessKeyId, secretAccessKey },
-    });
-    return emrClient;
   }
 }

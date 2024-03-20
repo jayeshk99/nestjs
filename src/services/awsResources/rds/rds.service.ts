@@ -29,7 +29,7 @@ export class RdsService {
         data;
 
       const rdsClient =
-        await this.clientConfigurationService.getRdsClient(data);
+        await this.clientConfigurationService.getRDSClient(data);
       const rdsInstancesList =
         await this.rdsSdkService.listRdsInstances(rdsClient);
 

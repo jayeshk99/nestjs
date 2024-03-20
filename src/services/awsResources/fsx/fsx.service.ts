@@ -25,7 +25,7 @@ export class FSxService {
         data;
 
       const fsxClient =
-        await this.clientConfigurationService.getFsxClient(data);
+        await this.clientConfigurationService.getFSxClient(data);
 
       const fileSystems = await this.fsxSdkService.listFileSystems(fsxClient);
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import {
   EMRClient,
   ListClustersCommand,
@@ -8,37 +8,44 @@ import {
 } from '@aws-sdk/client-emr';
 @Injectable()
 export class EMRSdkService {
-  async listEmr(efsClient: EMRClient) {
+  private readonly logger = new Logger(EMRSdkService.name);
+  async listEMRClusters(client: EMRClient) {
     let efsList: ListClustersCommandOutput['Clusters'] = [];
-    let nextToken: string | null = null;
-    let inputParams: ListClustersCommandInput = {};
-    do {
-      try {
+    try {
+      let nextToken: string | null = null;
+      let input: ListClustersCommandInput = {};
+      do {
         if (nextToken) {
-          inputParams.Marker = nextToken;
+          input.Marker = nextToken;
         } else {
-          delete inputParams.Marker;
+          delete input.Marker;
+        }
+        const { Clusters, Marker } = await client.send(
+          new ListClustersCommand(input),
+        );
+
+        if (Clusters.length > 0) {
+          efsList.push(...Clusters);
         }
 
-        const data = await efsClient.send(new ListClustersCommand(inputParams));
-        const resources = data.Clusters;
-        if (resources && resources.length > 0) {
-          efsList.push(...resources);
-        }
-
-        nextToken = data.Marker || null;
-      } catch (error) {
-        console.error(`Error listing EMR List:`, error);
-        break;
-      }
-    } while (nextToken);
+        nextToken = Marker || null;
+      } while (nextToken);
+    } catch (error) {
+      this.logger.log(`Error in listing EMR clusters Error:${error}`);
+    }
     return efsList;
   }
 
-  async describeEmrCluster(emrClient: EMRClient, clusterId: string) {
-    const clusterDesc = await emrClient.send(
-      new DescribeClusterCommand({ ClusterId: clusterId }),
-    );
-    return clusterDesc.Cluster;
+  async describeEMRCluster(emrClient: EMRClient, clusterId: string) {
+    try {
+      const { Cluster } = await emrClient.send(
+        new DescribeClusterCommand({ ClusterId: clusterId }),
+      );
+      return Cluster;
+    } catch (error) {
+      this.logger.log(
+        `Error in fetching cluster details cluster:${clusterId} Error:${error}`,
+      );
+    }
   }
 }

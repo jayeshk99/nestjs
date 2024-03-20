@@ -42,7 +42,7 @@ export class ECSService {
       const cloudTrailClient =
         await this.clientConfigurationService.getCloudTrailClient(data);
       const ecsClient =
-        await this.clientConfigurationService.getEcsClient(data);
+        await this.clientConfigurationService.getECSClient(data);
       const ecsList = await this.ecsSdkService.listEcsClusters(ecsClient);
 
       if (ecsList && ecsList.length) {

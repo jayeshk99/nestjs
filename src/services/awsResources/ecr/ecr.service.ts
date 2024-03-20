@@ -32,7 +32,7 @@ export class ECRService {
       const { accessKeyId, secretAccessKey, accountId, region, currencyCode } =
         data;
       const ecrClient =
-        await this.clientConfigurationService.getEcrClient(data);
+        await this.clientConfigurationService.getECRClient(data);
       const ecrList = await this.ecrSdkService.listEcr(ecrClient);
 
       if (ecrList && ecrList.length) {

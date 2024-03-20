@@ -28,19 +28,19 @@ export class EMRService {
     private readonly emrRepository: EMRRepository,
     private readonly cloudTrailSdkService: CloudTrailSdkService,
   ) {}
-  async fetchEmrDetails(data: ClientCredentials) {
+  async syncEMRClusters(data: ClientCredentials) {
     try {
       this.logger.log(
-        `EMR details job STARTED for account: ${data.accountId} region: ${data.region}`,
+        `started Syncing EMR clusters for account:${data.accountId} region:${data.region}`,
       );
       const { accessKeyId, secretAccessKey, accountId, region, currencyCode } =
         data;
       const cloudtrailClient =
         await this.clientConfigurationService.getCloudTrailClient(data);
       const emrClient =
-        await this.clientConfigurationService.getEmrClient(data);
+        await this.clientConfigurationService.getEMRClient(data);
 
-      const clusters = await this.emrSdkService.listEmr(emrClient);
+      const clusters = await this.emrSdkService.listEMRClusters(emrClient);
 
       if (clusters && clusters.length) {
         for (let cluster of clusters) {
@@ -51,7 +51,7 @@ export class EMRService {
           const endDateTime =
             cluster?.Status && cluster.Status.Timeline?.EndDateTime;
           if (endDateTime === void 0) {
-            const clusterDesc = await this.emrSdkService.describeEmrCluster(
+            const clusterDesc = await this.emrSdkService.describeEMRCluster(
               emrClient,
               cluster.Id,
             );
@@ -121,11 +121,11 @@ export class EMRService {
         }
       }
       this.logger.log(
-        `EMR Details job COMPLETED for account: ${data.accountId} region: ${data.region}`,
+        `completed Syncing EMR clusters for account:${data.accountId} region:${data.region}`,
       );
     } catch (error) {
       this.logger.log(
-        `Error in getting EMR Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
+        `Error in syncing EMR Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
       );
     }
   }
