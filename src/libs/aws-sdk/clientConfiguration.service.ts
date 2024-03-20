@@ -16,6 +16,7 @@ import { ECSClient } from '@aws-sdk/client-ecs';
 import { ResourceGroupsClient } from '@aws-sdk/client-resource-groups';
 import { CloudTrailClient } from '@aws-sdk/client-cloudtrail';
 import { EMRClient } from '@aws-sdk/client-emr';
+import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 
 @Injectable()
 export class ClientConfigurationService {
@@ -147,5 +148,13 @@ export class ClientConfigurationService {
       credentials: { accessKeyId, secretAccessKey },
     });
     return emrClient;
+  }
+  async getDynamoDbClient(creds: ClientCredentials) {
+    const { region, accessKeyId, secretAccessKey } = creds;
+    const dynamoDbClient = new DynamoDBClient({
+      region,
+      credentials: { accessKeyId, secretAccessKey },
+    });
+    return dynamoDbClient;
   }
 }

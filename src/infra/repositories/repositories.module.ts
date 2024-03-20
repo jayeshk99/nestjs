@@ -33,6 +33,8 @@ import { AwsContainerInstanceEntity } from '../entities/awsContainerInstance.ent
 import { ECSRepository } from './ecs.repository';
 import { EMREntity } from '../entities/emrDetails.entity';
 import { EMRRepository } from './emr.repository';
+import { DynamoDBDetailEntity } from '../entities/dynamoDbDetails.entity';
+import { DynamoDBRepository } from './dynamoDb.repository';
 
 @Module({
   imports: [
@@ -55,6 +57,7 @@ import { EMRRepository } from './emr.repository';
       EBSEntity,
       AwsContainerInstanceEntity,
       EMREntity,
+      DynamoDBDetailEntity,
     ]),
   ],
   providers: [
@@ -76,6 +79,7 @@ import { EMRRepository } from './emr.repository';
     EBSRepository,
     ECSRepository,
     EMRRepository,
+    DynamoDBRepository,
   ],
   exports: [
     AwsInstanceRepository,
@@ -95,6 +99,7 @@ import { EMRRepository } from './emr.repository';
     EBSRepository,
     ECSRepository,
     EMRRepository,
+    DynamoDBRepository,
   ],
 })
 export class RepositoriesModule {}

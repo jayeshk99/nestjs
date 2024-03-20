@@ -15,6 +15,7 @@ import { ResourceGroupModule } from '../awsResources/resourceGroups/resourceGrou
 import { EBSModule } from '../awsResources/ebs/ebs.module';
 import { ECSModule } from '../awsResources/ecs/ecs.module';
 import { EMRModule } from '../awsResources/emr/emr.module';
+import { DynamoDBModule } from '../awsResources/dynamoDb/dynamoDb.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { EMRModule } from '../awsResources/emr/emr.module';
     EBSModule,
     ECSModule,
     EMRModule,
+    DynamoDBModule,
   ],
   providers: [ResourceSyncService, RDSUtilizationDataSyncService],
   exports: [ResourceSyncService, RDSUtilizationDataSyncService],

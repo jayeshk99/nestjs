@@ -22,6 +22,7 @@
   "dependencies": {
     "@aws-sdk/client-cloudtrail": "^3.536.0",
     "@aws-sdk/client-cloudwatch": "^3.529.1",
+    "@aws-sdk/client-dynamodb": "^3.535.0",
     "@aws-sdk/client-ec2": "^3.532.0",
     "@aws-sdk/client-ecr": "^3.529.1",
     "@aws-sdk/client-ecs": "^3.535.0",

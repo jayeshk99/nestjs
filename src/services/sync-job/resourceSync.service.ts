@@ -19,6 +19,7 @@ import { EBSService } from '../awsResources/ebs/ebs.service';
 import { AwsUsageDetailsRepository } from 'src/infra/repositories/awsUsageDetails.repository';
 import { ECSService } from '../awsResources/ecs/ecs.service';
 import { EMRService } from '../awsResources/emr/emr.service';
+import { DynamoDBService } from '../awsResources/dynamoDb/dynamoDb.service';
 
 @Injectable()
 export class ResourceSyncService {
@@ -40,6 +41,7 @@ export class ResourceSyncService {
     private readonly awsUsageDetailRepository: AwsUsageDetailsRepository,
     private readonly ecsService: ECSService,
     private readonly emrservice: EMRService,
+    private readonly dynamoDbService: DynamoDBService,
   ) {}
 
   async fetchAllResources(AccountId: string): Promise<void> {
@@ -86,6 +88,9 @@ export class ResourceSyncService {
           await this.ebsService.fetchEBSDetails(regionWiseClientRequest);
           await this.ecsService.fetchEcsDetails(regionWiseClientRequest);
           await this.emrservice.fetchEmrDetails(regionWiseClientRequest);
+          await this.dynamoDbService.fetchDynamoDbDetails(
+            regionWiseClientRequest,
+          );
         }),
       );
     } catch (error) {

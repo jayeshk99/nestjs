@@ -14,6 +14,7 @@ import { ECSSdkService } from './ecsSdk.service';
 import { ResourceGroupSdkService } from './resourceGroupSdk.service';
 import { CloudTrailSdkService } from './cloudTrailSdk.service';
 import { EMRSdkService } from './emr.sdk.service';
+import { DynamoDBSdkService } from './dynamoDbSdk.service';
 
 @Module({
   imports: [],
@@ -35,6 +36,7 @@ import { EMRSdkService } from './emr.sdk.service';
     ResourceGroupSdkService,
     CloudTrailSdkService,
     EMRSdkService,
+    DynamoDBSdkService,
   ],
   exports: [
     ClientConfigurationService,
@@ -54,6 +56,7 @@ import { EMRSdkService } from './emr.sdk.service';
     ResourceGroupSdkService,
     CloudTrailSdkService,
     EMRSdkService,
+    DynamoDBSdkService,
   ],
 })
 export class AwsSdkModule {}
