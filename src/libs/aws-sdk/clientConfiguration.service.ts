@@ -17,10 +17,13 @@ import { ResourceGroupsClient } from '@aws-sdk/client-resource-groups';
 import { CloudTrailClient } from '@aws-sdk/client-cloudtrail';
 import { EMRClient } from '@aws-sdk/client-emr';
 import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
+import { ElasticBeanstalkClient } from '@aws-sdk/client-elastic-beanstalk';
+import { SNSClient } from '@aws-sdk/client-sns';
+import { SQSClient } from '@aws-sdk/client-sqs';
 
 @Injectable()
 export class ClientConfigurationService {
-  async getEC2Client(creds: ClientCredentials): Promise<EC2Client> {
+  async getEC2Client(creds: ClientCredentials) {
     const { accessKeyId, secretAccessKey, region } = creds;
     return new EC2Client({
       credentials: { accessKeyId, secretAccessKey },
@@ -28,7 +31,7 @@ export class ClientConfigurationService {
     });
   }
 
-  async getPricingClient(creds: ClientCredentials): Promise<PricingClient> {
+  async getPricingClient(creds: ClientCredentials) {
     const { accessKeyId, secretAccessKey, region } = creds;
     return new PricingClient({
       credentials: { accessKeyId, secretAccessKey },
@@ -36,9 +39,7 @@ export class ClientConfigurationService {
     });
   }
 
-  async getCloudWatchClient(
-    creds: ClientCredentials,
-  ): Promise<CloudWatchClient> {
+  async getCloudWatchClient(creds: ClientCredentials) {
     const { accessKeyId, secretAccessKey, region } = creds;
     return new CloudWatchClient({
       credentials: { accessKeyId, secretAccessKey },
@@ -46,7 +47,7 @@ export class ClientConfigurationService {
     });
   }
 
-  async getS3Client(creds: ClientCredentials): Promise<S3Client> {
+  async getS3Client(creds: ClientCredentials) {
     const { accessKeyId, secretAccessKey, region } = creds;
     return new S3Client({
       credentials: { accessKeyId, secretAccessKey },
@@ -54,7 +55,7 @@ export class ClientConfigurationService {
     });
   }
 
-  async getEFSClient(creds: ClientCredentials): Promise<EFSClient> {
+  async getEFSClient(creds: ClientCredentials) {
     const { region, accessKeyId, secretAccessKey } = creds;
     return new EFSClient({
       region: region,
@@ -62,53 +63,49 @@ export class ClientConfigurationService {
     });
   }
 
-  async getS3GlacierClient(creds: ClientCredentials): Promise<GlacierClient> {
+  async getS3GlacierClient(creds: ClientCredentials) {
     const { region, accessKeyId, secretAccessKey } = creds;
     return new GlacierClient({
       region: region,
       credentials: { accessKeyId, secretAccessKey },
     });
   }
-  async getFsxClient(creds: ClientCredentials): Promise<FSxClient> {
+  async getFSxClient(creds: ClientCredentials) {
     const { region, accessKeyId, secretAccessKey } = creds;
     return new FSxClient({
       region,
       credentials: { accessKeyId, secretAccessKey },
     });
   }
-  async getEcrClient(creds: ClientCredentials): Promise<ECRClient> {
+  async getECRClient(creds: ClientCredentials) {
     const { region, accessKeyId, secretAccessKey } = creds;
     return new ECRClient({
       region,
       credentials: { accessKeyId, secretAccessKey },
     });
   }
-  async getEksClient(creds: ClientCredentials): Promise<EKSClient> {
+  async getEKSClient(creds: ClientCredentials) {
     const { region, accessKeyId, secretAccessKey } = creds;
     return new EKSClient({
       region,
       credentials: { accessKeyId, secretAccessKey },
     });
   }
-  async getRdsClient(creds: ClientCredentials): Promise<RDSClient> {
+  async getRDSClient(creds: ClientCredentials) {
     const { region, accessKeyId, secretAccessKey } = creds;
     return new RDSClient({
       region,
       credentials: { accessKeyId, secretAccessKey },
     });
   }
-  async getResourceGroupClient(
-    creds: ClientCredentials,
-  ): Promise<ResourceGroupsClient> {
+  async getResourceGroupClient(creds: ClientCredentials) {
     const { region, accessKeyId, secretAccessKey } = creds;
     return new ResourceGroupsClient({
       region,
       credentials: { accessKeyId, secretAccessKey },
     });
   }
-  async getCloudTrailClient(
-    creds: ClientCredentials,
-  ): Promise<CloudTrailClient> {
+  async getCloudTrailClient(creds: ClientCredentials) {
     const { region, accessKeyId, secretAccessKey } = creds;
     return new CloudTrailClient({
       region,
@@ -118,36 +115,53 @@ export class ClientConfigurationService {
 
   async getAWSLoadBalancerClient(creds: ClientCredentials) {
     const { region, accessKeyId, secretAccessKey } = creds;
-    const loadBalancerClient = new ElasticLoadBalancingClient({
+    return new ElasticLoadBalancingClient({
       region,
       credentials: { accessKeyId, secretAccessKey },
     });
-    return loadBalancerClient;
   }
   async getAWSLoadBalancerV2Client(creds: ClientCredentials) {
     const { region, accessKeyId, secretAccessKey } = creds;
-    const loadBalancerClient = new ElasticLoadBalancingV2Client({
+    return new ElasticLoadBalancingV2Client({
       region,
       credentials: { accessKeyId, secretAccessKey },
     });
-    return loadBalancerClient;
   }
-  async getEcsClient(creds: ClientCredentials) {
+  async getBeanStalkClient(creds: ClientCredentials) {
     const { region, accessKeyId, secretAccessKey } = creds;
-    const loadBalancerClient = new ECSClient({
+    return new ElasticBeanstalkClient({
       region,
       credentials: { accessKeyId, secretAccessKey },
     });
-    return loadBalancerClient;
+  }
+  async getECSClient(creds: ClientCredentials) {
+    const { region, accessKeyId, secretAccessKey } = creds;
+    return new ECSClient({
+      region,
+      credentials: { accessKeyId, secretAccessKey },
+    });
+  }
+  async getSNSClient(creds: ClientCredentials) {
+    const { region, accessKeyId, secretAccessKey } = creds;
+    return new SNSClient({
+      region,
+      credentials: { accessKeyId, secretAccessKey },
+    });
+  }
+  async getSQSClient(creds: ClientCredentials) {
+    const { region, accessKeyId, secretAccessKey } = creds;
+    return new SQSClient({
+      region,
+      credentials: { accessKeyId, secretAccessKey },
+    });
   }
 
-  async getEmrClient(creds: ClientCredentials) {
+  async getEMRClient(creds: ClientCredentials) {
     const { region, accessKeyId, secretAccessKey } = creds;
-    const emrClient = new EMRClient({
+    return new EMRClient({
       region,
       credentials: { accessKeyId, secretAccessKey },
     });
-    return emrClient;
   }
   async getDynamoDbClient(creds: ClientCredentials) {
     const { region, accessKeyId, secretAccessKey } = creds;

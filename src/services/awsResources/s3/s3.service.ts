@@ -31,14 +31,13 @@ export class S3Service {
     private readonly awsUsageDetailsRepository: AwsUsageDetailsRepository,
     private readonly s3DetailsRepository: S3DetailsRepository,
   ) {}
-  async fetchS3Details(data: ClientCredentials) {
+  async syncS3Buckets(data: ClientCredentials, startDate: Date, endDate: Date) {
     try {
       this.logger.log(
-        `S3 details job STARTED for account: ${data.accountId} region: ${data.region}`,
+        `started Syncing S3 buckets for account:${data.accountId} region:${data.region}`,
       );
       const { accessKeyId, secretAccessKey, accountId, region, currencyCode } =
         data;
-      const currentTimestamp = new Date();
 
       const s3Client = await this.clientConfigurationService.getS3Client(data);
       const cloudWatchClient =
@@ -50,17 +49,14 @@ export class S3Service {
           { Name: 'StorageType', Value: 'StandardStorage' },
           { Name: 'BucketName', Value: '' },
         ],
-        EndTime: new Date(
-          currentTimestamp.setDate(currentTimestamp.getDate() - 1),
-        ),
-        StartTime: new Date(
-          currentTimestamp.setDate(currentTimestamp.getDate() - 1),
-        ),
+        EndTime: endDate,
+        StartTime: startDate,
       };
-      const bucketsList = await this.s3SdkService.listBuckets(s3Client);
-      if (bucketsList && bucketsList.Buckets && bucketsList.Buckets.length) {
-        for (let i = 0; i < bucketsList.Buckets.length; i++) {
-          const bucket = bucketsList.Buckets[i];
+      const { Buckets: bucketsList, Owner: owner } =
+        await this.s3SdkService.listBuckets(s3Client);
+      if (bucketsList && bucketsList.length) {
+        for (let i = 0; i < bucketsList.length; i++) {
+          const bucket = bucketsList[i];
           metricParams.Dimensions[1].Value = bucket.Name;
 
           const sizeMetricData = await this.awsHelperService.getMetricsData(
@@ -78,7 +74,7 @@ export class S3Service {
               productCode: PRODUCT_CODE.S3,
             });
           const s3BucketFields: S3BucketProps = {
-            storageOwner: bucketsList.Owner.DisplayName,
+            storageOwner: owner.DisplayName,
             storageName: bucket.Name,
             createdOn: bucket.CreationDate,
             accountId: accountId,
@@ -100,15 +96,22 @@ export class S3Service {
           s3BucketFields.region =
             regionResult.LocationConstraint || REGIONS.US_EAST_1;
           // TODO: make this repeated find and update logic generic
-          const isBucketExist =
-            await this.s3DetailsRepository.findS3Bucket(s3BucketFields);
+          const isBucketExist = await this.s3DetailsRepository.findByCondition({
+            where: {
+              accountId,
+              region: s3BucketFields.region,
+              isActive: 1,
+              storageName: bucket.Name,
+            },
+          });
           if (isBucketExist) {
-            await this.s3DetailsRepository.updateS3Bucket(
+            await this.s3DetailsRepository.update(
               isBucketExist.id,
               s3BucketFields,
             );
           } else {
-            await this.s3DetailsRepository.createS3Bucket(s3BucketFields);
+            const s3 = this.s3DetailsRepository.create(s3BucketFields);
+            await this.s3DetailsRepository.save(s3);
           }
 
           // TODO: Syncing tags for s3 bucket
@@ -116,11 +119,11 @@ export class S3Service {
         }
       }
       this.logger.log(
-        `S3 Details job COMPLETED for account: ${data.accountId} region: ${data.region}`,
+        `completed Syncing S3 buckets for account:${data.accountId} region:${data.region}`,
       );
     } catch (error) {
       this.logger.log(
-        `Error in getting s3 Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
+        `Error in syncing s3 buckets for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
       );
     }
   }

@@ -1,12 +1,12 @@
 import { Module } from '@nestjs/common';
+import { EC2Service } from './ec2.service';
 import { RepositoriesModule } from 'src/infra/repositories/repositories.module';
 import { AwsSdkModule } from 'src/libs/aws-sdk/aws-sdk.module';
-import { EKSService } from './eks.service';
 import { AwsHelperModule } from '../helper/helper.module';
 
 @Module({
-  imports: [RepositoriesModule, AwsHelperModule, AwsSdkModule],
-  providers: [EKSService],
-  exports: [EKSService],
+  imports: [RepositoriesModule, AwsSdkModule, AwsHelperModule],
+  providers: [EC2Service],
+  exports: [EC2Service],
 })
-export class EKSModule {}
+export class EC2Module {}

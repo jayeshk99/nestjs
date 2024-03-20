@@ -7,7 +7,7 @@ import {
 import { Injectable } from '@nestjs/common';
 @Injectable()
 export class S3GlacierSdkService {
-  async listS3Glacier(
+  async listS3GlacierVaults(
     s3GlacierClient: GlacierClient,
     accountId: string,
   ): Promise<ListVaultsCommandOutput['VaultList']> {

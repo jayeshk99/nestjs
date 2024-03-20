@@ -25,7 +25,11 @@ export class AppController {
       moment().subtract(1, 'day').format('YYYY-MM-DD HH:mm'),
     );
     const endTime = new Date();
-    await this.resourceSyncService.fetchAllResources(body.accountId);
+    await this.resourceSyncService.syncAllResources(
+      body.accountId,
+      startTime,
+      endTime,
+    );
     await this.rdsUtilizationDataSyncService.syncUtilizationData(
       body.accountId,
       startTime,

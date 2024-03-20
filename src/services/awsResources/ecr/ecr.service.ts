@@ -24,15 +24,15 @@ export class ECRService {
     private readonly ecrSdkService: ECRSdkService,
     private readonly awsHelperService: AwsHelperService,
   ) {}
-  async fetchEcrDetails(data: ClientCredentials) {
+  async syncECRContainers(data: ClientCredentials) {
     try {
       this.logger.log(
-        `ECR details job STARTED for account: ${data.accountId} region: ${data.region}`,
+        `started Syncing ECR containers for account:${data.accountId} region:${data.region}`,
       );
       const { accessKeyId, secretAccessKey, accountId, region, currencyCode } =
         data;
       const ecrClient =
-        await this.clientConfigurationService.getEcrClient(data);
+        await this.clientConfigurationService.getECRClient(data);
       const ecrList = await this.ecrSdkService.listEcr(ecrClient);
 
       if (ecrList && ecrList.length) {
@@ -67,20 +67,28 @@ export class ECRService {
             isActive: 1,
             type: 0,
           };
-          const isEcrExist = await this.ecrRepository.findEcr(RepositoryFields);
+          const isEcrExist = await this.ecrRepository.findByCondition({
+            where: {
+              repositoryArn: repository.repositoryArn,
+              accountId,
+              region,
+              isActive: 1,
+            },
+          });
           if (isEcrExist) {
-            await this.ecrRepository.updateEcr(isEcrExist.id, RepositoryFields);
+            await this.ecrRepository.update(isEcrExist.id, RepositoryFields);
           } else {
-            await this.ecrRepository.createEcr(RepositoryFields);
+            const ecr = this.ecrRepository.create(RepositoryFields);
+            await this.ecrRepository.save(ecr);
           }
         }
       }
       this.logger.log(
-        `ECR details job Completed for account: ${data.accountId} region: ${data.region}`,
+        `completed Syncing ECR Containers for account:${data.accountId} region:${data.region}`,
       );
     } catch (error) {
       this.logger.log(
-        `Error in getting ECR Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
+        `Error in syncing ECR Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
       );
     }
   }

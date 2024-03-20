@@ -5,7 +5,7 @@ import { ECRService } from './ecr.service';
 import { AwsHelperModule } from '../helper/helper.module';
 
 @Module({
-  imports: [RepositoriesModule, AwsSdkModule, AwsHelperModule],
+  imports: [RepositoriesModule, AwsHelperModule, AwsSdkModule],
   providers: [ECRService],
   exports: [ECRService],
 })

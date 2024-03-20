@@ -5,7 +5,7 @@ import { EFSService } from './efs.service';
 import { AwsHelperModule } from '../helper/helper.module';
 
 @Module({
-  imports: [RepositoriesModule, AwsSdkModule, AwsHelperModule],
+  imports: [RepositoriesModule, AwsHelperModule, AwsSdkModule],
   providers: [EFSService],
   exports: [EFSService],
 })

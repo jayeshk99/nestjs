@@ -32,17 +32,17 @@ export class ECSService {
     private readonly awsHelperService: AwsHelperService,
     private readonly cloudTrailSdkService: CloudTrailSdkService,
   ) {}
-  async fetchEcsDetails(data: ClientCredentials) {
+  async syncECSClusters(data: ClientCredentials) {
     try {
       this.logger.log(
-        `ECS details job STARTED for account: ${data.accountId} region: ${data.region}`,
+        `started Syncing ECS clusters for account:${data.accountId} region:${data.region}`,
       );
       const { accessKeyId, secretAccessKey, accountId, region, currencyCode } =
         data;
       const cloudTrailClient =
         await this.clientConfigurationService.getCloudTrailClient(data);
       const ecsClient =
-        await this.clientConfigurationService.getEcsClient(data);
+        await this.clientConfigurationService.getECSClient(data);
       const ecsList = await this.ecsSdkService.listEcsClusters(ecsClient);
 
       if (ecsList && ecsList.length) {
@@ -133,11 +133,11 @@ export class ECSService {
         }
       }
       this.logger.log(
-        `ECS details job Completed for account: ${data.accountId} region: ${data.region}`,
+        `completed Syncing ECS clusters for account:${data.accountId} region:${data.region}`,
       );
     } catch (error) {
       this.logger.log(
-        `Error in getting ECS Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
+        `Error in syncing ECS Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
       );
     }
   }

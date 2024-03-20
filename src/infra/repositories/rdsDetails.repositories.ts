@@ -3,22 +3,21 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { RDSDetailsEntity } from '../entities/rdsDetails.entity';
 import { RDSInstanceProps } from 'src/common/interfaces/rds.interface';
+import { BaseRepository } from './base.repository';
 
 @Injectable()
-export class RdsDetailsRepository {
+export class RdsDetailsRepository extends BaseRepository<
+  RDSDetailsEntity,
+  number
+> {
   constructor(
     @InjectRepository(RDSDetailsEntity)
     private readonly dbInstanceRepository: Repository<RDSDetailsEntity>,
-  ) {}
+  ) {
+    super(dbInstanceRepository);
+  }
   async getAll(): Promise<RDSDetailsEntity[]> {
     return await this.dbInstanceRepository.find();
-  }
-
-  async findDBInstance(params: RDSInstanceProps): Promise<RDSDetailsEntity> {
-    const { accountId, dbInstanceArn } = params;
-    return await this.dbInstanceRepository.findOne({
-      where: { accountId, dbInstanceArn, isActive: 1 },
-    });
   }
 
   async findAllActiveDBInstances(
@@ -39,9 +38,6 @@ export class RdsDetailsRepository {
     return result;
   }
 
-  async updateDBInstance(id: number, data: RDSInstanceProps): Promise<void> {
-    await this.dbInstanceRepository.update({ id }, { ...data });
-  }
   async updateDBInstanceByIdentifier(
     condtions: {
       dbInstanceIdentifier: string;
@@ -55,10 +51,5 @@ export class RdsDetailsRepository {
       { dbInstanceIdentifier, accountId, region, isActive: 1 },
       { ...data },
     );
-  }
-
-  async createDBInstance(data: RDSInstanceProps): Promise<void> {
-    const result = this.dbInstanceRepository.create(data);
-    await this.dbInstanceRepository.save(result);
   }
 }

@@ -24,15 +24,15 @@ export class EKSService {
     private readonly eksSdkService: EKSSdkService,
     private readonly awsHelperService: AwsHelperService,
   ) {}
-  async fetchEksDetails(data: ClientCredentials) {
+  async syncEKSClusters(data: ClientCredentials) {
     try {
       this.logger.log(
-        `EKS details job STARTED for account: ${data.accountId} region: ${data.region}`,
+        `started Syncing EKS clusters for account:${data.accountId} region:${data.region}`,
       );
       const { accessKeyId, secretAccessKey, accountId, region, currencyCode } =
         data;
       const eksClient =
-        await this.clientConfigurationService.getEksClient(data);
+        await this.clientConfigurationService.getEKSClient(data);
       const eksList = await this.eksSdkService.listEks(eksClient);
 
       if (eksList && eksList.length) {
@@ -63,20 +63,28 @@ export class EKSService {
             type: 0,
           };
 
-          const isEksExist = await this.eksRepository.findEks(ClusterFields);
+          const isEksExist = await this.eksRepository.findByCondition({
+            where: {
+              accountId,
+              region,
+              clusterArn: cluster.arn,
+              isActive: 1,
+            },
+          });
           if (isEksExist) {
-            await this.eksRepository.updateEks(isEksExist.id, ClusterFields);
+            await this.eksRepository.update(isEksExist.id, ClusterFields);
           } else {
-            await this.eksRepository.createEks(ClusterFields);
+            const eks = this.eksRepository.create(ClusterFields);
+            await this.eksRepository.save(eks);
           }
         }
       }
       this.logger.log(
-        `EKS details job Completed for account: ${data.accountId} region: ${data.region}`,
+        `completed Syncing EKS clusters for account:${data.accountId} region:${data.region}`,
       );
     } catch (error) {
       this.logger.log(
-        `Error in getting EKS Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
+        `Error in syncing EKS Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
       );
     }
   }

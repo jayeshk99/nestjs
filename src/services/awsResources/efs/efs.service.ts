@@ -24,10 +24,10 @@ export class EFSService {
     private readonly efsSdkService: EFSSdkService,
     private readonly awsHelperService: AwsHelperService,
   ) {}
-  async fetchEfsDetails(data: ClientCredentials) {
+  async syncEFSFileSystem(data: ClientCredentials) {
     try {
       this.logger.log(
-        `EFS details job STARTED for account: ${data.accountId} region: ${data.region}`,
+        `started Syncing EFS file system for account:${data.accountId} region:${data.region}`,
       );
       const { accessKeyId, secretAccessKey, accountId, region, currencyCode } =
         data;
@@ -60,17 +60,28 @@ export class EFSService {
               ? prevMonthCost
               : dailyCost * moment().daysInMonth() || 0,
           };
-          const isEfsExist = await this.efsRepository.findEFS(EFSFields);
+          const isEfsExist = await this.efsRepository.findByCondition({
+            where: {
+              accountId,
+              fileSystemArn: efsDetails.FileSystemArn,
+              region,
+              isActive: 1,
+            },
+          });
           if (isEfsExist) {
-            await this.efsRepository.updateEfs(isEfsExist.id, EFSFields);
+            await this.efsRepository.update(isEfsExist.id, EFSFields);
           } else {
-            await this.efsRepository.createEfs(EFSFields);
+            const efs = this.efsRepository.create(EFSFields);
+            await this.efsRepository.save(efs);
           }
         }
       }
+      this.logger.log(
+        `completed Syncing EFS file system for account:${data.accountId} region:${data.region}`,
+      );
     } catch (error) {
       this.logger.log(
-        `Error in getting EFS Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
+        `Error in syncing EFS Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
       );
     }
   }

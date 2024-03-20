@@ -16,10 +16,10 @@ export class ResourceGroupService {
     private readonly cloudTrailSdkService: CloudTrailSdkService,
     private readonly resourceGroupRepository: ResourceGroupRepository,
   ) {}
-  async fetchResourceGroupDetails(data: ClientCredentials): Promise<void> {
+  async syncResourceGroups(data: ClientCredentials): Promise<void> {
     try {
       this.logger.log(
-        `S3 details job STARTED for account: ${data.accountId} region: ${data.region}`,
+        `started Syncing load balancers for account:${data.accountId} region:${data.region}`,
       );
       const { accountId, accessKeyId, secretAccessKey, region, currencyCode } =
         data;
@@ -56,24 +56,32 @@ export class ResourceGroupService {
             accountId: accountId,
           };
           const resourceGroupExist =
-            await this.resourceGroupRepository.findResourceGroup(
-              ResourceGroupFields,
-            );
+            await this.resourceGroupRepository.findByCondition({
+              where: {
+                accountId,
+                region,
+                isActive: 1,
+                resourceGroupArn: resourceGroup.GroupArn,
+              },
+            });
           if (resourceGroupExist) {
-            await this.resourceGroupRepository.updateResourceGroup(
+            await this.resourceGroupRepository.update(
               resourceGroupExist.id,
               ResourceGroupFields,
             );
           } else {
-            await this.resourceGroupRepository.addResourceGroup(
-              ResourceGroupFields,
-            );
+            const group =
+              this.resourceGroupRepository.create(ResourceGroupFields);
+            await this.resourceGroupRepository.save(group);
           }
         }
       }
+      this.logger.log(
+        `completed Syncing resource groups for account:${data.accountId} region:${data.region}`,
+      );
     } catch (error) {
       this.logger.log(
-        `error while syncing resource groups for account:${data.accountId} region:${data.region} error:${error}`,
+        `Error in syncing resource groups for account:${data.accountId} region:${data.region} error:${error}`,
       );
     }
   }

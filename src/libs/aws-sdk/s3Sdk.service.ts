@@ -8,9 +8,9 @@ import {
 } from '@aws-sdk/client-s3';
 @Injectable()
 export class S3SdkService {
-  async listBuckets(s3Client: S3Client): Promise<ListBucketsCommandOutput> {
-    let buckets = await s3Client.send(new ListBucketsCommand({}));
-    return buckets;
+  async listBuckets(s3Client: S3Client) {
+    let { Buckets, Owner } = await s3Client.send(new ListBucketsCommand({}));
+    return { Buckets, Owner };
   }
   async getBucketLocation(
     s3Client: S3Client,

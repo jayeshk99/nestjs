@@ -8,24 +8,24 @@ import { FsxSdkService } from 'src/libs/aws-sdk/fsxSdkService';
 import { FsxFileSystemProps } from 'src/common/interfaces/fsx.interface';
 
 @Injectable()
-export class FsxService {
-  private readonly logger = new Logger(FsxService.name);
+export class FSxService {
+  private readonly logger = new Logger(FSxService.name);
   constructor(
     private readonly clientConfigurationService: ClientConfigurationService,
     private readonly fsxSdkService: FsxSdkService,
     private readonly awsUsageDetailsRepository: AwsUsageDetailsRepository,
     private readonly fsxDetailsRepository: FsxDetailsRepository,
   ) {}
-  async fetchFsxDetails(data: ClientCredentials) {
+  async syncFSxFileSystem(data: ClientCredentials) {
     try {
       this.logger.log(
-        `Fsx details job STARTED for account: ${data.accountId} region: ${data.region}`,
+        `started Syncing FSx file system for account:${data.accountId} region:${data.region}`,
       );
       const { accessKeyId, secretAccessKey, accountId, region, currencyCode } =
         data;
 
       const fsxClient =
-        await this.clientConfigurationService.getFsxClient(data);
+        await this.clientConfigurationService.getFSxClient(data);
 
       const fileSystems = await this.fsxSdkService.listFileSystems(fsxClient);
 
@@ -51,15 +51,23 @@ export class FsxService {
             currencyCode: currencyCode,
           };
           const isFileSystemExist =
-            await this.fsxDetailsRepository.findFsxFileSystem(FsxFields);
+            await this.fsxDetailsRepository.findByCondition({
+              where: {
+                accountId,
+                region,
+                resourceARN: fsxDetails.ResourceARN,
+                isActive: 1,
+              },
+            });
 
           if (isFileSystemExist) {
-            await this.fsxDetailsRepository.updateFsxFileSystem(
+            await this.fsxDetailsRepository.update(
               isFileSystemExist.id,
               FsxFields,
             );
           } else {
-            await this.fsxDetailsRepository.createFsxFileSystem(FsxFields);
+            const fsx = this.fsxDetailsRepository.create(FsxFields);
+            await this.fsxDetailsRepository.save(fsx);
           }
           //   const tagResult = await syncAwsTag(
           //     accountId,
@@ -70,11 +78,11 @@ export class FsxService {
         }
       }
       this.logger.log(
-        `Fsx Details job COMPLETED for account: ${data.accountId} region: ${data.region}`,
+        `completed Syncing FSx file system for account:${data.accountId} region:${data.region}`,
       );
     } catch (error) {
       this.logger.log(
-        `Error in getting Fsx Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
+        `Error in syncing FSx Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
       );
     }
   }
