@@ -13,6 +13,7 @@ import { AWSLoadBalancerSdkService } from './awsLoadBalancerSdk.service';
 import { ECSSdkService } from './ecsSdk.service';
 import { ResourceGroupSdkService } from './resourceGroupSdk.service';
 import { CloudTrailSdkService } from './cloudTrailSdk.service';
+import { EMRSdkService } from './emr.sdk.service';
 import { BeanStalkSdkService } from './beanstalkSdk.service';
 import { SNSSdkService } from './snsSdk.service';
 import { SQSSdkService } from './sqsSdk.service';
@@ -36,6 +37,7 @@ import { SQSSdkService } from './sqsSdk.service';
     RdsSdkService,
     ResourceGroupSdkService,
     CloudTrailSdkService,
+    EMRSdkService,
     BeanStalkSdkService,
     SNSSdkService,
     SQSSdkService
@@ -57,6 +59,7 @@ import { SQSSdkService } from './sqsSdk.service';
     RdsSdkService,
     ResourceGroupSdkService,
     CloudTrailSdkService,
+    EMRSdkService,
     BeanStalkSdkService,
     SNSSdkService,
     SQSSdkService

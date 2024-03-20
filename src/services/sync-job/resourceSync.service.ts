@@ -17,6 +17,7 @@ import { AWSLoadBalancerService } from '../awsResources/loadBalancer/loadBalance
 import { ResourceGroupService } from '../awsResources/resourceGroups/resourceGroups.service';
 import { AwsUsageDetailsRepository } from 'src/infra/repositories/awsUsageDetails.repository';
 import { ECSService } from '../awsResources/ecs/ecs.service';
+import { EMRService } from '../awsResources/emr/emr.service';
 import { EC2Service } from '../awsResources/ec2/ec2.service';
 import { ElasticBeanStalkService } from '../awsResources/beanstalk/beanstalk.service';
 import { SNSService } from '../awsResources/sns/sns.service';
@@ -40,6 +41,7 @@ export class ResourceSyncService {
     private readonly resourceGroupService: ResourceGroupService,
     private readonly awsUsageDetailRepository: AwsUsageDetailsRepository,
     private readonly ecsService: ECSService,
+    private readonly emrservice: EMRService,
     private readonly ec2Service: EC2Service,
     private readonly beanStalkService: ElasticBeanStalkService,
     private readonly sqsService: SQSService,

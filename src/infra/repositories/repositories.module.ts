@@ -31,6 +31,8 @@ import { EBSRepository } from './ebs.repository';
 import { EBSEntity } from '../entities/ebsDetails.entity';
 import { AwsContainerInstanceEntity } from '../entities/awsContainerInstance.entity';
 import { ECSRepository } from './ecs.repository';
+import { EMREntity } from '../entities/emrDetails.entity';
+import { EMRRepository } from './emr.repository';
 import { ElasticIPAddress } from '../entities/elasticIpAddresses.entity';
 import { ElasticIpRepository } from './elasticIp.Repository';
 import { BeanStalkRepository } from './elasticbeanstalk.repository';
@@ -60,6 +62,7 @@ import { SQSRepository } from './sqs.repository';
       AwsResourceGroupEntity,
       EBSEntity,
       AwsContainerInstanceEntity,
+      EMREntity,
       ElasticIPAddress,
       ElasticBeanstalkEntity,
       SNSDetailsEntity,
@@ -84,6 +87,7 @@ import { SQSRepository } from './sqs.repository';
     ResourceGroupRepository,
     EBSRepository,
     ECSRepository,
+    EMRRepository,
     ElasticIpRepository,
     BeanStalkRepository,
     SNSRepository,
@@ -106,6 +110,7 @@ import { SQSRepository } from './sqs.repository';
     ResourceGroupRepository,
     EBSRepository,
     ECSRepository,
+    EMRRepository,
     ElasticIpRepository,
     BeanStalkRepository,
     SNSRepository,
@@ -113,5 +118,3 @@ import { SQSRepository } from './sqs.repository';
   ],
 })
 export class RepositoriesModule {}
-
-// TODO: Implement base repository and extend repos from it
