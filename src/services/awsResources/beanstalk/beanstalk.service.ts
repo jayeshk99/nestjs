@@ -52,17 +52,22 @@ export class ElasticBeanStalkService {
               : dailyCost * moment().daysInMonth() || 0,
             currencyCode: currencyCode,
           };
-          const doesAppExist =
-            await this.beanStalkRepository.findApplication(beanstalkFields);
+          const doesAppExist = await this.beanStalkRepository.findByCondition({
+            where: {
+              appArn: beanstalk.ApplicationArn,
+              accountId,
+              region,
+              isActive: 1,
+            },
+          });
           if (doesAppExist) {
-            await this.beanStalkRepository.updateBeanStalkApplication(
+            await this.beanStalkRepository.update(
               doesAppExist.id,
               beanstalkFields,
             );
           } else {
-            await this.beanStalkRepository.addBeanStalkApplication(
-              beanstalkFields,
-            );
+            const app = this.beanStalkRepository.create(beanstalkFields);
+            await this.beanStalkRepository.save(app);
           }
         }
       }

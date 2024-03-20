@@ -21,7 +21,8 @@ export class ResourceGroupService {
       this.logger.log(
         `S3 details job STARTED for account: ${data.accountId} region: ${data.region}`,
       );
-      const { accountId, accessKeyId, secretAccessKey, region,currencyCode } = data;
+      const { accountId, accessKeyId, secretAccessKey, region, currencyCode } =
+        data;
       const resourceGroupClient =
         await this.clientConfigurationService.getResourceGroupClient(data);
       const resourceGroupList =
@@ -45,6 +46,7 @@ export class ResourceGroupService {
                 ],
               },
               resourceGroup.GroupName,
+              'resource groups',
             );
           const ResourceGroupFields: ResourceGroupProps = {
             resourceGroupName: resourceGroup.GroupName,
@@ -54,18 +56,23 @@ export class ResourceGroupService {
             accountId: accountId,
           };
           const resourceGroupExist =
-            await this.resourceGroupRepository.findResourceGroup(
-              ResourceGroupFields,
-            );
+            await this.resourceGroupRepository.findByCondition({
+              where: {
+                accountId,
+                region,
+                isActive: 1,
+                resourceGroupArn: resourceGroup.GroupArn,
+              },
+            });
           if (resourceGroupExist) {
-            await this.resourceGroupRepository.updateResourceGroup(
+            await this.resourceGroupRepository.update(
               resourceGroupExist.id,
               ResourceGroupFields,
             );
           } else {
-            await this.resourceGroupRepository.addResourceGroup(
-              ResourceGroupFields,
-            );
+            const group =
+              this.resourceGroupRepository.create(ResourceGroupFields);
+            await this.resourceGroupRepository.save(group);
           }
         }
       }

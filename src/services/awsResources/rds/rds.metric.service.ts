@@ -125,11 +125,6 @@ export class RdsMetricService {
             ];
             for (const { data, metricName } of dataToProcess) {
               if (data.length) {
-                console.log(
-                  metricName,
-                  rdsInstance.dbinstanceidentifier[i],
-                  rdsInstance.region,
-                );
                 await this.rdsUtilizationRepository.deleteDuplicateUtilizationData(
                   {
                     accountId: accountId,
@@ -239,7 +234,7 @@ export class RdsMetricService {
         NetworkTransmitThroughput,
       };
     } catch (error) {
-      console.log('Error fetching RDS Utilization data', error.message);
+      this.logger.log('Error fetching RDS Utilization data', error.message);
     }
   }
 }

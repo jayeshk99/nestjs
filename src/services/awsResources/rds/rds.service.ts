@@ -25,7 +25,8 @@ export class RdsService {
       this.logger.log(
         `Fsx details job STARTED for account: ${data.accountId} region: ${data.region}`,
       );
-      const { accessKeyId, secretAccessKey, accountId, region ,currencyCode} = data;
+      const { accessKeyId, secretAccessKey, accountId, region, currencyCode } =
+        data;
 
       const rdsClient =
         await this.clientConfigurationService.getRdsClient(data);
@@ -79,14 +80,22 @@ export class RdsService {
             deletionProtection: dbInstance.DeletionProtection,
           };
           const dbInstanceExist =
-            await this.rdsDetailsRepository.findDBInstance(DBInstanceFields);
+            await this.rdsDetailsRepository.findByCondition({
+              where: {
+                accountId,
+                region,
+                dbInstanceArn: dbInstance.DBInstanceArn,
+                isActive: 1,
+              },
+            });
           if (dbInstanceExist) {
-            await this.rdsDetailsRepository.updateDBInstance(
+            await this.rdsDetailsRepository.update(
               dbInstanceExist.id,
               DBInstanceFields,
             );
           } else {
-            await this.rdsDetailsRepository.createDBInstance(DBInstanceFields);
+            const rds = this.rdsDetailsRepository.create(DBInstanceFields);
+            await this.rdsDetailsRepository.save(rds);
           }
         }
       }

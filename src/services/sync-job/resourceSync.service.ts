@@ -15,9 +15,8 @@ import { EKSService } from '../awsResources/eks/eks.service';
 import { RdsService } from '../awsResources/rds/rds.service';
 import { AWSLoadBalancerService } from '../awsResources/loadBalancer/loadBalancer.service';
 import { ResourceGroupService } from '../awsResources/resourceGroups/resourceGroups.service';
-import { EBSService } from '../awsResources/ebs/ebs.service';
 import { AwsUsageDetailsRepository } from 'src/infra/repositories/awsUsageDetails.repository';
-import { ElasticIpService } from '../awsResources/elasticIp/elasticIp.service';
+import { EC2Service } from '../awsResources/ec2/ec2.service';
 import { ElasticBeanStalkService } from '../awsResources/beanstalk/beanstalk.service';
 
 @Injectable()
@@ -36,9 +35,8 @@ export class ResourceSyncService {
     private readonly rdsService: RdsService,
     private readonly loadBalancerService: AWSLoadBalancerService,
     private readonly resourceGroupService: ResourceGroupService,
-    private readonly ebsService: EBSService,
     private readonly awsUsageDetailRepository: AwsUsageDetailsRepository,
-    private readonly elasticIpService: ElasticIpService,
+    private readonly ec2Service: EC2Service,
     private readonly elasticBeanStalkService:ElasticBeanStalkService
   ) {}
 
@@ -83,8 +81,8 @@ export class ResourceSyncService {
           await this.resourceGroupService.fetchResourceGroupDetails(
             regionWiseClientRequest,
           );
-          await this.ebsService.fetchEBSDetails(regionWiseClientRequest);
-          await this.elasticIpService.syncIpAddresses(regionWiseClientRequest);
+          await this.ec2Service.syncEBSVolumes(regionWiseClientRequest);
+          await this.ec2Service.syncIpAddresses(regionWiseClientRequest);
           await this.elasticBeanStalkService.syncBeanStalkApplications(regionWiseClientRequest)
         }),
       );

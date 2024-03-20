@@ -15,6 +15,7 @@ export class EC2SdkService {
   async getEnabledRegions(EC2Client: EC2Client) {
     return await EC2Client.send(new DescribeRegionsCommand({}));
   }
+
   async listEBSVolumes(
     client: EC2Client,
   ): Promise<DescribeVolumesCommandOutput['Volumes']> {

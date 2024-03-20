@@ -63,11 +63,19 @@ export class EKSService {
             type: 0,
           };
 
-          const isEksExist = await this.eksRepository.findEks(ClusterFields);
+          const isEksExist = await this.eksRepository.findByCondition({
+            where: {
+              accountId,
+              region,
+              clusterArn: cluster.arn,
+              isActive: 1,
+            },
+          });
           if (isEksExist) {
-            await this.eksRepository.updateEks(isEksExist.id, ClusterFields);
+            await this.eksRepository.update(isEksExist.id, ClusterFields);
           } else {
-            await this.eksRepository.createEks(ClusterFields);
+            const eks = this.eksRepository.create(ClusterFields);
+            await this.eksRepository.save(eks);
           }
         }
       }

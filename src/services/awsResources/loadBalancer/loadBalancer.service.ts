@@ -37,7 +37,8 @@ export class AWSLoadBalancerService {
       this.logger.log(
         `AWSLoad Balancer details job STARTED for account: ${data.accountId} region: ${data.region}`,
       );
-      const { accessKeyId, secretAccessKey, accountId, region,currencyCode } = data;
+      const { accessKeyId, secretAccessKey, accountId, region, currencyCode } =
+        data;
       const currentTimestamp = new Date();
       const loadBalancerClient =
         await this.clientConfigurationService.getAWSLoadBalancerClient(data);
@@ -68,8 +69,9 @@ export class AWSLoadBalancerService {
         const isBucketExist =
           await this.awsLoadBalancerRepository.findByCondition({
             where: {
-              accountId: elb.accountId,
+              accountId,
               loadBalancerName: elb.loadBalancerName,
+              region,
               isActive: 1,
             },
           });

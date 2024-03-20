@@ -100,15 +100,22 @@ export class S3Service {
           s3BucketFields.region =
             regionResult.LocationConstraint || REGIONS.US_EAST_1;
           // TODO: make this repeated find and update logic generic
-          const isBucketExist =
-            await this.s3DetailsRepository.findS3Bucket(s3BucketFields);
+          const isBucketExist = await this.s3DetailsRepository.findByCondition({
+            where: {
+              accountId,
+              region: s3BucketFields.region,
+              isActive: 1,
+              storageName: bucket.Name,
+            },
+          });
           if (isBucketExist) {
-            await this.s3DetailsRepository.updateS3Bucket(
+            await this.s3DetailsRepository.update(
               isBucketExist.id,
               s3BucketFields,
             );
           } else {
-            await this.s3DetailsRepository.createS3Bucket(s3BucketFields);
+            const s3 = this.s3DetailsRepository.create(s3BucketFields);
+            await this.s3DetailsRepository.save(s3);
           }
 
           // TODO: Syncing tags for s3 bucket

@@ -43,15 +43,24 @@ export class S3GlacierService {
             region: region,
             unit: 'Byte',
           };
-          const isGlacierExist =
-            await this.s3GlacierRepository.findS3Glacier(glacierVaultFields);
+          const isGlacierExist = await this.s3GlacierRepository.findByCondition(
+            {
+              where: {
+                accountId,
+                region,
+                isActive: 1,
+                vaultARN: glacierVaultDetails.VaultARN,
+              },
+            },
+          );
           if (isGlacierExist) {
-            await this.s3GlacierRepository.updateS3Glacier(
+            await this.s3GlacierRepository.update(
               isGlacierExist.id,
               glacierVaultFields,
             );
           } else {
-            await this.s3GlacierRepository.createS3Glacier(glacierVaultFields);
+            const glacier = this.s3GlacierRepository.create(glacierVaultFields);
+            await this.s3GlacierRepository.save(glacier);
           }
         }
       }

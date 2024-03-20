@@ -51,15 +51,23 @@ export class FsxService {
             currencyCode: currencyCode,
           };
           const isFileSystemExist =
-            await this.fsxDetailsRepository.findFsxFileSystem(FsxFields);
+            await this.fsxDetailsRepository.findByCondition({
+              where: {
+                accountId,
+                region,
+                resourceARN: fsxDetails.ResourceARN,
+                isActive: 1,
+              },
+            });
 
           if (isFileSystemExist) {
-            await this.fsxDetailsRepository.updateFsxFileSystem(
+            await this.fsxDetailsRepository.update(
               isFileSystemExist.id,
               FsxFields,
             );
           } else {
-            await this.fsxDetailsRepository.createFsxFileSystem(FsxFields);
+            const fsx = this.fsxDetailsRepository.create(FsxFields);
+            await this.fsxDetailsRepository.save(fsx);
           }
           //   const tagResult = await syncAwsTag(
           //     accountId,

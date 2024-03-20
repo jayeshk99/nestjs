@@ -60,11 +60,19 @@ export class EFSService {
               ? prevMonthCost
               : dailyCost * moment().daysInMonth() || 0,
           };
-          const isEfsExist = await this.efsRepository.findEFS(EFSFields);
+          const isEfsExist = await this.efsRepository.findByCondition({
+            where: {
+              accountId,
+              fileSystemArn: efsDetails.FileSystemArn,
+              region,
+              isActive: 1,
+            },
+          });
           if (isEfsExist) {
-            await this.efsRepository.updateEfs(isEfsExist.id, EFSFields);
+            await this.efsRepository.update(isEfsExist.id, EFSFields);
           } else {
-            await this.efsRepository.createEfs(EFSFields);
+            const efs = this.efsRepository.create(EFSFields);
+            await this.efsRepository.save(efs);
           }
         }
       }

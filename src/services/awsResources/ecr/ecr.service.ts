@@ -67,11 +67,19 @@ export class ECRService {
             isActive: 1,
             type: 0,
           };
-          const isEcrExist = await this.ecrRepository.findEcr(RepositoryFields);
+          const isEcrExist = await this.ecrRepository.findByCondition({
+            where: {
+              repositoryArn: repository.repositoryArn,
+              accountId,
+              region,
+              isActive: 1,
+            },
+          });
           if (isEcrExist) {
-            await this.ecrRepository.updateEcr(isEcrExist.id, RepositoryFields);
+            await this.ecrRepository.update(isEcrExist.id, RepositoryFields);
           } else {
-            await this.ecrRepository.createEcr(RepositoryFields);
+            const ecr = this.ecrRepository.create(RepositoryFields);
+            await this.ecrRepository.save(ecr);
           }
         }
       }
