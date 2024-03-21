@@ -14,10 +14,10 @@ export class ECRSdkService {
   async listEcr(
     ecrClient: ECRClient,
   ): Promise<DescribeRepositoriesCommandOutput['repositories']> {
-    let ecrList: DescribeRepositoriesCommandOutput['repositories'] = [];
+    const allresources: DescribeRepositoriesCommandOutput['repositories'] = [];
     let nextToken: string | null = null;
     // TODO: implement enum for possible values for different resource/ make on global config or enum for aws resources
-    let inputParams: DescribeRepositoriesCommandInput = {};
+    const inputParams: DescribeRepositoriesCommandInput = {};
     do {
       try {
         if (nextToken) {
@@ -32,7 +32,7 @@ export class ECRSdkService {
         const resources = data.repositories;
 
         if (resources && resources.length > 0) {
-          ecrList.push(...resources);
+          allresources.push(...resources);
         }
 
         nextToken = data.nextToken;
@@ -41,7 +41,7 @@ export class ECRSdkService {
         break;
       }
     } while (nextToken);
-    return ecrList;
+    return allresources;
   }
 
   async listImages(

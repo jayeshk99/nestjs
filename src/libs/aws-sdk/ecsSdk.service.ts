@@ -13,10 +13,8 @@ import {
 } from '@aws-sdk/client-ecs';
 @Injectable()
 export class ECSSdkService {
-  async listEcsClusters(
-    ecsClient: ECSClient,
-  ): Promise<ListClustersCommandOutput['clusterArns']> {
-    let ecsList: ListClustersCommandOutput['clusterArns'] = [];
+  async listEcsClusters(ecsClient: ECSClient) {
+    const allresources: ListClustersCommandOutput['clusterArns'] = [];
     let nextToken: string | null = null;
     let inputParams: ListResourcesProps = {};
     do {
@@ -30,7 +28,7 @@ export class ECSSdkService {
         const data = await ecsClient.send(new ListClustersCommand(inputParams));
         const resources = data.clusterArns;
         if (resources && resources.length > 0) {
-          ecsList.push(...resources);
+          allresources.push(...resources);
         }
 
         nextToken = data.nextToken || null;
@@ -39,17 +37,14 @@ export class ECSSdkService {
         break;
       }
     } while (nextToken);
-    return ecsList;
+    return allresources;
   }
 
-  async listEcsInstances(
-    ecsClient: ECSClient,
-    clusterArn: string,
-  ): Promise<ListContainerInstancesCommandOutput['containerInstanceArns']> {
-    let ecsList: ListContainerInstancesCommandOutput['containerInstanceArns'] =
+  async listEcsInstances(ecsClient: ECSClient, clusterArn: string) {
+    const allresources: ListContainerInstancesCommandOutput['containerInstanceArns'] =
       [];
     let nextToken: string | null = null;
-    let inputParams: ListContainerInstancesCommandInput = {
+    const inputParams: ListContainerInstancesCommandInput = {
       cluster: clusterArn,
     };
 
@@ -66,7 +61,7 @@ export class ECSSdkService {
         );
         const resources = data.containerInstanceArns;
         if (resources && resources.length > 0) {
-          ecsList.push(...resources);
+          allresources.push(...resources);
         }
         nextToken = data.nextToken || null;
       } catch (error) {
@@ -74,18 +69,18 @@ export class ECSSdkService {
         break;
       }
     } while (nextToken);
-    return ecsList;
+    return allresources;
   }
 
   async describeEcsInstance(
     ecsClient: ECSClient,
     clusterName: string,
-    containerInstances: string[],
+    containerInstancesArray: string[],
   ) {
-    let instanceDesc: DescribeContainerInstancesCommandOutput['containerInstances'] =
+    const instanceDesc: DescribeContainerInstancesCommandOutput['containerInstances'] =
       [];
     let instances: string[] = [];
-    instances = [...containerInstances.slice(0, 100)];
+    instances = [...containerInstancesArray.slice(0, 100)];
     let index = 100;
     while (instances.length) {
       try {
@@ -93,14 +88,14 @@ export class ECSSdkService {
           cluster: clusterName,
           containerInstances: instances,
         };
-        const data = await ecsClient.send(
+        const { containerInstances } = await ecsClient.send(
           new DescribeContainerInstancesCommand(inputParams),
         );
-        const resources = data.containerInstances;
-        if (resources && resources.length > 0) {
-          instanceDesc.push(...resources);
+
+        if (containerInstances && containerInstances.length > 0) {
+          instanceDesc.push(...containerInstances);
         }
-        instances = [...containerInstances.slice(index + 1, index + 100)];
+        instances = [...containerInstancesArray.slice(index + 1, index + 100)];
         index += 100;
       } catch (error) {
         console.error(`Error DESCRIBING ECS INSTANCE :`, error);

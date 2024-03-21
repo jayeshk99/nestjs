@@ -4,15 +4,13 @@ import { ClientConfigurationService } from 'src/libs/aws-sdk/clientConfiguration
 import { ClientCredentials } from '../../common/interfaces/awsClient.interface';
 import { REGIONS } from 'src/common/constants/constants';
 import { EC2SdkService } from 'src/libs/aws-sdk/ec2Sdk.service';
-
 import { EFSService } from '../awsResources/efs/efs.service';
 import { S3GlacierService } from '../awsResources/s3Glacier/s3Glacier.service';
 import { S3Service } from '../awsResources/s3/s3.service';
 import { FSxService } from '../awsResources/fsx/fsx.service';
-import { Region } from 'src/common/interfaces/ec2Region.interface';
 import { ECRService } from '../awsResources/ecr/ecr.service';
 import { EKSService } from '../awsResources/eks/eks.service';
-import { RdsService } from '../awsResources/rds/rds.service';
+import { RDSService } from '../awsResources/rds/rds.service';
 import { AWSLoadBalancerService } from '../awsResources/loadBalancer/loadBalancer.service';
 import { ResourceGroupService } from '../awsResources/resourceGroups/resourceGroups.service';
 import { AwsUsageDetailsRepository } from 'src/infra/repositories/awsUsageDetails.repository';
@@ -24,6 +22,7 @@ import { ElasticBeanStalkService } from '../awsResources/beanstalk/beanstalk.ser
 import { SNSService } from '../awsResources/sns/sns.service';
 import { SQSService } from '../awsResources/sqs/sqs.service';
 import { ElastiCacheService } from '../awsResources/elasticache/elasticache.service';
+import { LambdaService } from '../awsResources/lambda/lambda.service';
 
 @Injectable()
 export class ResourceSyncService {
@@ -38,7 +37,7 @@ export class ResourceSyncService {
     private readonly fsxService: FSxService,
     private readonly ecrSevice: ECRService,
     private readonly eksService: EKSService,
-    private readonly rdsService: RdsService,
+    private readonly rdsService: RDSService,
     private readonly loadBalancerService: AWSLoadBalancerService,
     private readonly resourceGroupService: ResourceGroupService,
     private readonly awsUsageDetailRepository: AwsUsageDetailsRepository,
@@ -49,7 +48,8 @@ export class ResourceSyncService {
     private readonly beanStalkService: ElasticBeanStalkService,
     private readonly sqsService: SQSService,
     private readonly snsService: SNSService,
-    private readonly elastiCacheService:ElastiCacheService
+    private readonly elastiCacheService: ElastiCacheService,
+    private readonly lambdaService: LambdaService
   ) {}
 
   async syncAllResources(
@@ -96,7 +96,12 @@ export class ResourceSyncService {
           this.snsService.syncTopics(clientRequest);
           this.emrService.syncEMRClusters(clientRequest);
           this.dynamoDbService.fetchDynamoDbDetails(clientRequest);
-          this.elastiCacheService.syncCacheClusters(clientRequest)
+          this.elastiCacheService.syncCacheClusters(
+            clientRequest,
+            startTime,
+            endTime,
+          );
+          this.lambdaService.syncLambdaFunctions(clientRequest)
         }),
       );
     } catch (error) {

@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
-import { RdsService } from './rds.service';
+import { RDSService } from './rds.service';
 import { AwsSdkModule } from 'src/libs/aws-sdk/aws-sdk.module';
 import { RepositoriesModule } from 'src/infra/repositories/repositories.module';
 import { AwsHelperModule } from '../helper/helper.module';
-import { RdsMetricService } from './rds.metric.service';
+import { RDSMetricService } from './rds.metric.service';
 
 @Module({
   imports: [RepositoriesModule, AwsSdkModule, AwsHelperModule],
-  providers: [RdsService, RdsMetricService],
-  exports: [RdsService, RdsMetricService],
+  providers: [RDSService, RDSMetricService],
+  exports: [RDSService, RDSMetricService],
 })
-export class RdsModule {}
+export class RDSModule {}

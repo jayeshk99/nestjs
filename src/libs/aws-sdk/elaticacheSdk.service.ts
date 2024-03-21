@@ -12,7 +12,7 @@ export class ElastiCacheSdkService {
   constructor() {}
   async listCacheClusters(client: ElastiCacheClient) {
     try {
-      const allresources: DescribeCacheClustersCommandOutput['CacheClusters'] =
+      let allresources: DescribeCacheClustersCommandOutput['CacheClusters'] =
         [];
       const input: DescribeCacheClustersCommandInput = {};
       let nextToken = null;

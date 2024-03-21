@@ -15,10 +15,10 @@ export class EKSSdkService {
   async listEks(
     eksClient: EKSClient,
   ): Promise<ListClustersCommandOutput['clusters']> {
-    let eksList: ListClustersCommandOutput['clusters'] = [];
+    const allresources: ListClustersCommandOutput['clusters'] = [];
     let nextToken: string | null = null;
     // TODO: implement enum for possible values for different resource/ make on global config or enum for aws resources
-    let inputParams: ListClustersCommandInput = {};
+    const inputParams: ListClustersCommandInput = {};
     do {
       try {
         if (nextToken) {
@@ -31,7 +31,7 @@ export class EKSSdkService {
         const resources = data.clusters;
 
         if (resources && resources.length > 0) {
-          eksList.push(...resources);
+          allresources.push(...resources);
         }
 
         nextToken = data.nextToken;
@@ -40,7 +40,7 @@ export class EKSSdkService {
         break;
       }
     } while (nextToken);
-    return eksList;
+    return allresources;
   }
 
   async describeCluster(

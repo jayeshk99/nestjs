@@ -48,7 +48,7 @@ export class AwsHelperService {
 
       const currentDate = moment(new Date()).format('YYYY-MM-DD');
       const startDate = moment(new Date())
-        .subtract(1, 'months')
+        .subtract(1, 'month')
         .format('YYYY-MM-DD');
 
       const usageCostFields: awsUsageCostProps = {

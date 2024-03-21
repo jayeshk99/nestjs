@@ -16,28 +16,26 @@ import { DescribeTargetGroupsInput } from 'aws-sdk/clients/elbv2';
 
 @Injectable()
 export class AWSLoadBalancerSdkService {
-  async listAwsLoadBalancer(
-    awsLoadBalancerClient: ElasticLoadBalancingClient,
-  ): Promise<DescribeLoadBalancersCommandOutput['LoadBalancerDescriptions']> {
-    let elbList: DescribeLoadBalancersCommandOutput['LoadBalancerDescriptions'] =
+  async listAwsLoadBalancer(awsLoadBalancerClient: ElasticLoadBalancingClient) {
+    const allresources: DescribeLoadBalancersCommandOutput['LoadBalancerDescriptions'] =
       [];
     let nextToken: string | null = null;
-    let inputParams: ListResourcesProps = {};
+    const input: ListResourcesProps = {};
     do {
       try {
         if (nextToken) {
-          inputParams.Marker = nextToken;
+          input.Marker = nextToken;
         } else {
-          delete inputParams.Marker;
+          delete input.Marker;
         }
 
         const data = await awsLoadBalancerClient.send(
-          new DescribeLoadBalancersCommand(inputParams),
+          new DescribeLoadBalancersCommand(input),
         );
         const resources = data.LoadBalancerDescriptions;
 
         if (resources && resources.length > 0) {
-          elbList.push(...resources);
+          allresources.push(...resources);
         }
 
         nextToken = data.NextMarker;
@@ -46,7 +44,7 @@ export class AWSLoadBalancerSdkService {
         break;
       }
     } while (nextToken);
-    return elbList;
+    return allresources;
   }
 
   // ******
@@ -54,25 +52,25 @@ export class AWSLoadBalancerSdkService {
   //  ******
   async listAwsLoadBalancerV2(
     awsLoadBalancerClient: ElasticLoadBalancingV2Client,
-  ): Promise<DescribeLoadBalancersV2CommandOutput['LoadBalancers']> {
-    let elbList: DescribeLoadBalancersV2CommandOutput['LoadBalancers'] = [];
+  ) {
+    const allresources: DescribeLoadBalancersV2CommandOutput['LoadBalancers'] = [];
     let nextToken: string | null = null;
-    let inputParams: ListResourcesProps = {};
+    const input: ListResourcesProps = {};
     do {
       try {
         if (nextToken) {
-          inputParams.Marker = nextToken;
+          input.Marker = nextToken;
         } else {
-          delete inputParams.Marker;
+          delete input.Marker;
         }
 
         const data = await awsLoadBalancerClient.send(
-          new DescribeLoadBalancersV2Command(inputParams),
+          new DescribeLoadBalancersV2Command(input),
         );
         const resources = data.LoadBalancers;
 
         if (resources && resources.length > 0) {
-          elbList.push(...resources);
+          allresources.push(...resources);
         }
 
         nextToken = data.NextMarker;
@@ -81,16 +79,16 @@ export class AWSLoadBalancerSdkService {
         break;
       }
     } while (nextToken);
-    return elbList;
+    return allresources;
   }
   async describeTargetGroup(
     awsLoadBalancerV2Client: ElasticLoadBalancingV2Client,
     loadBalancerArn: string,
-  ): Promise<DescribeTargetGroupsCommandOutput['TargetGroups']> {
-    let targetGroupsList: DescribeTargetGroupsCommandOutput['TargetGroups'] =
+  ) {
+    const targetGroupsList: DescribeTargetGroupsCommandOutput['TargetGroups'] =
       [];
     let nextToken: string | null = null;
-    let inputParams: DescribeTargetGroupsInput = {
+    const inputParams: DescribeTargetGroupsInput = {
       LoadBalancerArn: loadBalancerArn,
     };
     do {

@@ -71,7 +71,7 @@ export class SNSService {
             arn: topicArn,
             owner: topicAttributes.Owner,
             subscriptionsPending: topicAttributes?.SubscriptionsPending,
-            lastModified: new Date(lastModified),
+            lastModified: lastModified ? new Date(lastModified) : null,
             subscriptionsConfirmed: topicAttributes?.SubscriptionsConfirmed,
             displayName: topicAttributes?.DisplayName,
             subscriptionsDeleted: topicAttributes?.SubscriptionsDeleted,

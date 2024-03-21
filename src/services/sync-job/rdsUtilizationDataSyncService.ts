@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
-import { RdsMetricService } from '../awsResources/rds/rds.metric.service';
+import { RDSMetricService } from '../awsResources/rds/rds.metric.service';
 
 @Injectable()
 export class RDSUtilizationDataSyncService {
-  constructor(private readonly rdsMetricService: RdsMetricService) {}
+  constructor(private readonly rdsMetricService: RDSMetricService) {}
   async syncUtilizationData(
     accountId: string,
     startTime: Date,

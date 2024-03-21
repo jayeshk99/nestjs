@@ -18,6 +18,8 @@ import { DynamoDBSdkService } from './dynamoDbSdk.service';
 import { BeanStalkSdkService } from './beanstalkSdk.service';
 import { SNSSdkService } from './snsSdk.service';
 import { SQSSdkService } from './sqsSdk.service';
+import { ElastiCacheSdkService } from './elaticacheSdk.service';
+import { AwsLambdaSdkService } from './awsLambdaSdk.service';
 
 @Module({
   imports: [],
@@ -43,6 +45,8 @@ import { SQSSdkService } from './sqsSdk.service';
     BeanStalkSdkService,
     SNSSdkService,
     SQSSdkService,
+    ElastiCacheSdkService,
+    AwsLambdaSdkService
   ],
   exports: [
     ClientConfigurationService,
@@ -66,6 +70,9 @@ import { SQSSdkService } from './sqsSdk.service';
     BeanStalkSdkService,
     SNSSdkService,
     SQSSdkService,
+    ElastiCacheSdkService,
+    AwsLambdaSdkService
+
   ],
 })
 export class AwsSdkModule {}

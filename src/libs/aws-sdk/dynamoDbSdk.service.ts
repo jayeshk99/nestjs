@@ -10,23 +10,23 @@ import {
 @Injectable()
 export class DynamoDBSdkService {
   async listDynamoDb(dynamoDbClient: DynamoDBClient) {
-    let efsList: ListTablesCommandOutput['TableNames'] = [];
+    const allresources: ListTablesCommandOutput['TableNames'] = [];
     let nextToken: string | null = null;
-    let inputParams: ListTablesCommandInput = {};
+    const input: ListTablesCommandInput = {};
     do {
       try {
         if (nextToken) {
-          inputParams.ExclusiveStartTableName = nextToken;
+          input.ExclusiveStartTableName = nextToken;
         } else {
-          delete inputParams.ExclusiveStartTableName;
+          delete input.ExclusiveStartTableName;
         }
 
         const data = await dynamoDbClient.send(
-          new ListTablesCommand(inputParams),
+          new ListTablesCommand(input),
         );
         const resources = data.TableNames;
         if (resources && resources.length > 0) {
-          efsList.push(...resources);
+          allresources.push(...resources);
         }
 
         nextToken = data.LastEvaluatedTableName || null;
@@ -35,7 +35,7 @@ export class DynamoDBSdkService {
         break;
       }
     } while (nextToken);
-    return efsList;
+    return allresources;
   }
 
   async describeTable(dynamoDbClient: DynamoDBClient, tableName: string) {

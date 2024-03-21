@@ -15,10 +15,10 @@ export class EFSSdkService {
   async listEfs(
     efsClient: EFSClient,
   ): Promise<DescribeFileSystemsCommandOutput['FileSystems']> {
-    let efsList: DescribeFileSystemsCommandOutput['FileSystems'] = [];
+    const allresources: DescribeFileSystemsCommandOutput['FileSystems'] = [];
     let nextToken: string | null = null;
     // TODO: implement enum for possible values for different resource/ make on global config or enum for aws resources
-    let inputParams: ListResourcesProps = {};
+    const inputParams: ListResourcesProps = {};
     do {
       try {
         if (nextToken) {
@@ -33,7 +33,7 @@ export class EFSSdkService {
         const resources = data.FileSystems;
 
         if (resources && resources.length > 0) {
-          efsList.push(...resources);
+          allresources.push(...resources);
         }
 
         nextToken = data.NextMarker || null;
@@ -42,6 +42,6 @@ export class EFSSdkService {
         break;
       }
     } while (nextToken);
-    return efsList;
+    return allresources;
   }
 }

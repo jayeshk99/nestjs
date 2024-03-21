@@ -10,8 +10,8 @@ import * as moment from 'moment';
 import { PRODUCT_CODE } from 'src/common/constants/constants';
 
 @Injectable()
-export class RdsService {
-  private readonly logger = new Logger(RdsService.name);
+export class RDSService {
+  private readonly logger = new Logger(RDSService.name);
   constructor(
     private readonly clientConfigurationService: ClientConfigurationService,
     private readonly rdsSdkService: RdsSdkService,

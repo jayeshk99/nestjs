@@ -8,7 +8,7 @@ import { S3GlacierModule } from '../awsResources/s3Glacier/s3Glacier.module';
 import { FsxModule } from '../awsResources/fsx/fsx.module';
 import { EKSModule } from '../awsResources/eks/eks.module';
 import { ECRModule } from '../awsResources/ecr/ecr.module';
-import { RdsModule } from '../awsResources/rds/rds.module';
+import { RDSModule } from '../awsResources/rds/rds.module';
 import { RDSUtilizationDataSyncService } from './rdsUtilizationDataSyncService';
 import { LoadBalancerModule } from '../awsResources/loadBalancer/loadBalancer.module';
 import { ResourceGroupModule } from '../awsResources/resourceGroups/resourceGroups.module';
@@ -19,27 +19,31 @@ import { EC2Module } from '../awsResources/ec2/ec2.module';
 import { ElasticBeanStalkModule } from '../awsResources/beanstalk/beanstalk.module';
 import { SNSModule } from '../awsResources/sns/sns.module';
 import { SQSModule } from '../awsResources/sqs/sqs.module';
+import { ElastiCacheModule } from '../awsResources/elasticache/elasticache.module';
+import { AwsResourceModule } from '../awsResources/resources.module';
 
 @Module({
   imports: [
     RepositoriesModule,
     AwsSdkModule,
-    S3Module,
-    EFSModule,
-    S3GlacierModule,
-    FsxModule,
-    EKSModule,
-    ECRModule,
-    RdsModule,
-    LoadBalancerModule,
-    ResourceGroupModule,
-    ECSModule,
-    EMRModule,
-    DynamoDBModule,
-    EC2Module,
-    ElasticBeanStalkModule,
-    SNSModule,
-    SQSModule,
+    AwsResourceModule
+    // S3Module,
+    // EFSModule,
+    // S3GlacierModule,
+    // FsxModule,
+    // EKSModule,
+    // ECRModule,
+    // RdsModule,
+    // LoadBalancerModule,
+    // ResourceGroupModule,
+    // ECSModule,
+    // EMRModule,
+    // DynamoDBModule,
+    // EC2Module,
+    // ElasticBeanStalkModule,
+    // SNSModule,
+    // SQSModule,
+    // ElastiCacheModule
   ],
   providers: [ResourceSyncService, RDSUtilizationDataSyncService],
   exports: [ResourceSyncService, RDSUtilizationDataSyncService],

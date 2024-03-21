@@ -10,10 +10,11 @@ import {
   CloudWatchClient,
   GetMetricStatisticsCommandOutput,
 } from '@aws-sdk/client-cloudwatch';
+import { AWS_NAME_SPACES } from 'src/common/constants/constants';
 
 @Injectable()
-export class RdsMetricService {
-  private readonly logger = new Logger(RdsMetricService.name);
+export class RDSMetricService {
+  private readonly logger = new Logger(RDSMetricService.name);
   constructor(
     private readonly awsAccountRepository: AwsAccountRepository,
     private readonly rdsDetailsRepository: RdsDetailsRepository,
@@ -195,7 +196,7 @@ export class RdsMetricService {
       const metricDataPromises = metricNames.map((metricName: string) => {
         return this.awsHelperService.getMetricsData(
           {
-            Namespace: 'AWS/RDS',
+            Namespace: AWS_NAME_SPACES.RDS,
             MetricName: metricName,
             Dimensions: [
               { Name: 'DBInstanceIdentifier', Value: `${InstanceName}` },

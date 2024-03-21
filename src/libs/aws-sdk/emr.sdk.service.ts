@@ -10,7 +10,7 @@ import {
 export class EMRSdkService {
   private readonly logger = new Logger(EMRSdkService.name);
   async listEMRClusters(client: EMRClient) {
-    let efsList: ListClustersCommandOutput['Clusters'] = [];
+    let allresources: ListClustersCommandOutput['Clusters'] = [];
     try {
       let nextToken: string | null = null;
       let input: ListClustersCommandInput = {};
@@ -25,7 +25,7 @@ export class EMRSdkService {
         );
 
         if (Clusters.length > 0) {
-          efsList.push(...Clusters);
+          allresources.push(...Clusters);
         }
 
         nextToken = Marker || null;
@@ -33,7 +33,7 @@ export class EMRSdkService {
     } catch (error) {
       this.logger.log(`Error in listing EMR clusters Error:${error}`);
     }
-    return efsList;
+    return allresources;
   }
 
   async describeEMRCluster(emrClient: EMRClient, clusterId: string) {

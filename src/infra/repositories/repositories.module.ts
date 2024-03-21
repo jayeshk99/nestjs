@@ -43,6 +43,10 @@ import { SNSRepository } from './sns.repository';
 import { SNSDetailsEntity } from '../entities/snsDetails.entity';
 import { SQSDetailsEntity } from '../entities/sqsDetails.entity';
 import { SQSRepository } from './sqs.repository';
+import { ElastiCacheRepository } from './elasticache.repository';
+import { ElastiCacheEntity } from '../entities/elasticCacheDetails.entity';
+import { LambdaDetailsEntity } from '../entities/lambdaDetails.entity';
+import { LambdaDetailsRepository } from './lambda.repository';
 
 @Module({
   imports: [
@@ -70,6 +74,8 @@ import { SQSRepository } from './sqs.repository';
       ElasticBeanstalkEntity,
       SNSDetailsEntity,
       SQSDetailsEntity,
+      ElastiCacheEntity,
+      LambdaDetailsEntity
     ]),
   ],
   providers: [
@@ -96,6 +102,8 @@ import { SQSRepository } from './sqs.repository';
     BeanStalkRepository,
     SNSRepository,
     SQSRepository,
+    ElastiCacheRepository,
+    LambdaDetailsRepository
   ],
   exports: [
     AwsInstanceRepository,
@@ -120,6 +128,8 @@ import { SQSRepository } from './sqs.repository';
     BeanStalkRepository,
     SNSRepository,
     SQSRepository,
+    ElastiCacheRepository,
+    LambdaDetailsRepository
   ],
 })
 export class RepositoriesModule {}

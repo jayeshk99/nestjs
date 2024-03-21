@@ -21,6 +21,7 @@ import { ElasticBeanstalkClient } from '@aws-sdk/client-elastic-beanstalk';
 import { SNSClient } from '@aws-sdk/client-sns';
 import { SQSClient } from '@aws-sdk/client-sqs';
 import { ElastiCacheClient } from '@aws-sdk/client-elasticache';
+import { LambdaClient } from '@aws-sdk/client-lambda';
 
 @Injectable()
 export class ClientConfigurationService {
@@ -166,15 +167,21 @@ export class ClientConfigurationService {
   }
   async getDynamoDbClient(creds: ClientCredentials) {
     const { region, accessKeyId, secretAccessKey } = creds;
-    const dynamoDbClient = new DynamoDBClient({
+    return new DynamoDBClient({
       region,
       credentials: { accessKeyId, secretAccessKey },
     });
-    return dynamoDbClient;
   }
   async getElastiCacheClient(creds: ClientCredentials) {
     const { region, accessKeyId, secretAccessKey } = creds;
     return new ElastiCacheClient({
+      region,
+      credentials: { accessKeyId, secretAccessKey },
+    });
+  }
+  async getLambdaClient(creds: ClientCredentials) {
+    const { region, accessKeyId, secretAccessKey } = creds;
+    return new LambdaClient({
       region,
       credentials: { accessKeyId, secretAccessKey },
     });
