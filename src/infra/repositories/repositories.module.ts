@@ -43,6 +43,10 @@ import { SNSRepository } from './sns.repository';
 import { SNSDetailsEntity } from '../entities/snsDetails.entity';
 import { SQSDetailsEntity } from '../entities/sqsDetails.entity';
 import { SQSRepository } from './sqs.repository';
+import { AWSWorkspaceEntity } from '../entities/workspaceDetails.entity';
+import { AWSWorkspaceRepository } from './awsWorkspace.repository';
+import { GlobalAcceleratorEntity } from '../entities/globalAccelerator.entity';
+import { GlobalAcceleratorRepository } from './globalAccelerator.repository';
 
 @Module({
   imports: [
@@ -70,6 +74,8 @@ import { SQSRepository } from './sqs.repository';
       ElasticBeanstalkEntity,
       SNSDetailsEntity,
       SQSDetailsEntity,
+      AWSWorkspaceEntity,
+      GlobalAcceleratorEntity,
     ]),
   ],
   providers: [
@@ -96,6 +102,8 @@ import { SQSRepository } from './sqs.repository';
     BeanStalkRepository,
     SNSRepository,
     SQSRepository,
+    AWSWorkspaceRepository,
+    GlobalAcceleratorRepository,
   ],
   exports: [
     AwsInstanceRepository,
@@ -120,6 +128,8 @@ import { SQSRepository } from './sqs.repository';
     BeanStalkRepository,
     SNSRepository,
     SQSRepository,
+    AWSWorkspaceRepository,
+    GlobalAcceleratorRepository,
   ],
 })
 export class RepositoriesModule {}

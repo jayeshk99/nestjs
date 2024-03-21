@@ -20,6 +20,8 @@ import { DynamoDBClient } from '@aws-sdk/client-dynamodb';
 import { ElasticBeanstalkClient } from '@aws-sdk/client-elastic-beanstalk';
 import { SNSClient } from '@aws-sdk/client-sns';
 import { SQSClient } from '@aws-sdk/client-sqs';
+import { WorkSpacesClient } from '@aws-sdk/client-workspaces';
+import { GlobalAcceleratorClient } from '@aws-sdk/client-global-accelerator';
 
 @Injectable()
 export class ClientConfigurationService {
@@ -170,5 +172,22 @@ export class ClientConfigurationService {
       credentials: { accessKeyId, secretAccessKey },
     });
     return dynamoDbClient;
+  }
+  async getWorkspaceClient(creds: ClientCredentials) {
+    const { region, accessKeyId, secretAccessKey } = creds;
+    const workspaceClient = new WorkSpacesClient({
+      region,
+      credentials: { accessKeyId, secretAccessKey },
+    });
+    return workspaceClient;
+  }
+
+  async getGlobalAcceleratorClient(creds: ClientCredentials) {
+    const { region, accessKeyId, secretAccessKey } = creds;
+    const globalAcceleratorClient = new GlobalAcceleratorClient({
+      region,
+      credentials: { accessKeyId, secretAccessKey },
+    });
+    return globalAcceleratorClient;
   }
 }

@@ -8,7 +8,7 @@ import {
 } from 'typeorm';
 
 @Entity({ name: 'AWSWorkspaceDetails' })
-export class AWSWorkspaceDetailsEntity {
+export class AWSWorkspaceEntity {
   @PrimaryGeneratedColumn({ name: 'Id' })
   id: number;
 
@@ -17,6 +17,9 @@ export class AWSWorkspaceDetailsEntity {
 
   @Column({ name: 'WorkspaceId' })
   workspaceId: string;
+
+  @Column({ name: 'WorkspaceArn' })
+  workspaceArn: string;
 
   @Column({ name: 'ComputerName' })
   computerName: string;
