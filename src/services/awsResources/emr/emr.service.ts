@@ -72,7 +72,7 @@ export class EMRService {
                 );
               const { dailyCost, isPrevMonthCostAvailable, prevMonthCost } =
                 await this.awsHelperService.getCostDetails({
-                  resourceId: clusterDesc.Id,
+                  resourceId: clusterDesc.ClusterArn,
                   accountId: accountId,
                   productCode: PRODUCT_CODE.EMR,
                 });

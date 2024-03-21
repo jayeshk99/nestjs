@@ -19,6 +19,8 @@ import { EC2Module } from '../awsResources/ec2/ec2.module';
 import { ElasticBeanStalkModule } from '../awsResources/beanstalk/beanstalk.module';
 import { SNSModule } from '../awsResources/sns/sns.module';
 import { SQSModule } from '../awsResources/sqs/sqs.module';
+import { AWSWorkspaceModule } from '../awsResources/workspace/workspace.module';
+import { GlobalAcceleratorModule } from '../awsResources/globalAccelerator/globalAccelerator.module';
 import { ElastiCacheModule } from '../awsResources/elasticache/elasticache.module';
 import { AwsResourceModule } from '../awsResources/resources.module';
 

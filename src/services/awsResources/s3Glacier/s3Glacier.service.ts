@@ -5,6 +5,9 @@ import { AwsUsageDetailsRepository } from 'src/infra/repositories/awsUsageDetail
 import { S3GlacierRepository } from 'src/infra/repositories/s3Glacier.repository';
 import { ClientConfigurationService } from 'src/libs/aws-sdk/clientConfiguration.service';
 import { S3GlacierSdkService } from 'src/libs/aws-sdk/s3GlacierSdk.service';
+import { AwsHelperService } from '../helper/helper.service';
+import { PRODUCT_CODE } from 'src/common/constants/constants';
+import moment from 'moment';
 
 @Injectable()
 export class S3GlacierService {
@@ -13,6 +16,7 @@ export class S3GlacierService {
   constructor(
     private readonly clientConfigurationService: ClientConfigurationService,
     private readonly awsUsageDetailsRepository: AwsUsageDetailsRepository,
+    private readonly awsHelperService: AwsHelperService,
     private readonly s3GlacierSdkService: S3GlacierSdkService,
     private readonly s3GlacierRepository: S3GlacierRepository,
   ) {}
@@ -21,7 +25,8 @@ export class S3GlacierService {
       this.logger.log(
         `started Syncing S3 Glacier vaults for account:${data.accountId} region:${data.region}`,
       );
-      const { accessKeyId, secretAccessKey, accountId, region } = data;
+      const { accessKeyId, secretAccessKey, accountId, region, currencyCode } =
+        data;
       const efsClient =
         await this.clientConfigurationService.getS3GlacierClient(data);
       const glacierList = await this.s3GlacierSdkService.listS3GlacierVaults(
@@ -29,8 +34,13 @@ export class S3GlacierService {
         accountId,
       );
       if (glacierList && glacierList.length) {
-        for (let i = 0; i < glacierList.length; i++) {
-          const glacierVaultDetails = glacierList[i];
+        for (let glacierVaultDetails of glacierList) {
+          const { dailyCost, isPrevMonthCostAvailable, prevMonthCost } =
+            await this.awsHelperService.getCostDetails({
+              resourceId: glacierVaultDetails.VaultARN,
+              accountId: accountId,
+              productCode: PRODUCT_CODE['S3 Glacier'],
+            });
           let a = glacierVaultDetails.CreationDate;
           const glacierVaultFields: S3GlacierProps = {
             vaultName: glacierVaultDetails.VaultName,
@@ -42,6 +52,12 @@ export class S3GlacierService {
             accountId: accountId,
             region: region,
             unit: 'Byte',
+            currencyCode: currencyCode,
+            predictedMonthlyCost: isPrevMonthCostAvailable
+              ? prevMonthCost
+              : dailyCost
+                ? dailyCost * moment().daysInMonth()
+                : 0,
           };
           const isGlacierExist = await this.s3GlacierRepository.findByCondition(
             {

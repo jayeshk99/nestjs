@@ -43,6 +43,10 @@ import { SNSRepository } from './sns.repository';
 import { SNSDetailsEntity } from '../entities/snsDetails.entity';
 import { SQSDetailsEntity } from '../entities/sqsDetails.entity';
 import { SQSRepository } from './sqs.repository';
+import { AWSWorkspaceEntity } from '../entities/workspaceDetails.entity';
+import { AWSWorkspaceRepository } from './awsWorkspace.repository';
+import { GlobalAcceleratorEntity } from '../entities/globalAccelerator.entity';
+import { GlobalAcceleratorRepository } from './globalAccelerator.repository';
 import { ElastiCacheRepository } from './elasticache.repository';
 import { ElastiCacheEntity } from '../entities/elasticCacheDetails.entity';
 import { LambdaDetailsEntity } from '../entities/lambdaDetails.entity';
@@ -74,6 +78,8 @@ import { LambdaDetailsRepository } from './lambda.repository';
       ElasticBeanstalkEntity,
       SNSDetailsEntity,
       SQSDetailsEntity,
+      AWSWorkspaceEntity,
+      GlobalAcceleratorEntity,
       ElastiCacheEntity,
       LambdaDetailsEntity
     ]),
@@ -102,6 +108,8 @@ import { LambdaDetailsRepository } from './lambda.repository';
     BeanStalkRepository,
     SNSRepository,
     SQSRepository,
+    AWSWorkspaceRepository,
+    GlobalAcceleratorRepository,
     ElastiCacheRepository,
     LambdaDetailsRepository
   ],
@@ -128,6 +136,8 @@ import { LambdaDetailsRepository } from './lambda.repository';
     BeanStalkRepository,
     SNSRepository,
     SQSRepository,
+    AWSWorkspaceRepository,
+    GlobalAcceleratorRepository,
     ElastiCacheRepository,
     LambdaDetailsRepository
   ],

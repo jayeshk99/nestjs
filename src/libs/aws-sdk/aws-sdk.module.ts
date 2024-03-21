@@ -18,6 +18,8 @@ import { DynamoDBSdkService } from './dynamoDbSdk.service';
 import { BeanStalkSdkService } from './beanstalkSdk.service';
 import { SNSSdkService } from './snsSdk.service';
 import { SQSSdkService } from './sqsSdk.service';
+import { AWSWorkspaceSdkService } from './workspaceSdk.service';
+import { globalAcceleratorSdkService } from './globalAcceleratorSdk.service';
 import { ElastiCacheSdkService } from './elaticacheSdk.service';
 import { AwsLambdaSdkService } from './awsLambdaSdk.service';
 
@@ -45,6 +47,8 @@ import { AwsLambdaSdkService } from './awsLambdaSdk.service';
     BeanStalkSdkService,
     SNSSdkService,
     SQSSdkService,
+    AWSWorkspaceSdkService,
+    globalAcceleratorSdkService,
     ElastiCacheSdkService,
     AwsLambdaSdkService
   ],
@@ -70,6 +74,8 @@ import { AwsLambdaSdkService } from './awsLambdaSdk.service';
     BeanStalkSdkService,
     SNSSdkService,
     SQSSdkService,
+    AWSWorkspaceSdkService,
+    globalAcceleratorSdkService,
     ElastiCacheSdkService,
     AwsLambdaSdkService
 
