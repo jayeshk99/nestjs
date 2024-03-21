@@ -22,6 +22,8 @@ import { AwsHelperModule } from './helper/helper.module';
 import { RDSMetricService } from './rds/rds.metric.service';
 import { AwsHelperService } from './helper/helper.service';
 import { LambdaService } from './lambda/lambda.service';
+import { GlobalAcceleratorService } from './globalAccelerator/globalAccelerator.service';
+import { AWSWorkspaceService } from './workspace/workspace.service';
 
 @Module({
   imports: [RepositoriesModule, AwsSdkModule, AwsHelperModule],
@@ -45,7 +47,9 @@ import { LambdaService } from './lambda/lambda.service';
     ResourceGroupService,
     RDSMetricService,
     AwsHelperService,
-    LambdaService
+    LambdaService,
+    GlobalAcceleratorService,
+    AWSWorkspaceService
   ],
   exports: [
     ElasticBeanStalkService,
@@ -67,7 +71,10 @@ import { LambdaService } from './lambda/lambda.service';
     ResourceGroupService,
     RDSMetricService,
     AwsHelperService,
-    LambdaService
+    LambdaService,
+    GlobalAcceleratorService,
+    AWSWorkspaceService
+    
   ],
 })
 export class AwsResourceModule {}

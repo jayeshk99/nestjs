@@ -190,36 +190,17 @@ export class ClientConfigurationService {
   }
   async getWorkspaceClient(creds: ClientCredentials) {
     const { region, accessKeyId, secretAccessKey } = creds;
-    const workspaceClient = new WorkSpacesClient({
+    return new WorkSpacesClient({
       region,
       credentials: { accessKeyId, secretAccessKey },
     });
-    return workspaceClient;
   }
 
   async getGlobalAcceleratorClient(creds: ClientCredentials) {
     const { region, accessKeyId, secretAccessKey } = creds;
-    const globalAcceleratorClient = new GlobalAcceleratorClient({
+    return new GlobalAcceleratorClient({
       region,
       credentials: { accessKeyId, secretAccessKey },
     });
-    return globalAcceleratorClient;
-  }
-  async getWorkspaceClient(creds: ClientCredentials) {
-    const { region, accessKeyId, secretAccessKey } = creds;
-    const workspaceClient = new WorkSpacesClient({
-      region,
-      credentials: { accessKeyId, secretAccessKey },
-    });
-    return workspaceClient;
-  }
-
-  async getGlobalAcceleratorClient(creds: ClientCredentials) {
-    const { region, accessKeyId, secretAccessKey } = creds;
-    const globalAcceleratorClient = new GlobalAcceleratorClient({
-      region,
-      credentials: { accessKeyId, secretAccessKey },
-    });
-    return globalAcceleratorClient;
   }
 }

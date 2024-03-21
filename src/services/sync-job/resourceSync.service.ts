@@ -50,7 +50,6 @@ export class ResourceSyncService {
     private readonly beanStalkService: ElasticBeanStalkService,
     private readonly sqsService: SQSService,
     private readonly snsService: SNSService,
-    private readonly emrService: EMRService,
     private readonly awsWorkspaceService: AWSWorkspaceService,
     private readonly globalAcceleratorService: GlobalAcceleratorService,
     private readonly elastiCacheService: ElastiCacheService,

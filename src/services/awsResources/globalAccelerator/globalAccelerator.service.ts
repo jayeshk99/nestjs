@@ -20,7 +20,7 @@ export class GlobalAcceleratorService {
   async fetchAcceleratorDetails(data: ClientCredentials) {
     try {
       this.logger.log(
-        `GlobalAccelerator details job STARTED for account: ${data.accountId} region: ${data.region}`,
+        `started Syncing global accelerator for account:${data.accountId} region:${data.region}`,
       );
       const { accessKeyId, secretAccessKey, accountId, region, currencyCode } =
         data;
@@ -78,11 +78,11 @@ export class GlobalAcceleratorService {
         }
       }
       this.logger.log(
-        `GlobalAccelerator Details job COMPLETED for account: ${data.accountId} region: ${data.region}`,
+        `started Syncing global accelerator for account:${data.accountId} region:${data.region}`,
       );
     } catch (error) {
       this.logger.log(
-        `Error in getting GlobalAccelerator Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
+        `Error in syncing global accelerator Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
       );
     }
   }

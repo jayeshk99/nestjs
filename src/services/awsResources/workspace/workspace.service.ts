@@ -30,7 +30,7 @@ export class AWSWorkspaceService {
   async fetchWorkspaceDetails(data: ClientCredentials) {
     try {
       this.logger.log(
-        `AWS Workspace details job STARTED for account: ${data.accountId} region: ${data.region}`,
+        `started Syncing workspaces for account:${data.accountId} region:${data.region}`,
       );
       const { accessKeyId, secretAccessKey, accountId, region, currencyCode } =
         data;
@@ -92,11 +92,11 @@ export class AWSWorkspaceService {
         }
       }
       this.logger.log(
-        `AWS Workspace Details job COMPLETED for account: ${data.accountId} region: ${data.region}`,
+        `completed Syncing worksapces for account:${data.accountId} region:${data.region}`,
       );
     } catch (error) {
       this.logger.log(
-        `Error in getting AWS Workspace Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
+        `Error in syncing Workspace Details for account: ${data.accountId} region: ${data.region}: Error: ${error}`,
       );
     }
   }
