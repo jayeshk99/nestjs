@@ -22,6 +22,7 @@ import { EC2Service } from '../awsResources/ec2/ec2.service';
 import { ElasticBeanStalkService } from '../awsResources/beanstalk/beanstalk.service';
 import { SNSService } from '../awsResources/sns/sns.service';
 import { SQSService } from '../awsResources/sqs/sqs.service';
+import { ElastiCacheService } from '../awsResources/elasticache/elasticache.service';
 
 @Injectable()
 export class ResourceSyncService {
@@ -45,7 +46,8 @@ export class ResourceSyncService {
     private readonly beanStalkService: ElasticBeanStalkService,
     private readonly sqsService: SQSService,
     private readonly snsService: SNSService,
-    private readonly emrService: EMRService
+    private readonly emrService: EMRService,
+    private readonly elastiCacheService:ElastiCacheService
   ) {}
 
   async syncAllResources(
@@ -91,6 +93,7 @@ export class ResourceSyncService {
           this.sqsService.syncQueues(clientRequest);
           this.snsService.syncTopics(clientRequest);
           this.emrService.syncEMRClusters(clientRequest)
+          this.elastiCacheService.syncCacheClusters(clientRequest)
         }),
       );
     } catch (error) {

@@ -19,6 +19,7 @@ import { EMRClient } from '@aws-sdk/client-emr';
 import { ElasticBeanstalkClient } from '@aws-sdk/client-elastic-beanstalk';
 import { SNSClient } from '@aws-sdk/client-sns';
 import { SQSClient } from '@aws-sdk/client-sqs';
+import { ElastiCacheClient } from '@aws-sdk/client-elasticache';
 
 @Injectable()
 export class ClientConfigurationService {
@@ -158,6 +159,13 @@ export class ClientConfigurationService {
   async getEMRClient(creds: ClientCredentials) {
     const { region, accessKeyId, secretAccessKey } = creds;
     return new EMRClient({
+      region,
+      credentials: { accessKeyId, secretAccessKey },
+    });
+  }
+  async getElastiCacheClient(creds: ClientCredentials) {
+    const { region, accessKeyId, secretAccessKey } = creds;
+    return new ElastiCacheClient({
       region,
       credentials: { accessKeyId, secretAccessKey },
     });
