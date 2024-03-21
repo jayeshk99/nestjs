@@ -14,6 +14,7 @@ import { LoadBalancerModule } from '../awsResources/loadBalancer/loadBalancer.mo
 import { ResourceGroupModule } from '../awsResources/resourceGroups/resourceGroups.module';
 import { ECSModule } from '../awsResources/ecs/ecs.module';
 import { EMRModule } from '../awsResources/emr/emr.module';
+import { DynamoDBModule } from '../awsResources/dynamoDb/dynamoDb.module';
 import { EC2Module } from '../awsResources/ec2/ec2.module';
 import { ElasticBeanStalkModule } from '../awsResources/beanstalk/beanstalk.module';
 import { SNSModule } from '../awsResources/sns/sns.module';
@@ -34,10 +35,11 @@ import { SQSModule } from '../awsResources/sqs/sqs.module';
     ResourceGroupModule,
     ECSModule,
     EMRModule,
+    DynamoDBModule,
     EC2Module,
     ElasticBeanStalkModule,
     SNSModule,
-    SQSModule
+    SQSModule,
   ],
   providers: [ResourceSyncService, RDSUtilizationDataSyncService],
   exports: [ResourceSyncService, RDSUtilizationDataSyncService],

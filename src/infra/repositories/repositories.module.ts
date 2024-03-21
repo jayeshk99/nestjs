@@ -33,6 +33,8 @@ import { AwsContainerInstanceEntity } from '../entities/awsContainerInstance.ent
 import { ECSRepository } from './ecs.repository';
 import { EMREntity } from '../entities/emrDetails.entity';
 import { EMRRepository } from './emr.repository';
+import { DynamoDBDetailEntity } from '../entities/dynamoDbDetails.entity';
+import { DynamoDBRepository } from './dynamoDb.repository';
 import { ElasticIPAddress } from '../entities/elasticIpAddresses.entity';
 import { ElasticIpRepository } from './elasticIp.Repository';
 import { BeanStalkRepository } from './elasticbeanstalk.repository';
@@ -63,10 +65,11 @@ import { SQSRepository } from './sqs.repository';
       EBSEntity,
       AwsContainerInstanceEntity,
       EMREntity,
+      DynamoDBDetailEntity,
       ElasticIPAddress,
       ElasticBeanstalkEntity,
       SNSDetailsEntity,
-      SQSDetailsEntity
+      SQSDetailsEntity,
     ]),
   ],
   providers: [
@@ -88,10 +91,11 @@ import { SQSRepository } from './sqs.repository';
     EBSRepository,
     ECSRepository,
     EMRRepository,
+    DynamoDBRepository,
     ElasticIpRepository,
     BeanStalkRepository,
     SNSRepository,
-    SQSRepository
+    SQSRepository,
   ],
   exports: [
     AwsInstanceRepository,
@@ -111,10 +115,11 @@ import { SQSRepository } from './sqs.repository';
     EBSRepository,
     ECSRepository,
     EMRRepository,
+    DynamoDBRepository,
     ElasticIpRepository,
     BeanStalkRepository,
     SNSRepository,
-    SQSRepository
+    SQSRepository,
   ],
 })
 export class RepositoriesModule {}

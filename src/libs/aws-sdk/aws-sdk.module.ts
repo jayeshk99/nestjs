@@ -14,6 +14,7 @@ import { ECSSdkService } from './ecsSdk.service';
 import { ResourceGroupSdkService } from './resourceGroupSdk.service';
 import { CloudTrailSdkService } from './cloudTrailSdk.service';
 import { EMRSdkService } from './emr.sdk.service';
+import { DynamoDBSdkService } from './dynamoDbSdk.service';
 import { BeanStalkSdkService } from './beanstalkSdk.service';
 import { SNSSdkService } from './snsSdk.service';
 import { SQSSdkService } from './sqsSdk.service';
@@ -38,9 +39,10 @@ import { SQSSdkService } from './sqsSdk.service';
     ResourceGroupSdkService,
     CloudTrailSdkService,
     EMRSdkService,
+    DynamoDBSdkService,
     BeanStalkSdkService,
     SNSSdkService,
-    SQSSdkService
+    SQSSdkService,
   ],
   exports: [
     ClientConfigurationService,
@@ -60,9 +62,10 @@ import { SQSSdkService } from './sqsSdk.service';
     ResourceGroupSdkService,
     CloudTrailSdkService,
     EMRSdkService,
+    DynamoDBSdkService,
     BeanStalkSdkService,
     SNSSdkService,
-    SQSSdkService
+    SQSSdkService,
   ],
 })
 export class AwsSdkModule {}
