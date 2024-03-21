@@ -43,14 +43,12 @@ export class ResourceSyncService {
     private readonly resourceGroupService: ResourceGroupService,
     private readonly awsUsageDetailRepository: AwsUsageDetailsRepository,
     private readonly ecsService: ECSService,
-    private readonly emrservice: EMRService,
+    private readonly emrService: EMRService,
     private readonly dynamoDbService: DynamoDBService,
     private readonly ec2Service: EC2Service,
     private readonly beanStalkService: ElasticBeanStalkService,
     private readonly sqsService: SQSService,
     private readonly snsService: SNSService,
-    private readonly emrService: EMRService,
-    private readonly emrService: EMRService,
     private readonly elastiCacheService:ElastiCacheService
   ) {}
 
